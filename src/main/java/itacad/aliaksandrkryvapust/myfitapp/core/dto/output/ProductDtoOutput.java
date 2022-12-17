@@ -16,6 +16,7 @@ public class ProductDtoOutput {
     private @NonNull Integer proteins;
     private @NonNull Integer fats;
     private @NonNull Integer carbohydrates;
+    private @NonNull Double weight;
     private @NonNull Instant dtCreate;
     private @NonNull Instant dtUpdate;
 }

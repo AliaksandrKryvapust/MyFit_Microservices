@@ -27,4 +27,7 @@ public class ProductDtoInput {
     @NotNull(message = "carbohydrates cannot be null")
     @Positive(message = "carbohydrates should be positive")
     private Integer carbohydrates;
+    @NotNull(message = "weight cannot be null")
+    @Positive(message = "weight should be positive")
+    private Double weight;
 }
