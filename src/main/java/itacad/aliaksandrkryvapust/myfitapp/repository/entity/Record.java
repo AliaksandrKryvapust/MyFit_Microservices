@@ -17,7 +17,7 @@ import java.util.UUID;
 public class Record {
     @Id
     @GeneratedValue(generator = "uuid3")
-    @GenericGenerator(name = "uuid3", strategy = "uuid")
+    @GenericGenerator(name = "uuid3", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
     @Column(name = "product_id", insertable = false, updatable = false)
     private UUID productId;
@@ -31,6 +31,8 @@ public class Record {
     @JoinColumn(name = "meal_id", referencedColumnName = "id")
     @Setter
     private Meal meal;
+    @Setter
+    private Double weight;
     @Column(updatable = false)
     @org.hibernate.annotations.Generated(GenerationTime.INSERT)
     private Instant dtCreate;

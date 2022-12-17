@@ -21,7 +21,7 @@ public class Product {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
-    @Type(type="pg-uuid")
+//    @Type(type="pg-uuid")
     private UUID id;
     @OneToMany(mappedBy = "product")
     @Setter

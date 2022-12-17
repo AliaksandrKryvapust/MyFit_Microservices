@@ -18,7 +18,7 @@ import java.util.UUID;
 public class Meal {
     @Id
     @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
     @OneToMany(mappedBy = "meal")
     @Setter
