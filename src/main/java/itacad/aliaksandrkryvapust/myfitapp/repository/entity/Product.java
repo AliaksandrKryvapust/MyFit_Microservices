@@ -7,6 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -21,6 +22,9 @@ public class Product {
     @GenericGenerator(name = "uuid", strategy = "uuid")
 //    @Type(type="pg-uuid")
     private UUID id;
+    @OneToMany(mappedBy = "product")
+    @Setter
+    private List<Ingredient> ingredients;
     @Setter
     private String title;
     @Setter

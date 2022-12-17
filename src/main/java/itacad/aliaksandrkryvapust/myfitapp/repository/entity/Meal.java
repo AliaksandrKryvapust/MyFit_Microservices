@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -19,6 +20,9 @@ public class Meal {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid")
     private UUID id;
+    @OneToMany(mappedBy = "meal")
+    @Setter
+    private List<Ingredient> ingredients;
     @Setter
     private String title;
     @Column(updatable = false)
