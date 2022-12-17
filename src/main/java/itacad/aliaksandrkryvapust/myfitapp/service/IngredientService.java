@@ -3,6 +3,7 @@ package itacad.aliaksandrkryvapust.myfitapp.service;
 import itacad.aliaksandrkryvapust.myfitapp.repository.api.IIngredientRepository;
 import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Ingredient;
 import itacad.aliaksandrkryvapust.myfitapp.service.api.IIngredientService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +16,7 @@ import java.util.UUID;
 public class IngredientService implements IIngredientService {
 
     private final IIngredientRepository ingredientRepository;
-
+    @Autowired
     public IngredientService(IIngredientRepository ingredientRepository) {
         this.ingredientRepository = ingredientRepository;
     }
