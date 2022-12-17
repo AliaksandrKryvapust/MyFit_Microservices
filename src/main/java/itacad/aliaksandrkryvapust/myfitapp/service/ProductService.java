@@ -23,22 +23,22 @@ public class ProductService implements IProductService {
 
     @Override
     @Transactional
-    public Product save(Product menuItem) {
-        if (menuItem.getId() != null || menuItem.getDtUpdate() != null) {
+    public Product save(Product product) {
+        if (product.getId() != null || product.getDtUpdate() != null) {
             throw new IllegalStateException("Product id & version should be empty");
         }
-        return this.productRepository.save(menuItem);
+        return this.productRepository.save(product);
     }
 
     @Override
     @Transactional
-    public Product update(Product menuItem, UUID id, Instant version) {
-        if (menuItem.getId() != null || menuItem.getDtUpdate() != null) {
+    public Product update(Product product, UUID id, Instant version) {
+        if (product.getId() != null || product.getDtUpdate() != null) {
             throw new IllegalStateException("MenuItem id & version should be empty");
         }
         Product currentEntity = this.productRepository.findById(id).orElseThrow();
         if (!currentEntity.getDtUpdate().equals(version)) {
-            throw new OptimisticLockException("menu_item table update failed, version does not match update denied");
+            throw new OptimisticLockException("product table update failed, version does not match update denied");
         }
         return this.productRepository.save(currentEntity);
     }
