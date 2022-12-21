@@ -12,10 +12,9 @@ import java.util.UUID;
 @Data
 @Jacksonized
 public class IngredientDtoInput {
-    @NotNull(message = "productId cannot be null")
-    @Positive(message = "productId should be positive")
-    private UUID productId;
+    @NotNull(message = "productId cannot be empty")
+    private final UUID productId;
     @NotNull(message = "weight cannot be null")
     @Positive(message = "weight should be positive")
-    private Double weight;
+    private final Double weight;
 }

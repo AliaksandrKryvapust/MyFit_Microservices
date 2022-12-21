@@ -2,16 +2,16 @@ package itacad.aliaksandrkryvapust.myfitapp.manager;
 
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.RecordDtoInput;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.RecordDtoOutput;
+import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.myfitapp.core.mapper.RecordMapper;
 import itacad.aliaksandrkryvapust.myfitapp.manager.api.IRecordManager;
 import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Record;
 import itacad.aliaksandrkryvapust.myfitapp.service.api.IRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Component
 public class RecordManager implements IRecordManager {
@@ -31,8 +31,8 @@ public class RecordManager implements IRecordManager {
     }
 
     @Override
-    public List<RecordDtoOutput> get() {
-        return this.recordService.get().stream().map(recordMapper::outputMapping).collect(Collectors.toList());
+    public PageDtoOutput get(Pageable pageable) {
+        return recordMapper.outputPageMapping(this.recordService.get(pageable));
     }
 
     @Override

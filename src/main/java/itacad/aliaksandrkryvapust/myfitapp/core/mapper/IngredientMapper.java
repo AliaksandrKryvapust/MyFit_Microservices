@@ -4,7 +4,6 @@ import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.IngredientDtoInput;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.IngredientDtoOutput;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.ProductDtoOutput;
 import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Ingredient;
-import itacad.aliaksandrkryvapust.myfitapp.repository.entity.IngredientKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -21,8 +20,8 @@ public class IngredientMapper {
     }
 
     public Ingredient inputMapping(IngredientDtoInput ingredientDtoInput) {
-        return Ingredient.builder().id(IngredientKey.builder()
-                        .productId(ingredientDtoInput.getProductId()).build())
+        return Ingredient.builder()
+                .productId(ingredientDtoInput.getProductId())
                 .weight(ingredientDtoInput.getWeight())
                 .build();
     }
@@ -32,8 +31,6 @@ public class IngredientMapper {
         return IngredientDtoOutput.builder()
                 .product(dtoOutput)
                 .weight(ingredient.getWeight())
-                .dtCreate(ingredient.getDtCreate())
-                .dtUpdate(ingredient.getDtUpdate())
                 .build();
     }
 }

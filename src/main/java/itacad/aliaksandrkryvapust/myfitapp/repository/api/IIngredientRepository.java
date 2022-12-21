@@ -8,4 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface IIngredientRepository extends JpaRepository<Ingredient, UUID> {
+    void deleteAllByMealId(UUID uuid);
 }

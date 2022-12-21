@@ -17,10 +17,11 @@ import java.util.UUID;
 @Table(name = "meal", schema = "app")
 public class Meal {
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
-    @OneToMany(mappedBy = "meal")
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "meal_id", referencedColumnName = "id", nullable = false)
     @Setter
     private List<Ingredient> ingredients;
     @Setter

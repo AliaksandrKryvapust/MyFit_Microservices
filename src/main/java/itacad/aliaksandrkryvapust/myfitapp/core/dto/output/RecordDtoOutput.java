@@ -10,9 +10,9 @@ import java.util.UUID;
 @Builder
 @Data
 public class RecordDtoOutput {
-    private @NonNull UUID id;
-    private UUID productId;
-    private UUID mealId;
-    private @NonNull Double weight;
-    private @NonNull Instant dtCreate;
+    private final @NonNull UUID uuid;
+    private final @NonNull Double weight;
+    private final @NonNull Instant dtCreate;
+    private ProductDtoOutput product;
+    private MealDtoOutput recipe;
 }

@@ -10,13 +10,13 @@ import java.util.UUID;
 @Builder
 @Data
 public class ProductDtoOutput {
-    private @NonNull UUID id;
-    private @NonNull String title;
-    private @NonNull Integer calories;
-    private @NonNull Integer proteins;
-    private @NonNull Integer fats;
-    private @NonNull Integer carbohydrates;
-    private @NonNull Double weight;
-    private @NonNull Instant dtCreate;
-    private @NonNull Instant dtUpdate;
+    private final @NonNull UUID uuid;
+    private final @NonNull String title;
+    private final @NonNull Integer calories;
+    private final @NonNull Integer proteins;
+    private final @NonNull Integer fats;
+    private final @NonNull Integer carbohydrates;
+    private final @NonNull Double weight;
+    private final @NonNull Instant dtCreate;
+    private final @NonNull Instant dtUpdate;
 }

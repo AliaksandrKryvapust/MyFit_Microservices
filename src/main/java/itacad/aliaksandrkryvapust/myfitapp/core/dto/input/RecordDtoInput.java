@@ -12,9 +12,9 @@ import java.util.UUID;
 @Data
 @Jacksonized
 public class RecordDtoInput {
-    private UUID productId;
-    private UUID mealId;
+    private final UUID productId;
+    private final UUID mealId;
     @NotNull(message = "proteins cannot be null")
     @Positive(message = "proteins should be positive")
-    private Double weight;
+    private final Double weight;
 }

@@ -15,8 +15,8 @@ import java.util.List;
 public class MealDtoInput {
     @Valid
     @NotNull(message = "ingredients cannot be null")
-    private List<IngredientDtoInput> ingredients;
+    private final List<IngredientDtoInput> ingredients;
     @NotNull(message = "title cannot be null")
     @Size(min = 2, max = 100, message = "title should contain from 4 to 100 letters")
-    private String title;
+    private final String title;
 }

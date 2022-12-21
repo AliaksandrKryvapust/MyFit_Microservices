@@ -11,9 +11,9 @@ import java.util.UUID;
 @Builder
 @Data
 public class MealDtoOutput {
-    private @NonNull UUID id;
-    private @NonNull List<IngredientDtoOutput> ingredients;
-    private @NonNull String title;
-    private @NonNull Instant dtCreate;
-    private @NonNull Instant dtUpdate;
+    private final @NonNull UUID uuid;
+    private final @NonNull List<IngredientDtoOutput> composition;
+    private final @NonNull String title;
+    private final @NonNull Instant dtCreate;
+    private final @NonNull Instant dtUpdate;
 }

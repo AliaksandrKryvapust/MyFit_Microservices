@@ -4,12 +4,12 @@ import itacad.aliaksandrkryvapust.myfitapp.repository.api.IIngredientRepository;
 import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Ingredient;
 import itacad.aliaksandrkryvapust.myfitapp.service.api.IIngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.OptimisticLockException;
-import java.time.Instant;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -24,15 +24,13 @@ public class IngredientService implements IIngredientService {
     @Override
     @Transactional
     public Ingredient save(Ingredient ingredient) {
-        if (ingredient.getId() != null) {
-            throw new IllegalStateException("Ingredient id should be empty");
-        }
+        validateInput(ingredient);
         return this.ingredientRepository.save(ingredient);
     }
 
     @Override
-    public List<Ingredient> get() {
-        return this.ingredientRepository.findAll();
+    public Page<Ingredient> get(Pageable pageable) {
+        return this.ingredientRepository.findAll(pageable);
     }
 
     @Override
@@ -48,14 +46,24 @@ public class IngredientService implements IIngredientService {
 
     @Override
     @Transactional
-    public Ingredient update(Ingredient ingredient, UUID id, Instant version) {
-        if (ingredient.getId() != null) {
-            throw new IllegalStateException("Ingredient id should be empty");
-        }
+    public Ingredient update(Ingredient ingredient, UUID id, Long version) {
+        validateInput(ingredient);
         Ingredient currentEntity = this.ingredientRepository.findById(id).orElseThrow();
-        if (!currentEntity.getDtUpdate().equals(version)) {
+        Long currentVersion = currentEntity.getDtUpdate().toEpochMilli();
+        if (!currentVersion.equals(version)) {
             throw new OptimisticLockException("menu_item table update failed, version does not match update denied");
         }
         return this.ingredientRepository.save(ingredient);
+    }
+
+    private void validateInput(Ingredient ingredient) {
+        if (ingredient.getProductId() != null) {
+            throw new IllegalStateException("Ingredient id should be empty");
+        }
+    }
+
+    @Override
+    public void deleteAllByMealId(UUID uuid) {
+        this.ingredientRepository.deleteAllByMealId(uuid);
     }
 }

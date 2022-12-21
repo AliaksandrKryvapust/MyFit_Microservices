@@ -2,17 +2,16 @@ package itacad.aliaksandrkryvapust.myfitapp.manager;
 
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.ProductDtoInput;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.ProductDtoOutput;
+import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.myfitapp.core.mapper.ProductMapper;
 import itacad.aliaksandrkryvapust.myfitapp.manager.api.IProductManager;
 import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Product;
 import itacad.aliaksandrkryvapust.myfitapp.service.api.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Component
 public class ProductManager implements IProductManager {
@@ -33,8 +32,8 @@ public class ProductManager implements IProductManager {
     }
 
     @Override
-    public List<ProductDtoOutput> get() {
-        return this.productService.get().stream().map(productMapper::outputMapping).collect(Collectors.toList());
+    public PageDtoOutput get(Pageable pageable) {
+        return productMapper.outputPageMapping(this.productService.get(pageable));
     }
 
     @Override
@@ -48,7 +47,7 @@ public class ProductManager implements IProductManager {
     }
 
     @Override
-    public ProductDtoOutput update(ProductDtoInput productDtoInput, UUID id, Instant version) {
+    public ProductDtoOutput update(ProductDtoInput productDtoInput, UUID id, Long version) {
         Product product = this.productService.update(productMapper.inputMapping(productDtoInput), id, version);
         return productMapper.outputMapping(product);
     }
