@@ -14,8 +14,8 @@ import java.util.List;
 @Jacksonized
 public class MealDtoInput {
     @Valid
-    @NotNull(message = "ingredients cannot be null")
-    private final List<IngredientDtoInput> ingredients;
+    @NotNull(message = "composition cannot be null")
+    private final List<IngredientDtoInput> composition;
     @NotNull(message = "title cannot be null")
     @Size(min = 2, max = 100, message = "title should contain from 4 to 100 letters")
     private final String title;

@@ -7,6 +7,7 @@ import itacad.aliaksandrkryvapust.myfitapp.manager.api.IRecordManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +40,7 @@ public class RecordController {
 
     @PostMapping
     protected ResponseEntity<RecordDtoOutput> post(@RequestBody @Valid RecordDtoInput dtoInput) {
-        return ResponseEntity.ok(this.recordManager.save(dtoInput));
+        return new ResponseEntity<>(this.recordManager.save(dtoInput), HttpStatus.CREATED);
     }
 
 }

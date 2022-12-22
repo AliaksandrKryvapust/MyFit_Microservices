@@ -32,7 +32,9 @@ public class Record {
     @Setter
     private Meal meal;
     @Setter
-    private Double weight;
+    private Instant dtSupply;
+    @Setter
+    private Integer weight;
     @Column(updatable = false)
     @org.hibernate.annotations.Generated(GenerationTime.INSERT)
     private Instant dtCreate;

@@ -13,10 +13,10 @@ public class ProductDtoOutput {
     private final @NonNull UUID uuid;
     private final @NonNull String title;
     private final @NonNull Integer calories;
-    private final @NonNull Integer proteins;
-    private final @NonNull Integer fats;
-    private final @NonNull Integer carbohydrates;
-    private final @NonNull Double weight;
+    private final @NonNull Double proteins;
+    private final @NonNull Double fats;
+    private final @NonNull Double carbohydrates;
+    private final @NonNull Integer weight;
     private final @NonNull Instant dtCreate;
     private final @NonNull Instant dtUpdate;
 }

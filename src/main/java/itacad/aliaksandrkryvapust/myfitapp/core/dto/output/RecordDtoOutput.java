@@ -11,8 +11,9 @@ import java.util.UUID;
 @Data
 public class RecordDtoOutput {
     private final @NonNull UUID uuid;
-    private final @NonNull Double weight;
+    private final @NonNull Integer weight;
     private final @NonNull Instant dtCreate;
+    private final @NonNull Instant dtSupply;
     private ProductDtoOutput product;
     private MealDtoOutput recipe;
 }

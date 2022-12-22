@@ -21,14 +21,14 @@ public class ProductDtoInput {
     private final Integer calories;
     @NotNull(message = "proteins cannot be null")
     @DecimalMin(value = "0", message = "proteins should be zero or greater")
-    private final Integer proteins;
+    private final Double proteins;
     @NotNull(message = "fats cannot be null")
     @DecimalMin(value = "0", message = "fats should  be zero or greater")
-    private final Integer fats;
+    private final Double fats;
     @NotNull(message = "carbohydrates cannot be null")
     @DecimalMin(value = "0", message = "carbohydrates should  be zero or greater")
-    private final Integer carbohydrates;
+    private final Double carbohydrates;
     @NotNull(message = "weight cannot be null")
     @Positive(message = "weight should be positive")
-    private final Double weight;
+    private final Integer weight;
 }

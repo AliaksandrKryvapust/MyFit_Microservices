@@ -28,7 +28,7 @@ public class Ingredient {
     @Setter
     private Product product;
     @Setter
-    private Double weight;
+    private Integer weight;
     @Column(updatable = false)
     @org.hibernate.annotations.Generated(GenerationTime.INSERT)
     private Instant dtCreate;

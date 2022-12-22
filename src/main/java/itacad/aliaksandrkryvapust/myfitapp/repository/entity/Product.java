@@ -24,13 +24,13 @@ public class Product {
     @Setter
     private Integer calories;
     @Setter
-    private Integer proteins;
+    private Double proteins;
     @Setter
-    private Integer fats;
+    private Double fats;
     @Setter
-    private Integer carbohydrates;
+    private Double carbohydrates;
     @Setter
-    private Double weight;
+    private Integer weight;
     @Column(updatable = false)
     @org.hibernate.annotations.Generated(GenerationTime.INSERT)
     private Instant dtCreate;

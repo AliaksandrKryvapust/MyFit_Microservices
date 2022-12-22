@@ -8,5 +8,5 @@ import lombok.NonNull;
 @Data
 public class IngredientDtoOutput {
     private final @NonNull ProductDtoOutput product;
-    private final @NonNull Double weight;
+    private final @NonNull Integer weight;
 }

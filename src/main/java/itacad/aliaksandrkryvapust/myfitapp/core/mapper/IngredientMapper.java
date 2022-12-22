@@ -21,7 +21,7 @@ public class IngredientMapper {
 
     public Ingredient inputMapping(IngredientDtoInput ingredientDtoInput) {
         return Ingredient.builder()
-                .productId(ingredientDtoInput.getProductId())
+                .productId(ingredientDtoInput.getProduct().getUuid())
                 .weight(ingredientDtoInput.getWeight())
                 .build();
     }

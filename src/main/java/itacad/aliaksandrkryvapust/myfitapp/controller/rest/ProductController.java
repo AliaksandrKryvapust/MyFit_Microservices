@@ -40,7 +40,7 @@ public class ProductController {
 
     @PostMapping
     protected ResponseEntity<ProductDtoOutput> post(@RequestBody @Valid ProductDtoInput dtoInput) {
-        return ResponseEntity.ok(this.productManager.save(dtoInput));
+        return new ResponseEntity<>(this.productManager.save(dtoInput), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}/version/{version}")

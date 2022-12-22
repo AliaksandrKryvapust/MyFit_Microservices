@@ -26,7 +26,7 @@ public class MealMapper {
     }
 
     public Meal inputMapping(MealDtoInput mealDtoInput) {
-        List<Ingredient> ingredient = mealDtoInput.getIngredients().stream().map(ingredientMapper::inputMapping)
+        List<Ingredient> ingredient = mealDtoInput.getComposition().stream().map(ingredientMapper::inputMapping)
                 .collect(Collectors.toList());
         return Meal.builder().ingredients(ingredient)
                 .title(mealDtoInput.getTitle())

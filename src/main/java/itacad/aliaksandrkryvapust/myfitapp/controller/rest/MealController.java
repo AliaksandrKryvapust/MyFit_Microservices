@@ -40,7 +40,7 @@ public class MealController {
 
     @PostMapping
     protected ResponseEntity<MealDtoOutput> post(@RequestBody @Valid MealDtoInput dtoInput) {
-        return ResponseEntity.ok(this.mealManager.save(dtoInput));
+        return new ResponseEntity<>(this.mealManager.save(dtoInput), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}/version/{version}")

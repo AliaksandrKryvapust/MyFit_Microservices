@@ -28,16 +28,25 @@ public class RecordMapper {
     }
 
     public Record inputMapping(RecordDtoInput recordDtoInput) {
-        return Record.builder().productId(recordDtoInput.getProductId())
-                .mealId(recordDtoInput.getMealId())
-                .weight(recordDtoInput.getWeight())
-                .build();
+        if (recordDtoInput.getRecipe() == null) {
+            return Record.builder().productId(recordDtoInput.getProduct().getUuid())
+                    .weight(recordDtoInput.getWeight())
+                    .dtSupply(recordDtoInput.getDtSupply())
+                    .build();
+        } else {
+            return Record.builder()
+                    .mealId(recordDtoInput.getRecipe().getUuid())
+                    .weight(recordDtoInput.getWeight())
+                    .dtSupply(recordDtoInput.getDtSupply())
+                    .build();
+        }
     }
 
     public RecordDtoOutput outputMapping(Record record) {
         RecordDtoOutput recordDtoOutput = RecordDtoOutput.builder()
                 .uuid(record.getId())
                 .weight(record.getWeight())
+                .dtSupply(record.getDtSupply())
                 .dtCreate(record.getDtCreate())
                 .build();
         if (record.getProduct() != null) {
