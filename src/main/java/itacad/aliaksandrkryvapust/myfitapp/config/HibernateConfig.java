@@ -28,7 +28,7 @@ public class HibernateConfig {
         jpaProperties.put("javax.persistence.jdbc.user", "postgres"); //DB User
         jpaProperties.put("javax.persistence.jdbc.password", "postgres"); //DB Password
         //Warning! Can rewrite the table
-        jpaProperties.put("hibernate.hbm2ddl.auto", "update"); // create / create-drop / update
+        jpaProperties.put("hibernate.hbm2ddl.auto", "validate"); // create / create-drop / update
         jpaProperties.put("hibernate.id.new_generator_mappings", "true"); //directs how identity or sequence columns are generated when using @GeneratedValue
         //Configures the naming strategy that is used when Hibernate creates new database objects and schema elements
         jpaProperties.put("hibernate.physical_naming_strategy", "itacad.aliaksandrkryvapust.myfitapp.config.CustomNamingStrategy");
