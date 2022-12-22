@@ -95,13 +95,14 @@ INSERT INTO app.ingredients(
 VALUES (50, '862fb56d-cc17-4281-bff9-9a6504594ad9', 'e80c0e64-3c2c-43d7-a144-f1f8a62ee7f8', '887ea1b4-2c86-4e38-8416-41c293a25bcb');
 INSERT INTO app.ingredients(
     weight, product_id, meal_id, id)
-VALUES (85, '3f2affb2-c13a-4517-a841-f01e2f937f36', 'e80c0e64-3c2c-43d7-a144-f1f8a62ee7f8', '612e2ff8-126d-4238-81e5-0510449c4b56');
-INSERT INTO app.ingredients(
-    weight, product_id, meal_id, id)
-VALUES (150, '832d5cc5-7cf0-42ea-91a1-c665c6a0df30', 'e80c0e64-3c2c-43d7-a144-f1f8a62ee7f8', 'ce107d41-c8f7-4225-803c-6fc59478eedf');
-INSERT INTO app.ingredients(
-    weight, product_id, meal_id, id)
-VALUES (5, '1f26a875-88a8-4ebf-84bc-8bf40a1ddeb9', 'e80c0e64-3c2c-43d7-a144-f1f8a62ee7f8', '76c71e45-2d33-40c0-ae0a-c6dc94a63857');
-INSERT INTO app.ingredients(
-    weight, product_id, meal_id, id)
-VALUES (1000, 'f7b34f78-b3ac-4d17-abbe-5a11236f1f2c', 'e80c0e64-3c2c-43d7-a144-f1f8a62ee7f8', 'abbb97d2-7ee2-4d56-a5f5-466d012bb789');
+VALUES (85, '3f2affb2-c13a-4517-a841-f01e2f937f36', 'e80c0e64-3c2c-43d7-a144-f1f8a62ee7f8',
+        '612e2ff8-126d-4238-81e5-0510449c4b56');
+INSERT INTO app.ingredients(weight, product_id, meal_id, id)
+VALUES (150, '832d5cc5-7cf0-42ea-91a1-c665c6a0df30', 'e80c0e64-3c2c-43d7-a144-f1f8a62ee7f8',
+        'ce107d41-c8f7-4225-803c-6fc59478eedf');
+INSERT INTO app.ingredients(weight, product_id, meal_id, id)
+VALUES (5, '1f26a875-88a8-4ebf-84bc-8bf40a1ddeb9', 'e80c0e64-3c2c-43d7-a144-f1f8a62ee7f8',
+        '76c71e45-2d33-40c0-ae0a-c6dc94a63857');
+INSERT INTO app.ingredients(weight, product_id, meal_id, id)
+VALUES (1000, 'f7b34f78-b3ac-4d17-abbe-5a11236f1f2c', 'e80c0e64-3c2c-43d7-a144-f1f8a62ee7f8',
+        'abbb97d2-7ee2-4d56-a5f5-466d012bb789');
