@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "ingredients_new", schema = "app")
+@Table(name = "ingredients", schema = "app")
 public class Ingredient {
     @Id
     @GeneratedValue(generator = "uuid")
