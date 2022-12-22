@@ -61,3 +61,16 @@ CREATE TABLE IF NOT EXISTS app.records
 ALTER TABLE IF EXISTS app.records
     OWNER to postgres;
 
+CREATE TABLE IF NOT EXISTS app.users
+(
+    id       uuid,
+    username character varying(20) NOT NULL,
+    password character varying(50) NOT NULL,
+    email    character varying(50) NOT NULL,
+    role     character varying(20) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+ALTER TABLE IF EXISTS app.users
+    OWNER to postgres;
+
