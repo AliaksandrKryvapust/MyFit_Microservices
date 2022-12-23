@@ -1,6 +1,7 @@
 package itacad.aliaksandrkryvapust.myfitapp.config.security;
 
 import itacad.aliaksandrkryvapust.myfitapp.controller.filter.JwtFilter;
+import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,8 +35,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/public/*")
+                .antMatchers("/api/public/*")
                 .permitAll()
+                .antMatchers("/api/admin/*")
+                .hasRole(Role.ADMIN.name())
                 .anyRequest()
                 .authenticated()
                 .and()
