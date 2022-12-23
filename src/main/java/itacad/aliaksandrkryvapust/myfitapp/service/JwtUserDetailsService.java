@@ -15,16 +15,16 @@ import java.util.List;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
-    private final IUserRepository dao;
+    private final IUserRepository userRepository;
 
     @Autowired
-    public JwtUserDetailsService(IUserRepository dao) {
-        this.dao = dao;
+    public JwtUserDetailsService(IUserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        User user = this.dao.findByUsername(username);
+        User user = this.userRepository.findByUsername(username);
         if (user==null){
             throw new UsernameNotFoundException("There is no such user" + username);
         }
