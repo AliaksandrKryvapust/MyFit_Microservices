@@ -40,17 +40,15 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        // we don't need CSRF because our token is invulnerable
+        http.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/public/*")
-                .permitAll()
-                .antMatchers("/api/admin/*")
-                .hasRole(Role.ADMIN.name())
-                .anyRequest()
-                .authenticated()
+                .antMatchers("/api/public/**").permitAll()
+                .antMatchers("/api/admin/**").hasRole(Role.ADMIN.name())
+                .anyRequest().authenticated()
                 .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                // don't create session
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
