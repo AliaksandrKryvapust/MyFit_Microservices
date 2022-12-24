@@ -222,7 +222,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/api/public/register",
+			"name": "register user",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -256,6 +256,27 @@
 						"api",
 						"public",
 						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login form",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/public/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"public",
+						"login"
 					]
 				}
 			},
