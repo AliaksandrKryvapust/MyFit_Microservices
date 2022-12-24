@@ -1,43 +1,44 @@
 package itacad.aliaksandrkryvapust.myfitapp.controller.rest;
 
+import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.UserDtoInput;
+import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.UserDtoLogin;
+import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.UserDtoOutput;
+import itacad.aliaksandrkryvapust.myfitapp.manager.api.IUserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
 
-//@RestController
-//@Validated
-//@RequestMapping("/login")
-//public class UserLoginController {
-//    private final IUserManager menuItemManager;
-//
-//    @Autowired
-//    public UserLoginController(IUserManager menuItemManager) {
-//        this.menuItemManager = menuItemManager;
-//    }
-//
-//    @GetMapping("/{name}")
-//    protected ResponseEntity<UserDtoOutput> get(@PathVariable String name) {
-//        return ResponseEntity.ok(menuItemManager.getUserByLogin(name));
-//    }
-//
-//    @PostMapping
-//    protected ResponseEntity<UserDtoOutput> registration(@RequestBody @Valid UserDtoInput dtoInput) {
-//        return ResponseEntity.ok(this.menuItemManager.save(dtoInput));
-//    }
-//
-//    @PutMapping("/{name}")
-//    protected ResponseEntity<UserDtoOutput> put(@PathVariable String name, @Valid @RequestBody UserDtoInput dtoInput) {
-//        return ResponseEntity.ok(this.menuItemManager.update(dtoInput, name));
-//    }
-//
-//    @DeleteMapping("/{name}")
-//    protected ResponseEntity<Object> delete(@PathVariable String name) {
-//        menuItemManager.delete(name);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
-//}
+@RestController
+@Validated
+@RequestMapping("/api/public")
+public class UserLoginController {
+    private final IUserManager userManager;
+
+    @Autowired
+    public UserLoginController(IUserManager userManager) {
+        this.userManager = userManager;
+    }
+
+    @PostMapping("/login")
+    protected ResponseEntity<UserDtoOutput> login(@RequestBody @Valid UserDtoLogin dtoLogin) {
+        UserDtoOutput userDtoOutput = userManager.login(dtoLogin);
+        if (userDtoOutput == null) {
+            throw new BadCredentialsException("User login or password is incorrect");
+        }
+        return new ResponseEntity<>(userDtoOutput, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/register")
+    protected ResponseEntity<UserDtoOutput> registration(@RequestBody @Valid UserDtoInput dtoInput) {
+        return new ResponseEntity<>(this.userManager.saveUser(dtoInput), HttpStatus.CREATED);
+    }
+}
