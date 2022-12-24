@@ -28,7 +28,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new NoSuchElementException("There is no such user" + username);
         }
-        List<GrantedAuthority> authorityList = new ArrayList<>(); //TODO
+        List<GrantedAuthority> authorityList = new ArrayList<>();
         authorityList.add(new SimpleGrantedAuthority(user.getRole().name()));
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorityList);
 //        return (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
