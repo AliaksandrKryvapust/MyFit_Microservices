@@ -1,11 +1,14 @@
 package itacad.aliaksandrkryvapust.myfitapp.manager;
 
 import itacad.aliaksandrkryvapust.myfitapp.controller.utils.JwtTokenUtil;
+import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.UserDtoInput;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.UserDtoLogin;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.UserDtoOutput;
 import itacad.aliaksandrkryvapust.myfitapp.core.mapper.UserMapper;
 import itacad.aliaksandrkryvapust.myfitapp.manager.api.IUserManager;
-import itacad.aliaksandrkryvapust.myfitapp.service.JwtUserDetailsService;
+import itacad.aliaksandrkryvapust.myfitapp.repository.entity.User;
+import itacad.aliaksandrkryvapust.myfitapp.service.api.IUserService;
+import itacad.aliaksandrkryvapust.myfitapp.service.security.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,14 +18,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserManager implements IUserManager {
-    private final JwtUserDetailsService userService;
+    private final JwtUserDetailsService jwtUserDetailsService;
+    private final IUserService userService;
     private final UserMapper userMapper;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    public UserManager(JwtUserDetailsService userService, UserMapper userMapper,
-                       AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil) {
+    public UserManager(JwtUserDetailsService jwtUserDetailsService, IUserService userService,
+                       UserMapper userMapper, AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil) {
+        this.jwtUserDetailsService = jwtUserDetailsService;
         this.userService = userService;
         this.userMapper = userMapper;
         this.authenticationManager = authenticationManager;
@@ -34,19 +39,19 @@ public class UserManager implements IUserManager {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userDtoLogin.getUsername(), userDtoLogin.getPassword()));
         if (authentication.isAuthenticated()) {
-            UserDetails userDetails = userService.loadUserByUsername(userDtoLogin.getUsername());
+            UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(userDtoLogin.getUsername());
             String token = jwtTokenUtil.generateToken(userDetails);
             return this.userMapper.loginOutputMapping(userDetails, token);
         } else {
             return null;
         }
     }
-//    @Override
-//    public UserDtoOutput save(UserDtoInput userDtoInput) {
-//        User user = this.userService.save(userMapper.inputMapping(userDtoInput));
-//        return userMapper.outputCrudMapping(user);
-//    }
-//
+    @Override
+    public UserDtoOutput saveUser(UserDtoInput userDtoInput) {
+        User user = this.userService.save(userMapper.userInputMapping(userDtoInput));
+        return userMapper.outputMapping(user);
+    }
+
 //    @Override
 //    public UserDtoOutput getUserByLogin(String login) {
 //        return this.userService.
