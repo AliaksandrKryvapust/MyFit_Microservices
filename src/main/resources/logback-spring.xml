@@ -13,7 +13,7 @@
     </appender>
 
     <property name="LOG_FILE" value="LogFile" />
-    <property name="LOG_DIR" value="/var/logs/application" />
+    <property name="LOG_DIR" value="." />
     <appender name="RollingFile"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_DIR}/${LOG_FILE}.log</file>
@@ -39,11 +39,5 @@
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />
     </root>
-
-    <!-- LOG "com.baeldung*" at TRACE level -->
-    <logger name="com.baeldung" level="trace" additivity="false">
-        <appender-ref ref="RollingFile" />
-        <appender-ref ref="Console" />
-    </logger>
 
 </configuration>
