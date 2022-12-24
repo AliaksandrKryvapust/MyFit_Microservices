@@ -11,9 +11,9 @@ import itacad.aliaksandrkryvapust.myfitapp.service.api.IUserService;
 import itacad.aliaksandrkryvapust.myfitapp.service.security.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -24,32 +24,45 @@ public class UserManager implements IUserManager {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
 
+    private final PasswordEncoder encoder;
+
     @Autowired
-    public UserManager(JwtUserDetailsService jwtUserDetailsService, IUserService userService,
-                       UserMapper userMapper, AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil) {
+    public UserManager(JwtUserDetailsService jwtUserDetailsService, IUserService userService, UserMapper userMapper,
+                       AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, PasswordEncoder encoder) {
         this.jwtUserDetailsService = jwtUserDetailsService;
         this.userService = userService;
         this.userMapper = userMapper;
         this.authenticationManager = authenticationManager;
         this.jwtTokenUtil = jwtTokenUtil;
+        this.encoder = encoder;
     }
 
     @Override
     public UserDtoOutput login(UserDtoLogin userDtoLogin) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(userDtoLogin.getUsername(), userDtoLogin.getPassword()));
-        if (authentication.isAuthenticated()) {
-            UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(userDtoLogin.getUsername());
-            String token = jwtTokenUtil.generateToken(userDetails);
-            return this.userMapper.loginOutputMapping(userDetails, token);
-        } else {
-            return null;
+        UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(userDtoLogin.getUsername());
+        if (!encoder.matches(userDtoLogin.getPassword(), userDetails.getPassword())) {
+            throw new BadCredentialsException("User login or password is incorrect");
         }
+        String token = jwtTokenUtil.generateToken(userDetails);
+        return this.userMapper.loginOutputMapping(userDetails, token);
     }
+
+    //    public UserDtoOutput login(UserDtoLogin userDtoLogin) {
+//        Authentication authentication = authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(userDtoLogin.getUsername(), userDtoLogin.getPassword()));
+//        if (authentication.isAuthenticated()) {
+//            UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(userDtoLogin.getUsername());
+//            String token = jwtTokenUtil.generateToken(userDetails);
+//            return this.userMapper.loginOutputMapping(userDetails, token);
+//        } else {
+//            return null;
+//        }
+//    }
     @Override
     public UserDtoOutput saveUser(UserDtoInput userDtoInput) {
-        User user = this.userService.save(userMapper.userInputMapping(userDtoInput));
-        return userMapper.outputMapping(user);
+        User user = userMapper.userInputMapping(userDtoInput);
+        user.setPassword(encoder.encode(user.getPassword()));
+        return userMapper.outputMapping(this.userService.save(user));
     }
 
 //    @Override

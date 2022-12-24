@@ -7,7 +7,6 @@ import itacad.aliaksandrkryvapust.myfitapp.repository.entity.User;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,7 +15,7 @@ public class UserMapper {
 
     public User userInputMapping(UserDtoInput userDtoInput) {
         return User.builder().username(userDtoInput.getUsername())
-                .password(new BCryptPasswordEncoder().encode(userDtoInput.getPassword()))
+                .password(userDtoInput.getPassword())
                 .email(userDtoInput.getEmail())
                 .role(Role.USER)
                 .build();
