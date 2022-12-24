@@ -62,4 +62,9 @@ public class UserService implements IUserService {
         currentEntity.setPassword(user.getPassword());
         currentEntity.setEmail(user.getEmail());
     }
+
+    @Override
+    public User getUser(String username) {
+        return this.userRepository.findByUsername(username);
+    }
 }
