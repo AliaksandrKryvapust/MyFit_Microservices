@@ -1,22 +1,24 @@
 package itacad.aliaksandrkryvapust.myfitapp.core.mapper;
 
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.UserDtoInput;
-import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.UserDtoLogin;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.UserDtoOutput;
+import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Role;
 import itacad.aliaksandrkryvapust.myfitapp.repository.entity.User;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserMapper {
 
-    public User inputMapping(UserDtoInput userDtoInput) {
+    public User userInputMapping(UserDtoInput userDtoInput) {
         return User.builder().username(userDtoInput.getUsername())
-                .password(userDtoInput.getPassword())
+                .password(new BCryptPasswordEncoder().encode(userDtoInput.getPassword()))
                 .email(userDtoInput.getEmail())
+                .role(Role.USER)
                 .build();
     }
 

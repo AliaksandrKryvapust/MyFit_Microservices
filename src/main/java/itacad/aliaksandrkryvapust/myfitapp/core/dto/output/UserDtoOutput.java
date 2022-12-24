@@ -6,5 +6,5 @@ import lombok.*;
 @Data
 public class UserDtoOutput {
     private final @NonNull String username;
-    private final @NonNull String token;
+    private final String token;
 }
