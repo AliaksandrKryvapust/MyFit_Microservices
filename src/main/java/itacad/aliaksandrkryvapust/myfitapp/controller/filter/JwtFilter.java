@@ -4,7 +4,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import itacad.aliaksandrkryvapust.myfitapp.controller.utils.JwtTokenUtil;
-import itacad.aliaksandrkryvapust.myfitapp.service.JwtUserDetailsService;
+import itacad.aliaksandrkryvapust.myfitapp.service.security.JwtUserDetailsService;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -37,7 +38,7 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         final String requestTokenHeader = request.getHeader(AUTHORIZATION);
-        if (requestTokenHeader.startsWith("Bearer ")) {
+        if (StringUtils.startsWithIgnoreCase(requestTokenHeader, "Bearer ")) {
             String jwtToken = requestTokenHeader.substring(7);
             try {
                 String username = jwtTokenUtil.getUsername(jwtToken);
