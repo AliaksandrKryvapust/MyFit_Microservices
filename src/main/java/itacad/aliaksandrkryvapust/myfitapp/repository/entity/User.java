@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.UUID;
 
 @Getter
@@ -26,9 +27,11 @@ public class User{
     @Setter
     @Column(nullable = false, unique = true)
     private String email;
-    @Setter
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Version
+    private Instant dtUpdate;
 
     @Override
     public String toString() {
