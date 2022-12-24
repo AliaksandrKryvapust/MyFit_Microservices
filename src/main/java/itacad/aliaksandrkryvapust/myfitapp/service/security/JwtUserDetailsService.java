@@ -1,4 +1,4 @@
-package itacad.aliaksandrkryvapust.myfitapp.service;
+package itacad.aliaksandrkryvapust.myfitapp.service.security;
 
 import itacad.aliaksandrkryvapust.myfitapp.repository.api.IUserRepository;
 import itacad.aliaksandrkryvapust.myfitapp.repository.entity.User;
@@ -7,11 +7,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
@@ -25,11 +25,14 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
         User user = this.userRepository.findByUsername(username);
-        if (user==null){
-            throw new UsernameNotFoundException("There is no such user" + username);
+        if (user == null) {
+            throw new NoSuchElementException("There is no such user" + username);
         }
-        List<GrantedAuthority> authorityList =  new ArrayList<>();
-        authorityList.add(new SimpleGrantedAuthority("USER_ROLE"));
+        List<GrantedAuthority> authorityList = new ArrayList<>(); //TODO
+        authorityList.add(new SimpleGrantedAuthority(user.getRole().name()));
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorityList);
+//        return (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
+
+
 }
