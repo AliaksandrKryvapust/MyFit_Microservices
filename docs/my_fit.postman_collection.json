@@ -9,6 +9,16 @@
 		{
 			"name": "add product",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBbmRyZXkiLCJpYXQiOjE2NzE5MTg2ODYsImV4cCI6MTY3MTkyMjI4Nn0.FUvvFjU_44LmSp7cdZ5L-n05Z17WxRX90b5JsKuV-44",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -41,6 +51,16 @@
 				"disableBodyPruning": true
 			},
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBbmRyZXkiLCJpYXQiOjE2NzE5MTg2ODYsImV4cCI6MTY3MTkyMjI4Nn0.FUvvFjU_44LmSp7cdZ5L-n05Z17WxRX90b5JsKuV-44",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"body": {
@@ -80,6 +100,16 @@
 		{
 			"name": "add recipe",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBbmRyZXkiLCJpYXQiOjE2NzE5MTg2ODYsImV4cCI6MTY3MTkyMjI4Nn0.FUvvFjU_44LmSp7cdZ5L-n05Z17WxRX90b5JsKuV-44",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -126,6 +156,16 @@
 		{
 			"name": "ger recipe page",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBbmRyZXkiLCJpYXQiOjE2NzE5MTg2ODYsImV4cCI6MTY3MTkyMjI4Nn0.FUvvFjU_44LmSp7cdZ5L-n05Z17WxRX90b5JsKuV-44",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -156,6 +196,16 @@
 		{
 			"name": "add food to journal",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBbmRyZXkiLCJpYXQiOjE2NzE5MTg2ODYsImV4cCI6MTY3MTkyMjI4Nn0.FUvvFjU_44LmSp7cdZ5L-n05Z17WxRX90b5JsKuV-44",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -193,6 +243,16 @@
 		{
 			"name": "get page of journal",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBbmRyZXkiLCJpYXQiOjE2NzE5MTg2ODYsImV4cCI6MTY3MTkyMjI4Nn0.FUvvFjU_44LmSp7cdZ5L-n05Z17WxRX90b5JsKuV-44",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -238,7 +298,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"Andrey\",\r\n    \"password\": \"RH6l\",\r\n    \"email\": \"andrey100@gmail.com\"\r\n}",
+					"raw": "{\r\n    \"nick\": \"PavelDyrov\",\r\n    \"password\": \"instagram\",\r\n    \"mail\": \"pavelDyrov@gmail.com\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -246,7 +306,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/public/register",
+					"raw": "http://localhost:8080/api/v1/users/registration",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -254,8 +314,9 @@
 					"port": "8080",
 					"path": [
 						"api",
-						"public",
-						"register"
+						"v1",
+						"users",
+						"registration"
 					]
 				}
 			},
@@ -264,10 +325,19 @@
 		{
 			"name": "login form",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mail\": \"pavelDyrov@gmail.com\",\r\n    \"password\": \"instagram\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://localhost:8080/api/public/login",
+					"raw": "http://localhost:8080/api/v1/users/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -275,7 +345,8 @@
 					"port": "8080",
 					"path": [
 						"api",
-						"public",
+						"v1",
+						"users",
 						"login"
 					]
 				}

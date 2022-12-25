@@ -18,7 +18,7 @@ import javax.validation.Valid;
 
 @RestController
 @Validated
-@RequestMapping("/api/public")
+@RequestMapping("/api/v1/users")
 public class UserLoginController {
     private final IUserManager userManager;
 
@@ -30,10 +30,10 @@ public class UserLoginController {
     @PostMapping("/login")
     protected ResponseEntity<UserDtoOutput> login(@RequestBody @Valid UserDtoLogin dtoLogin) {
         UserDtoOutput userDtoOutput = userManager.login(dtoLogin);
-        return new ResponseEntity<>(userDtoOutput, HttpStatus.CREATED);
+        return ResponseEntity.ok(userDtoOutput);
     }
 
-    @PostMapping("/register")
+    @PostMapping("/registration")
     protected ResponseEntity<UserDtoOutput> registration(@RequestBody @Valid UserDtoInput dtoInput) {
         return new ResponseEntity<>(this.userManager.saveUser(dtoInput), HttpStatus.CREATED);
     }

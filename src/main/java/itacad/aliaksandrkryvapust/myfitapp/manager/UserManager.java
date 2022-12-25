@@ -39,7 +39,7 @@ public class UserManager implements IUserManager {
 
     @Override
     public UserDtoOutput login(UserDtoLogin userDtoLogin) {
-        UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(userDtoLogin.getUsername());
+        UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(userDtoLogin.getMail());
         if (!encoder.matches(userDtoLogin.getPassword(), userDetails.getPassword())) {
             throw new BadCredentialsException("User login or password is incorrect");
         }
@@ -60,9 +60,8 @@ public class UserManager implements IUserManager {
 //    }
     @Override
     public UserDtoOutput saveUser(UserDtoInput userDtoInput) {
-        User user = userMapper.userInputMapping(userDtoInput);
-        user.setPassword(encoder.encode(user.getPassword()));
-        return userMapper.outputMapping(this.userService.save(user));
+        User user = this.userService.save(userMapper.userInputMapping(userDtoInput));
+        return userMapper.outputMapping(user);
     }
 
 //    @Override
