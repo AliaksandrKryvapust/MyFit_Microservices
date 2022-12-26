@@ -1,9 +1,6 @@
 package itacad.aliaksandrkryvapust.myfitapp.core.dto.input;
 
 import itacad.aliaksandrkryvapust.myfitapp.controller.validator.api.IValidEmail;
-import itacad.aliaksandrkryvapust.myfitapp.controller.validator.api.IValidEnum;
-import itacad.aliaksandrkryvapust.myfitapp.repository.entity.UserRole;
-import itacad.aliaksandrkryvapust.myfitapp.repository.entity.UserStatus;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
@@ -12,10 +9,11 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+
 @Builder
 @Data
 @Jacksonized
-public class UserDtoInput {
+public class UserDtoRegistration {
     @NotNull(message = "username cannot be null")
     @Size(min = 2, max = 50, message = "username should contain from 2 to 50 letters")
     private final String nick;
@@ -26,10 +24,4 @@ public class UserDtoInput {
     @NotEmpty
     @IValidEmail(message = "email is not valid")
     private final String mail;
-    @NotNull(message = "user role cannot be null")
-    @IValidEnum(enumClass = UserRole.class, message = "user role does not match")
-    private final String role;
-    @NotNull(message = "user role cannot be null")
-    @IValidEnum(enumClass = UserStatus.class, message = "user status does not match")
-    private final String status;
 }

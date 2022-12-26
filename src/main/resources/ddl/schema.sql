@@ -67,7 +67,9 @@ CREATE TABLE IF NOT EXISTS app.users
     password  character varying(200)      NOT NULL,
     email     character varying(50)       NOT NULL,
     role      character varying(20)       NOT NULL,
+    status    character varying(50)       NOT NULL,
     dt_update timestamp without time zone NOT NULL DEFAULT now(),
+    dt_create timestamp without time zone NOT NULL DEFAULT now(),
     PRIMARY KEY (id)
 );
 

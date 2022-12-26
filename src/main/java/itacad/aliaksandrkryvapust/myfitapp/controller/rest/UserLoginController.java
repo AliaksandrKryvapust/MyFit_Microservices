@@ -1,17 +1,17 @@
 package itacad.aliaksandrkryvapust.myfitapp.controller.rest;
 
-import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.UserDtoInput;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.UserDtoLogin;
+import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.UserDtoRegistration;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.UserDtoOutput;
+import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.UserLoginDtoOutput;
 import itacad.aliaksandrkryvapust.myfitapp.manager.api.IUserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -27,14 +27,21 @@ public class UserLoginController {
         this.userManager = userManager;
     }
 
+    @GetMapping("/me")
+    protected ResponseEntity<UserDtoOutput> getCurrentUser() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = userDetails.getUsername();
+        return ResponseEntity.ok(this.userManager.getUser(username));
+    }
+
     @PostMapping("/login")
-    protected ResponseEntity<UserDtoOutput> login(@RequestBody @Valid UserDtoLogin dtoLogin) {
-        UserDtoOutput userDtoOutput = userManager.login(dtoLogin);
-        return ResponseEntity.ok(userDtoOutput);
+    protected ResponseEntity<UserLoginDtoOutput> login(@RequestBody @Valid UserDtoLogin dtoLogin) {
+        UserLoginDtoOutput userLoginDtoOutput = userManager.login(dtoLogin);
+        return ResponseEntity.ok(userLoginDtoOutput);
     }
 
     @PostMapping("/registration")
-    protected ResponseEntity<UserDtoOutput> registration(@RequestBody @Valid UserDtoInput dtoInput) {
+    protected ResponseEntity<UserLoginDtoOutput> registration(@RequestBody @Valid UserDtoRegistration dtoInput) {
         return new ResponseEntity<>(this.userManager.saveUser(dtoInput), HttpStatus.CREATED);
     }
 }

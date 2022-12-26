@@ -29,7 +29,7 @@ public class UserService implements IUserService {
     }
 
     private void validate(User user) {
-        if (user.getId() != null) {
+        if (user.getId() != null || user.getDtUpdate() != null) {
             throw new IllegalStateException("User id should be empty");
         }
     }
@@ -61,6 +61,7 @@ public class UserService implements IUserService {
         currentEntity.setUsername(user.getUsername());
         currentEntity.setPassword(user.getPassword());
         currentEntity.setEmail(user.getEmail());
+        currentEntity.setStatus(user.getStatus());
     }
 
     @Override

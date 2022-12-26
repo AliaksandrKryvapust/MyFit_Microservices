@@ -43,7 +43,7 @@ public class MealController {
         return new ResponseEntity<>(this.mealManager.save(dtoInput), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}/version/{version}")
+    @PutMapping("/{id}/dt_update/{version}")
     protected ResponseEntity<MealDtoOutput> put(@PathVariable UUID id, @PathVariable(name = "version") String version,
                                                 @Valid @RequestBody MealDtoInput dtoInput) {
         return ResponseEntity.ok(this.mealManager.update(dtoInput, id, Long.valueOf(version)));

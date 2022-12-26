@@ -1,7 +1,7 @@
 package itacad.aliaksandrkryvapust.myfitapp.config.security;
 
 import itacad.aliaksandrkryvapust.myfitapp.controller.filter.JwtFilter;
-import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Role;
+import itacad.aliaksandrkryvapust.myfitapp.repository.entity.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,7 +48,7 @@ public class SecurityConfig {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/v1/users/registration", "/api/v1/users/login").permitAll()
-                .antMatchers("/api/admin/**").hasRole(Role.ADMIN.name())
+                .antMatchers("/api/users","/api/users/**").hasRole(UserRole.ADMIN.name())
                 .anyRequest().authenticated()
                 .and()
                 // Set exception handler

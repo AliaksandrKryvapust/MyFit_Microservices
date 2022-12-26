@@ -1,6 +1,7 @@
 package itacad.aliaksandrkryvapust.myfitapp.repository.entity;
 
 import lombok.*;
+import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -28,8 +29,12 @@ public class User{
     @Column(nullable = false, unique = true)
     private String email;
     @Enumerated(EnumType.STRING)
-    private Role role;
-
+    private UserRole role;
+    @Setter
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
+    @org.hibernate.annotations.Generated(GenerationTime.INSERT)
+    private Instant dtCreate;
     @Version
     private Instant dtUpdate;
 
@@ -40,7 +45,10 @@ public class User{
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-                ", role=" + role +
+                ", userRole=" + role +
+                ", status=" + status +
+                ", dtCreate=" + dtCreate +
+                ", dtUpdate=" + dtUpdate +
                 '}';
     }
 }

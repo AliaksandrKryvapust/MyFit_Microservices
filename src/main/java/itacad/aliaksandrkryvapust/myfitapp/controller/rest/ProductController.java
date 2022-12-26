@@ -43,7 +43,7 @@ public class ProductController {
         return new ResponseEntity<>(this.productManager.save(dtoInput), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}/version/{version}")
+    @PutMapping("/{id}/dt_update/{version}")
     protected ResponseEntity<ProductDtoOutput> put(@PathVariable UUID id, @PathVariable(name = "version")
     String version, @Valid @RequestBody ProductDtoInput dtoInput) {
         return ResponseEntity.ok(this.productManager.update(dtoInput, id, Long.parseLong(version)));

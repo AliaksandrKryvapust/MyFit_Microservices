@@ -106,3 +106,7 @@ VALUES (5, '1f26a875-88a8-4ebf-84bc-8bf40a1ddeb9', 'e80c0e64-3c2c-43d7-a144-f1f8
 INSERT INTO app.ingredients(weight, product_id, meal_id, id)
 VALUES (1000, 'f7b34f78-b3ac-4d17-abbe-5a11236f1f2c', 'e80c0e64-3c2c-43d7-a144-f1f8a62ee7f8',
         'abbb97d2-7ee2-4d56-a5f5-466d012bb789');
+
+INSERT INTO app.users(id, username, password, email, role, status)
+VALUES ('89c1f7df-008a-49f5-9056-008f26075792', 'admin', '{bcrypt}$2a$10$qvXFAk.shmmMdKRgvXlFSOQyPpMNZh2QNN6zT7hEq6wLico0FXEp6',
+        'admin@myfit.com', 'ADMIN', 'WAITING_ACTIVATION');
