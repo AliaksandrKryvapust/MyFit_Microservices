@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @RestController
 @Validated
-@RequestMapping("api/journal/food")
+@RequestMapping("/api/v1/journal/food")
 public class RecordController {
     private final IRecordManager recordManager;
 

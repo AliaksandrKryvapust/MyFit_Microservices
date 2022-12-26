@@ -18,36 +18,14 @@ servers:
         default: "8080"
 
 tags:
-  - name: "Пользователи"
-    description: "Информация о пользователях системы"
-  - name: "Личный кабинет"
-    description: "Доступ к личному кабинету"
+  - name: "Безопасность"
 
 paths:
-  /api/v1/users:
-    post:
-      tags:
-        - "Пользователи"
-      summary: "Добавление нового пользователя"
-      security:
-        - bearerAuth: [ROLE_ADMIN]
-      requestBody:
-        $ref: "#/components/requestBodies/CreateUser"
-      responses:
-        '201':
-          description: "Пользователь добавлен"
-        '400':
-          $ref: '#/components/responses/Bad_Request'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '500':
-          $ref: '#/components/responses/Internal_Server_Error'
+  /api/v1/audit:
     get:
       tags:
-        - "Пользователи"
-      summary: "Получить страницу пользователей"
+        - "Безопасность"
+      summary: "Получить страницу действий в системе"
       security:
         - bearerAuth: [ROLE_ADMIN]
       parameters:
@@ -73,7 +51,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PageOfUser'
+                $ref: '#/components/schemas/PageOfAudit'
         '400':
           $ref: '#/components/responses/Bad_Request'
         '401':
@@ -82,11 +60,11 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '500':
           $ref: '#/components/responses/Internal_Server_Error'
-  /api/v1/users/{uuid}:
+  /api/v1/audit/{uuid}:
     get:
       tags:
-        - "Пользователи"
-      summary: "Получить информацию о пользователе"
+        - "Безопасность"
+      summary: "Получить информацию о действии в системе"
       security:
         - bearerAuth: [ROLE_ADMIN]
       parameters:
@@ -103,7 +81,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Audit'
         '400':
           $ref: '#/components/responses/Bad_Request'
         '401':
@@ -112,118 +90,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '500':
           $ref: '#/components/responses/Internal_Server_Error'
-  /api/v1/users/{uuid}/dt_update/{dt_update}:
-    put:
-      tags:
-        - "Пользователи"
-      summary: "Редактировать информацию о пользователе"
-      security:
-        - bearerAuth: [ROLE_ADMIN]
-      parameters:
-        - in: path
-          name: uuid
-          description: "Идентификатор пользователя"
-          required: true
-          schema:
-            type: string
-            format: uuid
-        - in: path
-          name: dt_update
-          required: true
-          schema:
-            type: string
-            format: int64
-          description: "Дата последнего обновления записи"
-      requestBody:
-        $ref: "#/components/requestBodies/CreateUser"
-      responses:
-        '200':
-          description: "Счёт обновлён"
-        '400':
-          $ref: '#/components/responses/Bad_Request'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '500':
-          $ref: '#/components/responses/Internal_Server_Error'
-  /api/v1/users/registration:
-    post:
-      tags:
-        - "Личный кабинет"
-      summary: "Регистрация"
-      requestBody:
-        $ref: "#/components/requestBodies/RegistrationUser"
-      responses:
-        '201':
-          description: "Пользователь зарегестрирован"
-        '400':
-          $ref: '#/components/responses/Bad_Request'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '500':
-          $ref: '#/components/responses/Internal_Server_Error'
-  /api/v1/users/login:
-    post:
-      tags:
-        - "Личный кабинет"
-      summary: "Вход"
-      requestBody:
-        $ref: "#/components/requestBodies/LoginUser"
-      responses:
-        '200':
-          description: "Вход выполнен"
-        '400':
-          $ref: '#/components/responses/Bad_Request'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '500':
-          $ref: '#/components/responses/Internal_Server_Error'
-  /api/v1/users/me:
-    get:
-      tags:
-        - "Личный кабинет"
-      summary: "Получить информацию о себе"
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        '400':
-          $ref: '#/components/responses/Bad_Request'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '500':
-          $ref: '#/components/responses/Internal_Server_Error'
+
 components:
-  requestBodies:
-    CreateUser:
-      description: Тело для создания Пользователя
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UserCreate'
-    RegistrationUser:
-      description: Тело для регистрации пользователя
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UserRegistration'
-    LoginUser:
-      description: Тело для входа
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UserLogin'
 
   securitySchemes:
     bearerAuth:
@@ -270,22 +138,22 @@ components:
               message:  Сервер не смог корректно обработать запрос. Пожалуйста обратитесь к администратору
   schemas:
     UserRole:
-        type: string
-        description: |
-              Роль пользователя:
-                * `ADMIN` - Администратор
-                * `USER` - Пользователь
-        enum:
+      type: string
+      description: |
+        Роль пользователя:
+          * `ADMIN` - Администратор
+          * `USER` - Пользователь
+      enum:
         - "ADMIN"
         - "USER"
     UserStatus:
-        type: string
-        description: |
-              Статус пользователя:
-                * `WAITING_ACTIVATION` - Ожидает активации
-                * `ACTIVATED` - Активирован
-                * `DEACTIVATED` - Деактивирован
-        enum:
+      type: string
+      description: |
+        Статус пользователя:
+          * `WAITING_ACTIVATION` - Ожидает активации
+          * `ACTIVATED` - Активирован
+          * `DEACTIVATED` - Деактивирован
+      enum:
         - "WAITING_ACTIVATION"
         - "ACTIVATED"
         - "DEACTIVATED"
@@ -305,40 +173,38 @@ components:
           $ref: '#/components/schemas/UserRole'
         status:
           $ref: '#/components/schemas/UserStatus'
-    UserCreate:
+    EssenceType:
+      type: string
+      description: |
+        Тип сущности:
+          * `PRODUCT` - Продукт
+          * `RECIPE` - Рецепт
+          * `USER` - Пользователь
+          * `JOURNAL_FOOD` - Журнал питания
+          * `REPORT` - Отчёт
+      enum:
+        - "PRODUCT"
+        - "RECIPE"
+        - "USER"
+        - "JOURNAL_FOOD"
+        - "REPORT"
+    Audit:
       type: object
-      description: Пользователь
-      allOf:
-        - $ref: '#/components/schemas/User'
+      description: Информация о действии в системе
       properties:
-        password:
+        user:
+          $ref: '#/components/schemas/User'
+        text:
           type: string
-          description: "Пароль"
-    UserRegistration:
-      type: object
-      description: Пользователь
-      properties:
-        mail:
+          description: "Описание действия пользователя"
+          example: "Создана запись в журнале питания"
+        type:
+          $ref: '#/components/schemas/EssenceType'
+        id:
           type: string
-          description: "Электронная почта"
-        nick:
-          type: string
-          description: "Псевдоним"
-        password:
-          type: string
-          description: "Пароль"
-    UserLogin:
-      type: object
-      description: Пользователь
-      properties:
-        mail:
-          type: string
-          description: "Электронная почта"
-        password:
-          type: string
-          description: "Пароль"
+          description: "Идентификатор сущности указанного типа"
 
-    PageOfUser:
+    PageOfAudit:
       type: object
       description: Страница пользователей
       allOf:
@@ -347,8 +213,8 @@ components:
         content:
           type: array
           items:
-            $ref: '#/components/schemas/User'
-        
+            $ref: '#/components/schemas/Audit'
+
     t_base_essence:
       type: object
       description: Описание базовой сущности.

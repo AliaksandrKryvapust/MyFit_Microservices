@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @RestController
 @Validated
-@RequestMapping("/api/product")
+@RequestMapping("/api/v1/product")
 public class ProductController {
     private final IProductManager productManager;
 

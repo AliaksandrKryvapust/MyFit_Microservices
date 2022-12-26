@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @RestController
 @Validated
-@RequestMapping("api/recipe")
+@RequestMapping("/api/v1/recipe")
 public class MealController {
     private final IMealManager mealManager;
 
