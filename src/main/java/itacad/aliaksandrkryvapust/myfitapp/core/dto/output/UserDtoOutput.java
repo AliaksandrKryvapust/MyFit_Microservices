@@ -12,11 +12,11 @@ import java.util.UUID;
 @Builder
 @Data
 public class UserDtoOutput {
-    private @NonNull UUID uuid;
-    private @NonNull String nick;
-    private @NonNull String mail;
-    private @NonNull UserRole role;
-    private @NonNull UserStatus status;
-    private @NonNull Instant dtCreate;
-    private @NonNull Instant dtUpdate;
+    private final @NonNull UUID uuid;
+    private final @NonNull String nick;
+    private final @NonNull String mail;
+    private final @NonNull UserRole role;
+    private final @NonNull UserStatus status;
+    private final @NonNull Instant dtCreate;
+    private final @NonNull Instant dtUpdate;
 }
