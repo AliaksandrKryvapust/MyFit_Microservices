@@ -23,9 +23,6 @@ public class User{
     @Column(nullable = false, unique = true)
     private String username;
     @Setter
-    @Column(nullable = false)
-    private String password;
-    @Setter
     @Column(nullable = false, unique = true)
     private String email;
     @Enumerated(EnumType.STRING)
@@ -43,7 +40,6 @@ public class User{
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", userRole=" + role +
                 ", status=" + status +
