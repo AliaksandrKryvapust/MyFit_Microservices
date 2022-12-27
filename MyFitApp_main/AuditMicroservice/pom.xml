@@ -8,4 +8,5 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>AuditMicroservice</artifactId>
+    <packaging>jar</packaging>
 </project>
