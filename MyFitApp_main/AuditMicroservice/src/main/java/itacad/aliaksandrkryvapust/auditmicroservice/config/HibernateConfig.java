@@ -19,7 +19,7 @@ public class HibernateConfig {
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("itacad.aliaksandrkryvapust.myfitapp");
+        factory.setPackagesToScan("itacad.aliaksandrkryvapust.auditmicroservice");
 
         Properties jpaProperties = new Properties();
         jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect"); //DB Dialect
@@ -31,7 +31,7 @@ public class HibernateConfig {
         jpaProperties.put("hibernate.hbm2ddl.auto", "none"); // create / create-drop / update
         jpaProperties.put("hibernate.id.new_generator_mappings", "true"); //directs how identity or sequence columns are generated when using @GeneratedValue
         //Configures the naming strategy that is used when Hibernate creates new database objects and schema elements
-        jpaProperties.put("hibernate.physical_naming_strategy", "itacad.aliaksandrkryvapust.myfitapp.config.CustomNamingStrategy");
+        jpaProperties.put("hibernate.physical_naming_strategy", "itacad.aliaksandrkryvapust.auditmicroservice.config.CustomNamingStrategy");
         jpaProperties.put("hibernate.show_sql", "true"); // Show SQL in console
         jpaProperties.put("hibernate.format_sql", "true"); // Show SQL formatted
         jpaProperties.put("hibernate.use_sql_comments", "true");
