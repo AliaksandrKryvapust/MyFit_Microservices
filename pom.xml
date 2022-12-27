@@ -11,9 +11,13 @@
     <groupId>ITAcad.AliaksandrKryvapust</groupId>
     <artifactId>MyFitApp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <name>MyFitApp</name>
     <description>MyFitApp</description>
+    <modules>
+        <module>UserAndProductsMicroservice</module>
+        <module>AuditMicroservice</module>
+    </modules>
     <properties>
         <java.version>11</java.version>
     </properties>
