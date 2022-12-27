@@ -1,0 +1,22 @@
+2022-12-25 19:46:38,654 INFO org.hibernate.validator.internal.util.Version [background-preinit] HV000001: Hibernate Validator 6.2.5.Final
+2022-12-25 19:46:38,685 INFO org.springframework.boot.StartupInfoLogger [main] Starting MyFitApp using Java 11.0.16.1 on Zodiac-PC with PID 396 (G:\Java\MyFitApp_main\target\classes started by User in G:\Java\MyFitApp_main)
+2022-12-25 19:46:38,685 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-12-25 19:46:41,094 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2022-12-25 19:46:41,094 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-12-25 19:46:41,094 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.69]
+2022-12-25 19:46:41,360 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-12-25 19:46:41,532 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-12-25 19:46:41,641 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.6.14.Final
+2022-12-25 19:46:41,898 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-12-25 19:46:42,238 WARN org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2022-12-25 19:46:42,243 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001005: using driver [org.postgresql.Driver] at URL [jdbc:postgresql://localhost:5432/my_fit]
+2022-12-25 19:46:42,244 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001001: Connection properties: {password=****, user=postgres}
+2022-12-25 19:46:42,245 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001003: Autocommit mode: false
+2022-12-25 19:46:42,250 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections [main] HHH000115: Hibernate connection pool size: 10 (min=1)
+2022-12-25 19:46:42,543 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2022-12-25 19:46:43,264 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-12-25 19:46:44,408 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2022-12-25 19:46:44,439 INFO org.springframework.boot.StartupInfoLogger [main] Started MyFitApp in 6.648 seconds (JVM running for 8.337)
+2022-12-25 19:47:01,431 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-12-25 19:47:01,456 WARN itacad.aliaksandrkryvapust.myfitapp.controller.filter.JwtFilter [http-nio-8080-exec-1] JWT token does not start with Bearer string
+2022-12-25 19:58:14,671 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState [SpringApplicationShutdownHook] HHH10001008: Cleaning up connection pool [jdbc:postgresql://localhost:5432/my_fit]
