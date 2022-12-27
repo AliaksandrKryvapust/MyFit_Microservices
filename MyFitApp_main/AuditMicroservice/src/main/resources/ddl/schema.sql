@@ -7,7 +7,6 @@ CREATE TABLE IF NOT EXISTS audit.users
 (
     id        uuid,
     username  character varying(20)       NOT NULL,
-    password  character varying(200)      NOT NULL,
     email     character varying(50)       NOT NULL,
     role      character varying(20)       NOT NULL,
     status    character varying(50)       NOT NULL,
