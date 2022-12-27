@@ -1,5 +1,7 @@
 package itacad.aliaksandrkryvapust.auditmicroservice.config.security;
 
+import itacad.aliaksandrkryvapust.auditmicroservice.controller.filter.JwtFilter;
+import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
