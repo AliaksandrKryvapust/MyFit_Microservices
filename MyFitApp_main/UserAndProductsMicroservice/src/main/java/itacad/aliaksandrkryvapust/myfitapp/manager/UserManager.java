@@ -13,9 +13,11 @@ import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.myfitapp.core.mapper.UserMapper;
 import itacad.aliaksandrkryvapust.myfitapp.core.mapper.microservices.AuditMapper;
 import itacad.aliaksandrkryvapust.myfitapp.manager.api.IUserManager;
+import itacad.aliaksandrkryvapust.myfitapp.manager.audit.AuditManager;
 import itacad.aliaksandrkryvapust.myfitapp.repository.entity.User;
 import itacad.aliaksandrkryvapust.myfitapp.service.api.IUserService;
 import itacad.aliaksandrkryvapust.myfitapp.service.security.JwtUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -41,18 +43,17 @@ public class UserManager implements IUserManager {
     private final UserMapper userMapper;
     private final JwtTokenUtil jwtTokenUtil;
     private final PasswordEncoder encoder;
-    private final ObjectMapper objectMapper;
-    private final AuditMapper auditMapper;
+    private final AuditManager auditManager;
 
+    @Autowired
     public UserManager(JwtUserDetailsService jwtUserDetailsService, IUserService userService, UserMapper userMapper,
-                       JwtTokenUtil jwtTokenUtil, PasswordEncoder encoder, ObjectMapper objectMapper, AuditMapper auditMapper) {
+                       JwtTokenUtil jwtTokenUtil, PasswordEncoder encoder, AuditManager auditManager) {
         this.jwtUserDetailsService = jwtUserDetailsService;
         this.userService = userService;
         this.userMapper = userMapper;
         this.jwtTokenUtil = jwtTokenUtil;
         this.encoder = encoder;
-        this.objectMapper = objectMapper;
-        this.auditMapper = auditMapper;
+        this.auditManager = auditManager;
     }
 
     @Override
@@ -80,9 +81,7 @@ public class UserManager implements IUserManager {
     public UserLoginDtoOutput saveUser(UserDtoRegistration userDtoRegistration, HttpServletRequest request) {
         try {
             User user = this.userService.save(userMapper.userInputMapping(userDtoRegistration));
-            UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(user.getEmail());
-            String token = jwtTokenUtil.generateToken(userDetails);
-            audit(user, token);
+            this.auditManager.audit(user);
             return userMapper.registerOutputMapping(user);
         } catch (URISyntaxException e) {
             throw new RuntimeException("URI to audit is incorrect");
@@ -91,17 +90,7 @@ public class UserManager implements IUserManager {
         }
     }
 
-    private void audit(User user, String token) throws JsonProcessingException, URISyntaxException {
-        AuditDto auditDto = this.auditMapper.userOutputMapping(user);
-        String requestBody = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(auditDto);
-        HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(new URI(AUDIT_URI))
-                .header(HttpHeaders.AUTHORIZATION, token)
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .build();
-        HttpClient.newHttpClient().sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString());
-    }
+
 
     @Override
     public UserDtoOutput getUser(String email) {
