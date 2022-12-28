@@ -17,6 +17,8 @@ import itacad.aliaksandrkryvapust.myfitapp.repository.entity.User;
 import itacad.aliaksandrkryvapust.myfitapp.service.api.IUserService;
 import itacad.aliaksandrkryvapust.myfitapp.service.security.JwtUserDetailsService;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -88,13 +90,13 @@ public class UserManager implements IUserManager {
     }
 
     private void audit(HttpServletRequest request, User user) throws JsonProcessingException, URISyntaxException {
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         AuditDto auditDto = this.auditMapper.userOutputMapping(user);
         String requestBody = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(auditDto);
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .uri(new URI(AUDIT_URI))
                 .header(TOKEN_HEADER, token)
-                .header(CONTENT, CONTENT_TYPE)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
         HttpClient.newHttpClient().sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString());
