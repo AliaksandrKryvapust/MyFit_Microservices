@@ -1,46 +1,56 @@
 package itacad.aliaksandrkryvapust.myfitapp.manager;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import itacad.aliaksandrkryvapust.myfitapp.controller.utils.JwtTokenUtil;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.UserDtoInput;
-import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.UserDtoRegistration;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.UserDtoLogin;
+import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.UserDtoRegistration;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.UserDtoOutput;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.UserLoginDtoOutput;
+import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.microservices.AuditDto;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.myfitapp.core.mapper.UserMapper;
+import itacad.aliaksandrkryvapust.myfitapp.core.mapper.microservices.AuditMapper;
 import itacad.aliaksandrkryvapust.myfitapp.manager.api.IUserManager;
 import itacad.aliaksandrkryvapust.myfitapp.repository.entity.User;
 import itacad.aliaksandrkryvapust.myfitapp.service.api.IUserService;
 import itacad.aliaksandrkryvapust.myfitapp.service.security.JwtUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.UUID;
+
+import static itacad.aliaksandrkryvapust.myfitapp.core.Constants.*;
 
 @Component
 public class UserManager implements IUserManager {
     private final JwtUserDetailsService jwtUserDetailsService;
     private final IUserService userService;
     private final UserMapper userMapper;
-    private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
-
     private final PasswordEncoder encoder;
+    private final ObjectMapper objectMapper;
+    private final AuditMapper auditMapper;
 
-    @Autowired
     public UserManager(JwtUserDetailsService jwtUserDetailsService, IUserService userService, UserMapper userMapper,
-                       AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, PasswordEncoder encoder) {
+                       JwtTokenUtil jwtTokenUtil, PasswordEncoder encoder, ObjectMapper objectMapper, AuditMapper auditMapper) {
         this.jwtUserDetailsService = jwtUserDetailsService;
         this.userService = userService;
         this.userMapper = userMapper;
-        this.authenticationManager = authenticationManager;
         this.jwtTokenUtil = jwtTokenUtil;
         this.encoder = encoder;
+        this.objectMapper = objectMapper;
+        this.auditMapper = auditMapper;
     }
 
     @Override
@@ -65,9 +75,29 @@ public class UserManager implements IUserManager {
 //        }
 //    }
     @Override
-    public UserLoginDtoOutput saveUser(UserDtoRegistration userDtoRegistration) {
-        User user = this.userService.save(userMapper.userInputMapping(userDtoRegistration));
-        return userMapper.registerOutputMapping(user);
+    public UserLoginDtoOutput saveUser(UserDtoRegistration userDtoRegistration, HttpServletRequest request) {
+        try {
+            User user = this.userService.save(userMapper.userInputMapping(userDtoRegistration));
+            audit(request, user);
+            return userMapper.registerOutputMapping(user);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("URI to audit is incorrect");
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to convert to JSON");
+        }
+    }
+
+    private void audit(HttpServletRequest request, User user) throws JsonProcessingException, URISyntaxException {
+        String token = request.getHeader("Authorization");
+        AuditDto auditDto = this.auditMapper.userOutputMapping(user);
+        String requestBody = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(auditDto);
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(new URI(AUDIT_URI))
+                .header(TOKEN_HEADER, token)
+                .header(CONTENT, CONTENT_TYPE)
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+        HttpClient.newHttpClient().sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString());
     }
 
     @Override
