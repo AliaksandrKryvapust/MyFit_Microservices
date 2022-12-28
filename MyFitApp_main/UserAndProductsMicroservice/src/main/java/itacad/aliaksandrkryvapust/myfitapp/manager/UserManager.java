@@ -96,7 +96,7 @@ public class UserManager implements IUserManager {
         String requestBody = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(auditDto);
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .uri(new URI(AUDIT_URI))
-                .header(TOKEN_HEADER, token)
+                .header(HttpHeaders.AUTHORIZATION, token)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();

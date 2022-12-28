@@ -31,7 +31,7 @@ public class JwtFilter extends OncePerRequestFilter {
         WebClient client = WebClient.create(TOKEN_VERIFICATION_URI);
         TokenValidationDto resp = client.get()
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .header(TOKEN_HEADER, requestTokenHeader)
+                .header(AUTHORIZATION, requestTokenHeader)
                 .exchangeToMono((r) -> {
                     if (r.statusCode().equals(HttpStatus.OK)) {
                         return r.bodyToMono(TokenValidationDto.class);
