@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenerationTime;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -12,10 +13,10 @@ import java.time.Instant;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "users", schema = "audit")
+@Table(name = "audit", schema = "audit")
 public class Audit {
     @Id
-    private String id;
+    private UUID id;
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
