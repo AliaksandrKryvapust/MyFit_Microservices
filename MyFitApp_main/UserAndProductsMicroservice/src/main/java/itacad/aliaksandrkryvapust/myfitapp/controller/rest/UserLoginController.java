@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 
@@ -41,7 +42,8 @@ public class UserLoginController {
     }
 
     @PostMapping("/registration")
-    protected ResponseEntity<UserLoginDtoOutput> registration(@RequestBody @Valid UserDtoRegistration dtoInput) {
-        return new ResponseEntity<>(this.userManager.saveUser(dtoInput), HttpStatus.CREATED);
+    protected ResponseEntity<UserLoginDtoOutput> registration(@RequestBody @Valid UserDtoRegistration dtoInput,
+                                                              HttpServletRequest request) {
+        return new ResponseEntity<>(this.userManager.saveUser(dtoInput, request), HttpStatus.CREATED);
     }
 }
