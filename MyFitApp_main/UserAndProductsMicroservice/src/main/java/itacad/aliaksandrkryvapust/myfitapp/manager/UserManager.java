@@ -80,7 +80,9 @@ public class UserManager implements IUserManager {
     public UserLoginDtoOutput saveUser(UserDtoRegistration userDtoRegistration, HttpServletRequest request) {
         try {
             User user = this.userService.save(userMapper.userInputMapping(userDtoRegistration));
-            audit(request, user);
+            UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(user.getEmail());
+            String token = jwtTokenUtil.generateToken(userDetails);
+            audit(user, token);
             return userMapper.registerOutputMapping(user);
         } catch (URISyntaxException e) {
             throw new RuntimeException("URI to audit is incorrect");
@@ -89,8 +91,7 @@ public class UserManager implements IUserManager {
         }
     }
 
-    private void audit(HttpServletRequest request, User user) throws JsonProcessingException, URISyntaxException {
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+    private void audit(User user, String token) throws JsonProcessingException, URISyntaxException {
         AuditDto auditDto = this.auditMapper.userOutputMapping(user);
         String requestBody = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(auditDto);
         HttpRequest httpRequest = HttpRequest.newBuilder()
@@ -110,8 +111,16 @@ public class UserManager implements IUserManager {
 
     @Override
     public UserDtoOutput save(UserDtoInput userDtoInput) {
+//        try {
         User user = this.userService.save(userMapper.inputMapping(userDtoInput));
+//        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+//        audit(user, token);
         return userMapper.outputMapping(user);
+//    } catch (URISyntaxException e) {
+//        throw new RuntimeException("URI to audit is incorrect");
+//    } catch (JsonProcessingException e) {
+//        throw new RuntimeException("Failed to convert to JSON");
+//    }
     }
 
     @Override
