@@ -7,6 +7,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -16,6 +22,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static itacad.aliaksandrkryvapust.auditmicroservice.core.Constants.TOKEN_HEADER;
 import static itacad.aliaksandrkryvapust.auditmicroservice.core.Constants.TOKEN_VERIFICATION_URI;
@@ -31,6 +39,14 @@ public class JwtFilter extends OncePerRequestFilter {
         final String requestSecretHeader = request.getHeader(TOKEN_HEADER);
         if (requestSecretHeader != null) {
             if (requestSecretHeader.equals(jwtSecret)) {
+                List<GrantedAuthority> authorityList = new ArrayList<>();
+                authorityList.add(new SimpleGrantedAuthority("AUDIT"));
+                UserDetails userDetails = new org.springframework.security.core.userdetails
+                        .User("audit@email", "audit", authorityList);
+                UsernamePasswordAuthenticationToken authenticationToken =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 filterChain.doFilter(request, response);
                 return;
             }
@@ -51,6 +67,12 @@ public class JwtFilter extends OncePerRequestFilter {
                 }).block();
         if (resp != null) {
             if (resp.getIsAuthenticated()) {
+                UserDetails userDetails = new org.springframework.security.core.userdetails
+                        .User(resp.getUsername(), "qwerty", resp.getAuthorities());
+                UsernamePasswordAuthenticationToken authenticationToken =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 filterChain.doFilter(request, response);
             } else {
                 logger.warn("Access denied");
