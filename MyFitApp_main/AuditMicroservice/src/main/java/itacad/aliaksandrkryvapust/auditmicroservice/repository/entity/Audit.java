@@ -16,7 +16,7 @@ import java.time.Instant;
 public class Audit {
     @Id
     private String id;
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
     private String text;
