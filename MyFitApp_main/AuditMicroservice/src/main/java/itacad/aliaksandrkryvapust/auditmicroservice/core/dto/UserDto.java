@@ -5,12 +5,14 @@ import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.UserStatus
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
+import lombok.extern.jackson.Jacksonized;
 
 import java.time.Instant;
 import java.util.UUID;
 
 @Builder
 @Data
+@Jacksonized
 public class UserDto {
     private final @NonNull UUID uuid;
     private final @NonNull String nick;
