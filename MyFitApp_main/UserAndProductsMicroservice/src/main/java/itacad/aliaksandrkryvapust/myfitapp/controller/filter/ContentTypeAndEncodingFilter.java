@@ -1,6 +1,7 @@
 package itacad.aliaksandrkryvapust.myfitapp.controller.filter;
 
 import itacad.aliaksandrkryvapust.myfitapp.core.Constants;
+import org.springframework.http.MediaType;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -17,7 +18,7 @@ public class ContentTypeAndEncodingFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         request.setCharacterEncoding(Constants.ENCODING);
-        response.setContentType(Constants.CONTENT_TYPE);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         chain.doFilter(request,response);
     }
 
