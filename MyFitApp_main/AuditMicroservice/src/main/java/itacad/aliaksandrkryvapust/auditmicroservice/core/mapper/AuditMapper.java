@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -26,7 +27,7 @@ public class AuditMapper {
 
     public Audit inputMapping(AuditDto auditDto) {
         User user = userMapper.inputMapping(auditDto.getUser());
-        return Audit.builder().id(auditDto.getId())
+        return Audit.builder().id(UUID.fromString(auditDto.getId()))
                 .user(user)
                 .text(auditDto.getText())
                 .type(auditDto.getType())
@@ -36,7 +37,7 @@ public class AuditMapper {
     public AuditDto outputMapping(Audit audit) {
         UserDto userDto = userMapper.outputMapping(audit.getUser());
         return AuditDto.builder()
-                .id(audit.getId())
+                .id(String.valueOf(audit.getId()))
                 .user(userDto)
                 .text(audit.getText())
                 .type(audit.getType())
