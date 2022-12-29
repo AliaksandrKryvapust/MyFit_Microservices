@@ -15,17 +15,8 @@ import java.util.List;
 @Component
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class TokenMapper {
-    private final JwtTokenUtil jwtTokenUtil;
 
-    @Autowired
-    public TokenMapper(JwtTokenUtil jwtTokenUtil) {
-        this.jwtTokenUtil = jwtTokenUtil;
-    }
-
-    public TokenValidationDto outputMapping(HttpServletRequest request) {
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION).substring("Bearer ".length());
-        String username = jwtTokenUtil.getUsername(token);
-        List<GrantedAuthority> authorityList = (List<GrantedAuthority>) request.getAttribute("authorities");
+    public TokenValidationDto outputMapping(String username, List<GrantedAuthority> authorityList) {
         return TokenValidationDto.builder()
                 .isAuthenticated(true)
                 .username(username)
