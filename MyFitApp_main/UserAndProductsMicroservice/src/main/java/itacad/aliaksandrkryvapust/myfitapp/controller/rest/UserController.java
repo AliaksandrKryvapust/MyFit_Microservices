@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.UUID;
 
@@ -39,14 +40,14 @@ public class UserController {
     }
 
     @PostMapping
-    protected ResponseEntity<UserDtoOutput> post(@RequestBody @Valid UserDtoInput dtoInput) {
-        return new ResponseEntity<>(this.userManager.save(dtoInput), HttpStatus.CREATED);
+    protected ResponseEntity<UserDtoOutput> post(@RequestBody @Valid UserDtoInput dtoInput, HttpServletRequest request) {
+        return new ResponseEntity<>(this.userManager.save(dtoInput, request), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}/dt_update/{version}")
     protected ResponseEntity<UserDtoOutput> put(@PathVariable UUID id, @PathVariable(name = "version") String version,
-                                                @Valid @RequestBody UserDtoInput dtoInput) {
-        return ResponseEntity.ok(this.userManager.update(dtoInput, id, Long.valueOf(version)));
+                                                @Valid @RequestBody UserDtoInput dtoInput, HttpServletRequest request) {
+        return ResponseEntity.ok(this.userManager.update(dtoInput, id, Long.valueOf(version), request));
     }
 
 }

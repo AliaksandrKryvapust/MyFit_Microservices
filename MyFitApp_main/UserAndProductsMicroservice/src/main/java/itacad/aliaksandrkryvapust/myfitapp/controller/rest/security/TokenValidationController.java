@@ -1,4 +1,4 @@
-package itacad.aliaksandrkryvapust.myfitapp.controller.rest;
+package itacad.aliaksandrkryvapust.myfitapp.controller.rest.security;
 
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.TokenValidationDto;
 import itacad.aliaksandrkryvapust.myfitapp.core.mapper.TokenMapper;
