@@ -66,7 +66,7 @@ public class UserManager implements IUserManager {
     public UserLoginDtoOutput saveUser(UserDtoRegistration userDtoRegistration, HttpServletRequest request) {
         try {
             User user = this.userService.save(userMapper.userInputMapping(userDtoRegistration));
-            AuditDto auditDto = this.auditMapper.outputMapping(user, userPost);
+            AuditDto auditDto = this.auditMapper.userOutputMapping(user, userPost);
             this.auditManager.audit(auditDto);
             return userMapper.registerOutputMapping(user);
         } catch (URISyntaxException e) {
@@ -88,7 +88,7 @@ public class UserManager implements IUserManager {
     public UserDtoOutput save(UserDtoInput userDtoInput, HttpServletRequest request) {
         try {
             User user = this.userService.save(userMapper.inputMapping(userDtoInput));
-            AuditDto auditDto = this.auditMapper.outputMapping(user, userPost);
+            AuditDto auditDto = this.auditMapper.userOutputMapping(user, userPost);
             this.auditManager.audit(auditDto);
             return userMapper.outputMapping(user);
         } catch (URISyntaxException e) {
@@ -113,7 +113,7 @@ public class UserManager implements IUserManager {
     public UserDtoOutput update(UserDtoInput dtoInput, UUID id, Long version, HttpServletRequest request) {
         try {
             User user = this.userService.update(userMapper.inputMapping(dtoInput), id, version);
-            AuditDto auditDto = this.auditMapper.outputMapping(user, userPut);
+            AuditDto auditDto = this.auditMapper.userOutputMapping(user, userPut);
             this.auditManager.audit(auditDto);
             return userMapper.outputMapping(user);
         } catch (URISyntaxException e) {
