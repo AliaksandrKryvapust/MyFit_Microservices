@@ -1,7 +1,6 @@
 package itacad.aliaksandrkryvapust.myfitapp.manager;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import itacad.aliaksandrkryvapust.myfitapp.controller.utils.JwtTokenUtil;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.UserDtoInput;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.UserDtoLogin;
@@ -19,25 +18,19 @@ import itacad.aliaksandrkryvapust.myfitapp.service.api.IUserService;
 import itacad.aliaksandrkryvapust.myfitapp.service.security.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.UUID;
-
-import static itacad.aliaksandrkryvapust.myfitapp.core.Constants.*;
 
 @Component
 public class UserManager implements IUserManager {
+    private final static String userPost = "New user was created";
+    private final static String userPut = "User was updated";
     private final JwtUserDetailsService jwtUserDetailsService;
     private final IUserService userService;
     private final UserMapper userMapper;
@@ -45,15 +38,18 @@ public class UserManager implements IUserManager {
     private final PasswordEncoder encoder;
     private final AuditManager auditManager;
 
+    private final AuditMapper auditMapper;
+
     @Autowired
     public UserManager(JwtUserDetailsService jwtUserDetailsService, IUserService userService, UserMapper userMapper,
-                       JwtTokenUtil jwtTokenUtil, PasswordEncoder encoder, AuditManager auditManager) {
+                       JwtTokenUtil jwtTokenUtil, PasswordEncoder encoder, AuditManager auditManager, AuditMapper auditMapper) {
         this.jwtUserDetailsService = jwtUserDetailsService;
         this.userService = userService;
         this.userMapper = userMapper;
         this.jwtTokenUtil = jwtTokenUtil;
         this.encoder = encoder;
         this.auditManager = auditManager;
+        this.auditMapper = auditMapper;
     }
 
     @Override
@@ -66,22 +62,12 @@ public class UserManager implements IUserManager {
         return this.userMapper.loginOutputMapping(userDetails, token);
     }
 
-    //    public UserLoginDtoOutput login(UserDtoLogin userDtoLogin) {
-//        Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(userDtoLogin.getUsername(), userDtoLogin.getPassword()));
-//        if (authentication.isAuthenticated()) {
-//            UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(userDtoLogin.getUsername());
-//            String token = jwtTokenUtil.generateToken(userDetails);
-//            return this.userMapper.loginOutputMapping(userDetails, token);
-//        } else {
-//            return null;
-//        }
-//    }
     @Override
     public UserLoginDtoOutput saveUser(UserDtoRegistration userDtoRegistration, HttpServletRequest request) {
         try {
             User user = this.userService.save(userMapper.userInputMapping(userDtoRegistration));
-            this.auditManager.audit(user);
+            AuditDto auditDto = this.auditMapper.outputMapping(user, userPost);
+            this.auditManager.audit(auditDto);
             return userMapper.registerOutputMapping(user);
         } catch (URISyntaxException e) {
             throw new RuntimeException("URI to audit is incorrect");
@@ -100,16 +86,16 @@ public class UserManager implements IUserManager {
 
     @Override
     public UserDtoOutput save(UserDtoInput userDtoInput) {
-//        try {
-        User user = this.userService.save(userMapper.inputMapping(userDtoInput));
-//        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-//        audit(user, token);
-        return userMapper.outputMapping(user);
-//    } catch (URISyntaxException e) {
-//        throw new RuntimeException("URI to audit is incorrect");
-//    } catch (JsonProcessingException e) {
-//        throw new RuntimeException("Failed to convert to JSON");
-//    }
+        try {
+            User user = this.userService.save(userMapper.inputMapping(userDtoInput));
+            AuditDto auditDto = this.auditMapper.outputMapping(user, userPost);
+            this.auditManager.audit(auditDto);
+            return userMapper.outputMapping(user);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("URI to audit is incorrect");
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to convert to JSON");
+        }
     }
 
     @Override
@@ -125,7 +111,15 @@ public class UserManager implements IUserManager {
 
     @Override
     public UserDtoOutput update(UserDtoInput dtoInput, UUID id, Long version) {
-        User user = this.userService.update(userMapper.inputMapping(dtoInput), id, version);
-        return userMapper.outputMapping(user);
+        try {
+            User user = this.userService.update(userMapper.inputMapping(dtoInput), id, version);
+            AuditDto auditDto = this.auditMapper.outputMapping(user, userPut);
+            this.auditManager.audit(auditDto);
+            return userMapper.outputMapping(user);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("URI to audit is incorrect");
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to convert to JSON");
+        }
     }
 }

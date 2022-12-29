@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AuditMapper {
     private final UserMapper userMapper;
-    private final String userPost = "New user was created";
 
     @Autowired
     public AuditMapper(UserMapper userMapper) {
@@ -22,12 +21,12 @@ public class AuditMapper {
     }
 
 
-    public AuditDto userOutputMapping(User user) {
+    public AuditDto outputMapping(User user, String text) {
         UserDtoOutput userDto = userMapper.outputMapping(user);
         return AuditDto.builder()
                 .id(String.valueOf(user.getId()))
                 .user(userDto)
-                .text(userPost)
+                .text(text)
                 .type(Type.USER)
                 .build();
     }
