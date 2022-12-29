@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
 @Component
@@ -25,7 +26,7 @@ public class MealManager implements IMealManager {
     }
 
     @Override
-    public MealDtoOutput save(MealDtoInput dtoInput) {
+    public MealDtoOutput save(MealDtoInput dtoInput, HttpServletRequest request) {
         Meal meal = this.mealService.save(mealMapper.inputMapping(dtoInput));
         return mealMapper.outputMapping(meal);
     }
@@ -41,12 +42,12 @@ public class MealManager implements IMealManager {
     }
 
     @Override
-    public void delete(UUID id) {
+    public void delete(UUID id, HttpServletRequest request) {
         this.mealService.delete(id);
     }
 
     @Override
-    public MealDtoOutput update(MealDtoInput dtoInput, UUID id, Long version) {
+    public MealDtoOutput update(MealDtoInput dtoInput, UUID id, Long version, HttpServletRequest request) {
         Meal meal = this.mealService.update(mealMapper.inputMapping(dtoInput), id, version);
         return mealMapper.outputMapping(meal);
     }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
 @Component
@@ -25,7 +26,7 @@ public class RecordManager implements IRecordManager {
     }
 
     @Override
-    public RecordDtoOutput save(RecordDtoInput dtoInput) {
+    public RecordDtoOutput save(RecordDtoInput dtoInput, HttpServletRequest request) {
         Record record = this.recordService.save(recordMapper.inputMapping(dtoInput));
         return recordMapper.outputMapping(record);
     }

@@ -85,7 +85,7 @@ public class UserManager implements IUserManager {
     }
 
     @Override
-    public UserDtoOutput save(UserDtoInput userDtoInput) {
+    public UserDtoOutput save(UserDtoInput userDtoInput, HttpServletRequest request) {
         try {
             User user = this.userService.save(userMapper.inputMapping(userDtoInput));
             AuditDto auditDto = this.auditMapper.outputMapping(user, userPost);
@@ -110,7 +110,7 @@ public class UserManager implements IUserManager {
     }
 
     @Override
-    public UserDtoOutput update(UserDtoInput dtoInput, UUID id, Long version) {
+    public UserDtoOutput update(UserDtoInput dtoInput, UUID id, Long version, HttpServletRequest request) {
         try {
             User user = this.userService.update(userMapper.inputMapping(dtoInput), id, version);
             AuditDto auditDto = this.auditMapper.outputMapping(user, userPut);

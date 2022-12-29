@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
 @Component
@@ -26,7 +27,7 @@ public class ProductManager implements IProductManager {
     }
 
     @Override
-    public ProductDtoOutput save(ProductDtoInput menuItemDtoInput) {
+    public ProductDtoOutput save(ProductDtoInput menuItemDtoInput, HttpServletRequest request) {
         Product product = this.productService.save(productMapper.inputMapping(menuItemDtoInput));
         return productMapper.outputMapping(product);
     }
@@ -42,12 +43,12 @@ public class ProductManager implements IProductManager {
     }
 
     @Override
-    public void delete(UUID id) {
+    public void delete(UUID id, HttpServletRequest request) {
         this.productService.delete(id);
     }
 
     @Override
-    public ProductDtoOutput update(ProductDtoInput productDtoInput, UUID id, Long version) {
+    public ProductDtoOutput update(ProductDtoInput productDtoInput, UUID id, Long version, HttpServletRequest request) {
         Product product = this.productService.update(productMapper.inputMapping(productDtoInput), id, version);
         return productMapper.outputMapping(product);
     }
