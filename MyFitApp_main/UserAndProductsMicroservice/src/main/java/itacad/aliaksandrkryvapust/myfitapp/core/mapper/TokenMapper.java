@@ -23,7 +23,7 @@ public class TokenMapper {
     }
 
     public TokenValidationDto outputMapping(HttpServletRequest request) {
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION).substring("Bearer ".length());
         String username = jwtTokenUtil.getUsername(token);
         List<GrantedAuthority> authorityList = (List<GrantedAuthority>) request.getAttribute("authorities");
         return TokenValidationDto.builder()

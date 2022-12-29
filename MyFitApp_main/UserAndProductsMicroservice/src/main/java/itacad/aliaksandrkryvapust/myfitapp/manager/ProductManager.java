@@ -62,7 +62,7 @@ public class ProductManager implements IProductManager {
     }
 
     private User getUser(HttpServletRequest request) {
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION).substring("Bearer ".length());
         String username = jwtTokenUtil.getUsername(token);
         return this.userService.getUser(username);
     }
