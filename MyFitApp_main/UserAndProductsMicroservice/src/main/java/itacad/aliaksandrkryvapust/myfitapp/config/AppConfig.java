@@ -36,12 +36,14 @@ public class AppConfig implements WebMvcConfigurer {
 
     @Bean
     public ObjectMapper objectMapper(){
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.configure(
-                com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,
-                false
-        );
-        return objectMapper;
+        return new Jackson2ObjectMapperBuilder()
+                .indentOutput(true)
+                .featuresToDisable(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS)
+                .featuresToDisable(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS)
+                .featuresToEnable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+                .featuresToEnable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+                .serializationInclusion(JsonInclude.Include.NON_EMPTY)
+                .serializationInclusion(JsonInclude.Include.NON_NULL)
+                .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE).build();
     }
 }
