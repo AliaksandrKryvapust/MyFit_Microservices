@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.UUID;
 
@@ -39,19 +40,19 @@ public class MealController {
     }
 
     @PostMapping
-    protected ResponseEntity<MealDtoOutput> post(@RequestBody @Valid MealDtoInput dtoInput) {
-        return new ResponseEntity<>(this.mealManager.save(dtoInput), HttpStatus.CREATED);
+    protected ResponseEntity<MealDtoOutput> post(@RequestBody @Valid MealDtoInput dtoInput, HttpServletRequest request) {
+        return new ResponseEntity<>(this.mealManager.save(dtoInput, request), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}/dt_update/{version}")
     protected ResponseEntity<MealDtoOutput> put(@PathVariable UUID id, @PathVariable(name = "version") String version,
-                                                @Valid @RequestBody MealDtoInput dtoInput) {
-        return ResponseEntity.ok(this.mealManager.update(dtoInput, id, Long.valueOf(version)));
+                                                @Valid @RequestBody MealDtoInput dtoInput, HttpServletRequest request) {
+        return ResponseEntity.ok(this.mealManager.update(dtoInput, id, Long.valueOf(version), request));
     }
 
     @DeleteMapping("/{id}")
-    protected ResponseEntity<Object> delete(@PathVariable UUID id) {
-        mealManager.delete(id);
+    protected ResponseEntity<Object> delete(@PathVariable UUID id, HttpServletRequest request) {
+        mealManager.delete(id, request);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

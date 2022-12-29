@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.UUID;
 
@@ -39,8 +40,8 @@ public class RecordController {
     }
 
     @PostMapping
-    protected ResponseEntity<RecordDtoOutput> post(@RequestBody @Valid RecordDtoInput dtoInput) {
-        return new ResponseEntity<>(this.recordManager.save(dtoInput), HttpStatus.CREATED);
+    protected ResponseEntity<RecordDtoOutput> post(@RequestBody @Valid RecordDtoInput dtoInput, HttpServletRequest request) {
+        return new ResponseEntity<>(this.recordManager.save(dtoInput, request), HttpStatus.CREATED);
     }
 
 }

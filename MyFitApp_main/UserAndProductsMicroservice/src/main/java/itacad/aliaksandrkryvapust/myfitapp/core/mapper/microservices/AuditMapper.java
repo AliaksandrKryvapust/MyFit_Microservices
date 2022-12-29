@@ -4,6 +4,9 @@ import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.UserDtoOutput;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.microservices.AuditDto;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.microservices.Type;
 import itacad.aliaksandrkryvapust.myfitapp.core.mapper.UserMapper;
+import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Meal;
+import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Product;
+import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Record;
 import itacad.aliaksandrkryvapust.myfitapp.repository.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -14,7 +17,6 @@ import org.springframework.stereotype.Component;
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AuditMapper {
     private final UserMapper userMapper;
-    private final String userPost = "New user was created";
 
     @Autowired
     public AuditMapper(UserMapper userMapper) {
@@ -22,13 +24,43 @@ public class AuditMapper {
     }
 
 
-    public AuditDto userOutputMapping(User user) {
+    public AuditDto userOutputMapping(User user, String text) {
         UserDtoOutput userDto = userMapper.outputMapping(user);
         return AuditDto.builder()
                 .id(String.valueOf(user.getId()))
                 .user(userDto)
-                .text(userPost)
+                .text(text)
                 .type(Type.USER)
+                .build();
+    }
+
+    public AuditDto recordOutputMapping(Record record, User user, String text) {
+        UserDtoOutput userDto = userMapper.outputMapping(user);
+        return AuditDto.builder()
+                .id(String.valueOf(record.getId()))
+                .user(userDto)
+                .text(text)
+                .type(Type.JOURNAL_FOOD)
+                .build();
+    }
+
+    public AuditDto productOutputMapping(Product product, User user, String text) {
+        UserDtoOutput userDto = userMapper.outputMapping(user);
+        return AuditDto.builder()
+                .id(String.valueOf(product.getId()))
+                .user(userDto)
+                .text(text)
+                .type(Type.PRODUCT)
+                .build();
+    }
+
+    public AuditDto mealOutputMapping(Meal meal, User user, String text) {
+        UserDtoOutput userDto = userMapper.outputMapping(user);
+        return AuditDto.builder()
+                .id(String.valueOf(meal.getId()))
+                .user(userDto)
+                .text(text)
+                .type(Type.RECIPE)
                 .build();
     }
 }

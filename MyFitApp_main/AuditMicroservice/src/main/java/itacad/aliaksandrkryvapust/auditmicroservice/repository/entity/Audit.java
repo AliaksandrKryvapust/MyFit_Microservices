@@ -21,7 +21,7 @@ public class Audit {
     private UUID id;
     @Setter
     private UUID uuid;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @Setter
     private User user;
