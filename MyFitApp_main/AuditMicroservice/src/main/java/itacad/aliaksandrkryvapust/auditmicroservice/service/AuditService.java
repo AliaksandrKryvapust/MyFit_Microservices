@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -27,9 +28,14 @@ public class AuditService implements IAuditService {
     @Override
     @Transactional
     public Audit save(Audit audit) {
-        User currentUser = this.userRepository.findByEmail(audit.getUser().getEmail());
-        if (currentUser==null){
-            this.userRepository.save(audit.getUser());
+        Optional<User> currentUser = this.userRepository.findById(audit.getUser().getId());
+        if (currentUser.isPresent()){
+            if (!currentUser.get().equals(audit.getUser())){
+                User user = this.userRepository.saveAndFlush(audit.getUser());
+                audit.setUser(user);
+            } else {
+                audit.setUser(currentUser.get());
+            }
         }
         return this.auditRepository.save(audit);
     }
