@@ -3,7 +3,7 @@ services:
   db:
     build: postgresql
     container_name: pg_container
-    image: my_fit
+    image: fitness_postgresql:1.0.0
     restart: always
     environment:
       POSTGRES_USER: postgres
@@ -13,7 +13,7 @@ services:
       - fitness_ntwrk
   pgadmin:
     build: pgadmin
-    container_name: pgadmin4_container
+    container_name: fitness_pgadmin:1.0.0
     image: my_fit_pgadmin
     restart: always
     environment:
@@ -30,24 +30,24 @@ services:
       - "81:8080"
     networks:
       - fitness_ntwrk
-#
-#  product-service:
-#    build: product_and_user-service
-#    image: product_and_user-service
-#    networks:
-#      - fitness_ntwrk
-#  audit-service:
-#    build: audit-service
-#    image: fitness_audit-service
-#    networks:
-#      - fitness_ntwrk
-#  proxy:
-#    build: proxy
-#    image: fitness_proxy
-#    ports:
-#      - "80:80"
-#    networks:
-#      - fitness_ntwrk
+
+  product-service:
+    build: product_and_user-service
+    image: product_and_user-service:1.0.0
+    networks:
+      - fitness_ntwrk
+  audit-service:
+    build: audit-service
+    image: audit-service:1.0.0
+    networks:
+      - fitness_ntwrk
+  proxy:
+    build: proxy
+    image: fitness_proxy
+    ports:
+      - "80:80"
+    networks:
+      - fitness_ntwrk
 networks:
   fitness_ntwrk:
     name: fitness_ntwrk
