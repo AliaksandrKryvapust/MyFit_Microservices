@@ -3,5 +3,9 @@ package itacad.aliaksandrkryvapust.auditmicroservice.repository.api;
 import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.Audit;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface IAuditRepository extends JpaRepository<Audit, String> {
+import java.util.Optional;
+import java.util.UUID;
+
+public interface IAuditRepository extends JpaRepository<Audit, UUID> {
+    Optional<Audit> findByUserId(UUID id);
 }

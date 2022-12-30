@@ -47,6 +47,6 @@ public class AuditService implements IAuditService {
 
     @Override
     public Audit get(UUID id) {
-        return this.auditRepository.findById(String.valueOf(id)).orElseThrow();
+        return this.auditRepository.findById(id).orElseThrow();
     }
 }

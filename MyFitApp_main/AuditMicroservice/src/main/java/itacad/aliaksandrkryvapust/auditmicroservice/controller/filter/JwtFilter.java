@@ -3,9 +3,7 @@ package itacad.aliaksandrkryvapust.auditmicroservice.controller.filter;
 
 import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.TokenValidationDto;
 import lombok.NonNull;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,6 +14,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -53,30 +52,24 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         final String requestTokenHeader = request.getHeader(AUTHORIZATION);
         WebClient client = WebClient.create(TOKEN_VERIFICATION_URI);
-        TokenValidationDto resp = client.get()
+        Mono<TokenValidationDto> resp = client.get()
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .header(AUTHORIZATION, requestTokenHeader)
-                .exchangeToMono((r) -> {
-                    if (r.statusCode().equals(HttpStatus.OK)) {
-                        return r.bodyToMono(TokenValidationDto.class);
-                    } else if (r.statusCode().is4xxClientError()) {
-                        throw new DataIntegrityViolationException("Bad request");
-                    } else {
-                        throw new RuntimeException("Failed to get token data");
-                    }
-                }).block();
-        if (resp != null) {
-            if (resp.getIsAuthenticated()) {
-                UserDetails userDetails = new org.springframework.security.core.userdetails
-                        .User(resp.getUsername(), "qwerty", resp.getAuthorities());
-                UsernamePasswordAuthenticationToken authenticationToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                filterChain.doFilter(request, response);
-            } else {
-                logger.warn("Access denied");
-            }
+                .retrieve().bodyToMono(TokenValidationDto.class);
+        TokenValidationDto validationDto = resp.blockOptional().orElseThrow();
+        if (validationDto.getAuthenticated()) {
+            List<GrantedAuthority> authorityList = new ArrayList<>();
+            authorityList.add(new SimpleGrantedAuthority(validationDto.getRole().name()));
+            UserDetails userDetails = new org.springframework.security.core.userdetails
+                    .User(validationDto.getUsername(), "qwerty", authorityList);
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            filterChain.doFilter(request, response);
+        } else {
+            logger.warn("Access denied");
         }
+
     }
 }
