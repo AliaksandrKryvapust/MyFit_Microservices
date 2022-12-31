@@ -1,10 +1,57 @@
-version: "3.9"
+version: '3.5'
 services:
   db:
-    image: "postgres"
+    build: postgresql
+    container_name: pg_container
+    image: fitness_postgresql:1.0.0
+    restart: always
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: my_fit
+    networks:
+      - fitness_ntwrk
+#  pgadmin:
+#    build: pgadmin
+#    container_name: fitness_pgadmin:1.0.0
+#    image: my_fit_pgadmin
+#    restart: always
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+#      PGADMIN_DEFAULT_PASSWORD: root
+#    ports:
+#      - "82:80"
+#    networks:
+#      - fitness_ntwrk
+#  swagger-ui:
+#    build: swagger-ui
+#    image: fitness_swagger-ui
+#    ports:
+#      - "81:8080"
+#    networks:
+#      - fitness_ntwrk
+#
+#  product-service:
+#    build: product_and_user-service
+#    image: product_and_user-service:1.0.0
+#    networks:
+#      - fitness_ntwrk
+  audit-service:
+    build: audit-service
+    image: audit-service:1.0.0
+    ports:
+      - "8081:8081"
+    networks:
+      - fitness_ntwrk
+#  proxy:
+#    build: proxy
+#    image: fitness_proxy
+#    ports:
+#      - "80:80"
+#    networks:
+#      - fitness_ntwrk
+networks:
+  fitness_ntwrk:
+    name: fitness_ntwrk
