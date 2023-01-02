@@ -36,7 +36,7 @@ public class AuditController {
     }
 
     @PostMapping
-    protected ResponseEntity<Object> post(@RequestBody AuditDto auditDto) {
+    protected ResponseEntity<Object> post(@RequestBody @Valid AuditDto auditDto) {
         this.auditManager.save(auditDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
