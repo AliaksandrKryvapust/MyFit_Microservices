@@ -13,6 +13,7 @@ CREATE TABLE report.report
     description character varying(200) NOT NULL,
     "from" timestamp without time zone NOT NULL,
     "to" timestamp without time zone NOT NULL,
+    username character varying(200) NOT NULL,
     PRIMARY KEY (id)
 );
 
