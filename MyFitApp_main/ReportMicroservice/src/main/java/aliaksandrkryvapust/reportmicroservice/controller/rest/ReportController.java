@@ -1,8 +1,9 @@
 package aliaksandrkryvapust.reportmicroservice.controller.rest;
 
-import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.AuditDto;
-import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.pages.PageDtoOutput;
-import itacad.aliaksandrkryvapust.auditmicroservice.manager.api.IAuditManager;
+import aliaksandrkryvapust.reportmicroservice.core.dto.ParamsDto;
+import aliaksandrkryvapust.reportmicroservice.core.dto.ReportDtoOutput;
+import aliaksandrkryvapust.reportmicroservice.core.dto.pages.PageDtoOutput;
+import aliaksandrkryvapust.reportmicroservice.manager.api.IReportManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,28 +16,28 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/audit")
 public class ReportController {
-    private final IAuditManager auditManager;
+    private final IReportManager reportManager;
 
     @Autowired
-    public ReportController(IAuditManager auditManager) {
-        this.auditManager = auditManager;
+    public ReportController(IReportManager reportManager) {
+        this.reportManager = reportManager;
     }
 
     @GetMapping(params = {"page", "size"})
     protected ResponseEntity<PageDtoOutput> getPage(@RequestParam("page") int page,
                                                     @RequestParam("size") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(auditManager.get(pageable));
+        return ResponseEntity.ok(reportManager.get(pageable));
     }
 
     @GetMapping("/{uuid}")
-    protected ResponseEntity<AuditDto> get(@PathVariable UUID uuid) {
-        return ResponseEntity.ok(auditManager.get(uuid));
+    protected ResponseEntity<ReportDtoOutput> get(@PathVariable UUID uuid) {
+        return ResponseEntity.ok(reportManager.get(uuid));
     }
 
     @PostMapping
-    protected ResponseEntity<Object> post(@RequestBody AuditDto auditDto) {
-        this.auditManager.save(auditDto);
+    protected ResponseEntity<Object> post(@RequestBody ParamsDto paramsDto) {
+        this.reportManager.save(paramsDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
