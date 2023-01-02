@@ -3,12 +3,16 @@ package aliaksandrkryvapust.reportmicroservice.core.mapper;
 import aliaksandrkryvapust.reportmicroservice.core.dto.ParamsDto;
 import aliaksandrkryvapust.reportmicroservice.core.dto.ReportDtoOutput;
 import aliaksandrkryvapust.reportmicroservice.core.dto.pages.PageDtoOutput;
+import aliaksandrkryvapust.reportmicroservice.repository.entity.Params;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.Report;
+import aliaksandrkryvapust.reportmicroservice.repository.entity.Status;
+import aliaksandrkryvapust.reportmicroservice.repository.entity.Type;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,8 +20,24 @@ import java.util.stream.Collectors;
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class ReportMapper {
 
-    public Report inputMapping(ParamsDto paramsDto){
-        return Report.builder().
+    public Report inputMapping(ParamsDto paramsDto, Type type, String username) {
+        String from = LocalDate.from(paramsDto.getFrom()).toString();
+        String to = LocalDate.from(paramsDto.getFrom()).toString();
+        Params params = Params.builder()
+                .from(paramsDto.getFrom())
+                .to(paramsDto.getTo()).build();
+        if (type.name().equals("JOURNAL_FOOD")) {
+            String description = String.format("Meal records of user %s from %s to %s.", username, from, to);
+            return Report.builder()
+                    .params(params)
+                    .type(type)
+                    .username(username)
+                    .status(Status.LOADED)
+                    .description(description).build();
+        } else {
+            throw new IllegalStateException("Type field is not enum value");
+        }
+
     }
 
     public ReportDtoOutput outputMapping(Report report) {
