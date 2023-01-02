@@ -11,6 +11,8 @@ CREATE TABLE report.report
     status character varying(100) NOT NULL,
     type character varying(100) NOT NULL,
     description character varying(200) NOT NULL,
+    "from" timestamp without time zone NOT NULL,
+    "to" timestamp without time zone NOT NULL,
     PRIMARY KEY (id)
 );
 
