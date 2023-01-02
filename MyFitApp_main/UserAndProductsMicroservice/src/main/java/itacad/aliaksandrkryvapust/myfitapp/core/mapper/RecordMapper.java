@@ -6,6 +6,7 @@ import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.ProductDtoOutput;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.RecordDtoOutput;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Record;
+import itacad.aliaksandrkryvapust.myfitapp.repository.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -27,17 +28,19 @@ public class RecordMapper {
         this.mealMapper = mealMapper;
     }
 
-    public Record inputMapping(RecordDtoInput recordDtoInput) {
+    public Record inputMapping(RecordDtoInput recordDtoInput, User user) {
         if (recordDtoInput.getRecipe() == null) {
             return Record.builder().productId(recordDtoInput.getProduct().getUuid())
                     .weight(recordDtoInput.getWeight())
                     .dtSupply(recordDtoInput.getDtSupply())
+                    .user(user)
                     .build();
         } else {
             return Record.builder()
                     .mealId(recordDtoInput.getRecipe().getUuid())
                     .weight(recordDtoInput.getWeight())
                     .dtSupply(recordDtoInput.getDtSupply())
+                    .user(user)
                     .build();
         }
     }
