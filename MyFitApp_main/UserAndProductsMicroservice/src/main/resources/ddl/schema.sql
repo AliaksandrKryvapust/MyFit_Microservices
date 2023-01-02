@@ -46,20 +46,6 @@ CREATE TABLE IF NOT EXISTS app.ingredients
 ALTER TABLE IF EXISTS app.ingredients
     OWNER to postgres;
 
-CREATE TABLE IF NOT EXISTS app.records
-(
-    id         uuid,
-    meal_id    uuid REFERENCES app.meal (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
-    product_id uuid REFERENCES app.products (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
-    weight     bigint                      NOT NULL,
-    dt_create  timestamp without time zone NOT NULL DEFAULT now(),
-    dt_supply  timestamp without time zone NOT NULL,
-    PRIMARY KEY (id)
-);
-
-ALTER TABLE IF EXISTS app.records
-    OWNER to postgres;
-
 CREATE TABLE IF NOT EXISTS app.users
 (
     id        uuid,
@@ -79,3 +65,18 @@ ALTER TABLE IF EXISTS app.users
 ALTER TABLE IF EXISTS app.users
     ADD CONSTRAINT "users_UK" UNIQUE (email)
         INCLUDE (username);
+
+CREATE TABLE IF NOT EXISTS app.records
+(
+    id         uuid,
+    meal_id    uuid REFERENCES app.meal (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
+    product_id uuid REFERENCES app.products (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
+    weight     bigint                      NOT NULL,
+    dt_create  timestamp without time zone NOT NULL DEFAULT now(),
+    dt_supply  timestamp without time zone NOT NULL,
+    user_id uuid REFERENCES app.users (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
+    PRIMARY KEY (id)
+);
+
+ALTER TABLE IF EXISTS app.records
+    OWNER to postgres;
