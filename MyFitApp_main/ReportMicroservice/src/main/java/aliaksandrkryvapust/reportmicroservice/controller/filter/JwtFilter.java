@@ -23,32 +23,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static aliaksandrkryvapust.reportmicroservice.core.Constants.TOKEN_HEADER;
 import static aliaksandrkryvapust.reportmicroservice.core.Constants.TOKEN_VERIFICATION_URI;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
-    private static final String jwtSecret = "NDQ1ZjAzNjQtMzViZi00MDRjLTljZjQtNjNjYWIyZTU5ZDYw";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
-        final String requestSecretHeader = request.getHeader(TOKEN_HEADER);
-        if (requestSecretHeader != null) {
-            if (requestSecretHeader.equals(jwtSecret)) {
-                List<GrantedAuthority> authorityList = new ArrayList<>();
-                authorityList.add(new SimpleGrantedAuthority("AUDIT"));
-                UserDetails userDetails = new org.springframework.security.core.userdetails
-                        .User("audit@email", "audit", authorityList);
-                UsernamePasswordAuthenticationToken authenticationToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                filterChain.doFilter(request, response);
-                return;
-            }
-        }
         final String requestTokenHeader = request.getHeader(AUTHORIZATION);
         WebClient client = WebClient.create(TOKEN_VERIFICATION_URI);
         Mono<TokenValidationDto> resp = client.get()
@@ -69,6 +52,5 @@ public class JwtFilter extends OncePerRequestFilter {
         } else {
             logger.warn("Access denied");
         }
-
     }
 }
