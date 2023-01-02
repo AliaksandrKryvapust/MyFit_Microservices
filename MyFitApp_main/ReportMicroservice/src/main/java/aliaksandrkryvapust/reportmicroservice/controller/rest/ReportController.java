@@ -38,8 +38,8 @@ public class ReportController {
     }
 
     @PostMapping("/{type}")
-    protected ResponseEntity<ReportDtoOutput> post(@PathVariable("type") Type type, @RequestBody @Valid ParamsDto paramsDto) {
-        ReportDtoOutput dtoOutput = this.reportManager.save(paramsDto, type);
-        return new ResponseEntity<>(dtoOutput, HttpStatus.CREATED);
+    protected ResponseEntity<Object> post(@PathVariable("type") Type type, @RequestBody @Valid ParamsDto paramsDto) {
+        this.reportManager.save(paramsDto, type);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
