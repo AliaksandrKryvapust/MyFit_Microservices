@@ -17,7 +17,7 @@ import java.time.Instant;
 @Jacksonized
 public class RecordDtoInput {
     @NotNull(message = "supply date cannot be null")
-    @Past(message = "supply date should be positive")
+    @Past(message = "supply date should refer to moment in the past")
     private final Instant dtSupply;
     @Valid
     private final ProductReferenceDtoInput product;
