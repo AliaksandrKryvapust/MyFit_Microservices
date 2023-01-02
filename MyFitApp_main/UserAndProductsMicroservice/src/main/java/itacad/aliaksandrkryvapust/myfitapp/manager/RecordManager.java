@@ -15,6 +15,7 @@ import itacad.aliaksandrkryvapust.myfitapp.repository.entity.User;
 import itacad.aliaksandrkryvapust.myfitapp.service.UserService;
 import itacad.aliaksandrkryvapust.myfitapp.service.api.IRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -46,9 +47,12 @@ public class RecordManager implements IRecordManager {
 
     @Override
     public RecordDtoOutput save(RecordDtoInput dtoInput, HttpServletRequest request) {
+        if (dtoInput.getRecipe()==null && dtoInput.getProduct()==null){
+            throw new DataIntegrityViolationException("At least Meal or Recipe should not be null");
+        }
         try {
-            Record record = this.recordService.save(recordMapper.inputMapping(dtoInput));
             User user = getUser(request);
+            Record record = this.recordService.save(recordMapper.inputMapping(dtoInput, user));
             AuditDto auditDto = this.auditMapper.recordOutputMapping(record, user, recordPost);
             this.auditManager.audit(auditDto);
             return recordMapper.outputMapping(record);
