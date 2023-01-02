@@ -6,6 +6,7 @@ import aliaksandrkryvapust.reportmicroservice.controller.exceptions.dto.SingleEx
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -35,7 +36,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         this.logger = LoggerFactory.getLogger(this.getClass());
     }
 
-    @ExceptionHandler({DataIntegrityViolationException.class, NoSuchElementException.class})
+    @ExceptionHandler({DataIntegrityViolationException.class, NoSuchElementException.class,
+            ConversionFailedException.class})
     public ResponseEntity<SingleExceptionDto> handleBadRequest(Exception ex) {
         this.makeLog(ex);
         SingleExceptionDto message = SingleExceptionDto.builder().logref("error")
