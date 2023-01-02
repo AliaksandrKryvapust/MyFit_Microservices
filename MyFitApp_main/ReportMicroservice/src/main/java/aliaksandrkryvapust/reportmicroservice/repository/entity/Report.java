@@ -30,6 +30,8 @@ public class Report {
     @Setter
     @Embedded
     private Params params;
+    @Setter
+    private String username;
     @org.hibernate.annotations.Generated(GenerationTime.INSERT)
     private Instant dtCreate;
     @Version
