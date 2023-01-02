@@ -17,6 +17,6 @@ public class ReportDtoOutput {
     private final @NonNull Type type;
     private final @NonNull String description;
     private final @NonNull ParamsDto params;
-    private final @NonNull Instant dtCreate;
-    private final @NonNull Instant dtUpdate;
+    private final @NonNull Long dtCreate;
+    private final @NonNull Long dtUpdate;
 }
