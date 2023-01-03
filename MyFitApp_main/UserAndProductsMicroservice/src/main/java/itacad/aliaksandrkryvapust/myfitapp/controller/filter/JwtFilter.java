@@ -8,6 +8,8 @@ import itacad.aliaksandrkryvapust.myfitapp.service.security.JwtUserDetailsServic
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -20,11 +22,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import static itacad.aliaksandrkryvapust.myfitapp.core.Constants.TOKEN_HEADER;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
+    private static final String jwtSecret = "NDQ1ZjAzNjQtMzViZi00MDRjLTljZjQtNjNjYWIyZTU5ZDYw";
     private final JwtUserDetailsService jwtUserDetailsService;
     private final JwtTokenUtil jwtTokenUtil;
 
@@ -37,6 +43,21 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
+        final String requestSecretHeader = request.getHeader(TOKEN_HEADER);
+        if (requestSecretHeader != null) {
+            if (requestSecretHeader.equals(jwtSecret)) {
+                List<GrantedAuthority> authorityList = new ArrayList<>();
+                authorityList.add(new SimpleGrantedAuthority("REPORT"));
+                UserDetails userDetails = new org.springframework.security.core.userdetails
+                        .User("report@email", "report", authorityList);
+                UsernamePasswordAuthenticationToken authenticationToken =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                filterChain.doFilter(request, response);
+                return;
+            }
+        }
         final String requestTokenHeader = request.getHeader(AUTHORIZATION);
         if (StringUtils.startsWithIgnoreCase(requestTokenHeader, "Bearer ")) {
             String jwtToken = requestTokenHeader.substring(7);
