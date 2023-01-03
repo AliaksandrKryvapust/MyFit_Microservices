@@ -43,6 +43,7 @@ public class ReportLoadJob implements Job {
             return;
         }
         report.setStatus(Status.PROGRESS);
+        this.reportService.save(report);
         log.info("Request was prepared");
         WebClient client = WebClient.create(JOB_IMPORT_URI);
         Mono<List<RecordDto>> resp = client.get()
