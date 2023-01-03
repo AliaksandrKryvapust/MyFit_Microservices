@@ -2,6 +2,7 @@ package itacad.aliaksandrkryvapust.myfitapp.manager;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import itacad.aliaksandrkryvapust.myfitapp.controller.utils.JwtTokenUtil;
+import itacad.aliaksandrkryvapust.myfitapp.core.dto.export.ParamsDto;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.RecordDtoInput;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.RecordDtoOutput;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.microservices.AuditDto;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -77,5 +79,11 @@ public class RecordManager implements IRecordManager {
     @Override
     public RecordDtoOutput get(UUID id) {
         return recordMapper.outputMapping(this.recordService.get(id));
+    }
+
+    @Override
+    public List<RecordDtoOutput> getRecordByTimeGap(ParamsDto paramsDto) {
+        List<Record> records = this.recordService.getRecordByTimeGap(paramsDto);
+        return this.recordMapper.listOutputMapping(records);
     }
 }
