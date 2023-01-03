@@ -3,7 +3,7 @@ package aliaksandrkryvapust.reportmicroservice.repository.entity;
 import lombok.*;
 
 import javax.persistence.Embeddable;
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -12,6 +12,6 @@ import java.time.Instant;
 @Builder
 @Embeddable
 public class Params {
-    private Instant from;
-    private Instant to;
+    private LocalDate start;
+    private LocalDate finish;
 }

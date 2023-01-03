@@ -5,6 +5,8 @@ import aliaksandrkryvapust.reportmicroservice.core.dto.ReportDtoOutput;
 import aliaksandrkryvapust.reportmicroservice.core.dto.pages.PageDtoOutput;
 import aliaksandrkryvapust.reportmicroservice.core.mapper.ReportMapper;
 import aliaksandrkryvapust.reportmicroservice.manager.api.IReportManager;
+import aliaksandrkryvapust.reportmicroservice.repository.entity.Report;
+import aliaksandrkryvapust.reportmicroservice.repository.entity.Type;
 import aliaksandrkryvapust.reportmicroservice.service.api.IReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -26,10 +28,11 @@ public class ReportManager implements IReportManager {
     }
 
     @Override
-    public ReportDtoOutput save(ParamsDto type) {
+    public ReportDtoOutput save(ParamsDto paramsDto, Type type) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        userDetails.g
-        return null;
+        String username =  userDetails.getUsername();
+        Report report = this.reportService.save(reportMapper.inputMapping(paramsDto, type, username));
+        return this.reportMapper.outputMapping(report);
     }
 
     @Override

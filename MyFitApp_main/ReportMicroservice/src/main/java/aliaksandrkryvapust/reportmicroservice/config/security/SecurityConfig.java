@@ -29,7 +29,7 @@ public class SecurityConfig {
         // we don't need CSRF because our token is invulnerable
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/v1/report", "/api/v1/report/**").hasAuthority(UserRole.ADMIN.name())
+//                .antMatchers(HttpMethod.GET, "/api/v1/report", "/api/v1/report/**").hasAuthority(UserRole.ADMIN.name())
                 .anyRequest().authenticated()
                 .and()
                 // Set exception handler

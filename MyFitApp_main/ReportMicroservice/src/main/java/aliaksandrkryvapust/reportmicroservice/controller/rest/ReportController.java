@@ -4,6 +4,7 @@ import aliaksandrkryvapust.reportmicroservice.core.dto.ParamsDto;
 import aliaksandrkryvapust.reportmicroservice.core.dto.ReportDtoOutput;
 import aliaksandrkryvapust.reportmicroservice.core.dto.pages.PageDtoOutput;
 import aliaksandrkryvapust.reportmicroservice.manager.api.IReportManager;
+import aliaksandrkryvapust.reportmicroservice.repository.entity.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,10 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/audit")
+@RequestMapping("/api/v1/report")
 public class ReportController {
     private final IReportManager reportManager;
 
@@ -30,14 +32,14 @@ public class ReportController {
         return ResponseEntity.ok(reportManager.get(pageable));
     }
 
-    @GetMapping("/{uuid}")
+    @GetMapping("/{uuid}/export")
     protected ResponseEntity<ReportDtoOutput> get(@PathVariable UUID uuid) {
         return ResponseEntity.ok(reportManager.get(uuid));
     }
 
-    @PostMapping
-    protected ResponseEntity<Object> post(@RequestBody ParamsDto paramsDto) {
-        this.reportManager.save(paramsDto);
+    @PostMapping("/{type}")
+    protected ResponseEntity<Object> post(@PathVariable("type") Type type, @RequestBody @Valid ParamsDto paramsDto) {
+        this.reportManager.save(paramsDto, type);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

@@ -19,7 +19,7 @@ public class HibernateConfig {
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("itacad.aliaksandrkryvapust.auditmicroservice");
+        factory.setPackagesToScan("aliaksandrkryvapust.reportmicroservice");
 
         Properties jpaProperties = new Properties();
         jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect"); //DB Dialect
@@ -31,12 +31,12 @@ public class HibernateConfig {
         jpaProperties.put("hibernate.hbm2ddl.auto", "none"); // create / create-drop / update
         jpaProperties.put("hibernate.id.new_generator_mappings", "true"); //directs how identity or sequence columns are generated when using @GeneratedValue
         //Configures the naming strategy that is used when Hibernate creates new database objects and schema elements
-        jpaProperties.put("hibernate.physical_naming_strategy", "itacad.aliaksandrkryvapust.auditmicroservice.config.CustomNamingStrategy");
+        jpaProperties.put("hibernate.physical_naming_strategy", "aliaksandrkryvapust.reportmicroservice.config.CustomNamingStrategy");
         jpaProperties.put("hibernate.show_sql", "true"); // Show SQL in console
         jpaProperties.put("hibernate.format_sql", "true"); // Show SQL formatted
         jpaProperties.put("hibernate.use_sql_comments", "true");
         jpaProperties.put("hibernate.connection.pool_size", "10");
-        jpaProperties.put("hibernate.default_schema", "app");
+        jpaProperties.put("hibernate.default_schema", "report");
         factory.setJpaProperties(jpaProperties);
         return factory;
     }

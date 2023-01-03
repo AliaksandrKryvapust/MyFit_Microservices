@@ -5,15 +5,15 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE report.report
 (
-    id uuid,
-    dt_create timestamp without time zone NOT NULL DEFAULT now(),
-    dt_update timestamp without time zone NOT NULL DEFAULT now(),
-    status character varying(100) NOT NULL,
-    type character varying(100) NOT NULL,
-    description character varying(200) NOT NULL,
-    "from" timestamp without time zone NOT NULL,
-    "to" timestamp without time zone NOT NULL,
-    username character varying(200) NOT NULL,
+    id          uuid,
+    dt_create   timestamp without time zone NOT NULL DEFAULT now(),
+    dt_update   timestamp without time zone NOT NULL DEFAULT now(),
+    status      character varying(100)      NOT NULL,
+    type        character varying(100)      NOT NULL,
+    description character varying(200)      NOT NULL,
+    start       date                        NOT NULL,
+    "end"       date                        NOT NULL,
+    username    character varying(200)      NOT NULL,
     PRIMARY KEY (id)
 );
 
