@@ -1,5 +1,6 @@
 package itacad.aliaksandrkryvapust.myfitapp.service;
 
+import itacad.aliaksandrkryvapust.myfitapp.core.dto.export.ParamsDto;
 import itacad.aliaksandrkryvapust.myfitapp.repository.api.IRecordRepository;
 import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Meal;
 import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Product;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -59,5 +61,10 @@ public class RecordService implements IRecordService {
     @Override
     public Record get(UUID id) {
         return this.recordRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public List<Record> getRecordByTimeGap(ParamsDto paramsDto) {
+        return this.recordRepository.getRecordByTimeGap(paramsDto.getFrom(), paramsDto.getTo());
     }
 }
