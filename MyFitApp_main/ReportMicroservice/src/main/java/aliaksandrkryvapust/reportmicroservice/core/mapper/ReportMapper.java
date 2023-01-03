@@ -12,7 +12,6 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,11 +20,11 @@ import java.util.stream.Collectors;
 public class ReportMapper {
 
     public Report inputMapping(ParamsDto paramsDto, Type type, String username) {
-        String from = LocalDate.from(paramsDto.getFrom()).toString();
-        String to = LocalDate.from(paramsDto.getFrom()).toString();
+        String from = paramsDto.getFrom().toString();
+        String to = paramsDto.getTo().toString();
         Params params = Params.builder()
-                .from(paramsDto.getFrom())
-                .to(paramsDto.getTo()).build();
+                .start((paramsDto.getFrom()))
+                .finish(paramsDto.getTo()).build();
         if (type.name().equals("JOURNAL_FOOD")) {
             String description = String.format("Meal records of user %s from %s to %s.", username, from, to);
             return Report.builder()
@@ -42,16 +41,16 @@ public class ReportMapper {
 
     public ReportDtoOutput outputMapping(Report report) {
         ParamsDto paramsDto = ParamsDto.builder()
-                .from(report.getParams().getFrom())
-                .to(report.getParams().getTo()).build();
+                .from(report.getParams().getStart())
+                .to(report.getParams().getFinish()).build();
         return ReportDtoOutput.builder()
                 .id(report.getId())
                 .params(paramsDto)
                 .description(report.getDescription())
                 .type(report.getType())
                 .status(report.getStatus())
-                .dtCreate(report.getDtCreate())
-                .dtUpdate(report.getDtUpdate())
+                .dtCreate(report.getDtCreate().toEpochMilli())
+                .dtUpdate(report.getDtUpdate().toEpochMilli())
                 .build();
     }
 
