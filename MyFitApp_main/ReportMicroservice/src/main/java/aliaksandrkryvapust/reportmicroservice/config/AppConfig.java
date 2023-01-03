@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -31,6 +32,8 @@ public class AppConfig implements WebMvcConfigurer {
                 .featuresToEnable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 .serializationInclusion(JsonInclude.Include.NON_EMPTY)
                 .serializationInclusion(JsonInclude.Include.NON_NULL)
+                .modules(new JavaTimeModule())
+                .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                 .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE).build();
         converters.add(new MappingJackson2HttpMessageConverter(objectMapper));
     }
