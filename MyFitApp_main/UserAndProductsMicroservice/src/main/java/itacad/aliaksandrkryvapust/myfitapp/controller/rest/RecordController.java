@@ -1,5 +1,6 @@
 package itacad.aliaksandrkryvapust.myfitapp.controller.rest;
 
+import itacad.aliaksandrkryvapust.myfitapp.core.dto.export.ParamsDto;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.RecordDtoInput;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.RecordDtoOutput;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.pages.PageDtoOutput;
@@ -14,6 +15,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -44,4 +49,16 @@ public class RecordController {
         return new ResponseEntity<>(this.recordManager.save(dtoInput, request), HttpStatus.CREATED);
     }
 
+    @GetMapping("/export")
+    protected ResponseEntity<List<RecordDtoOutput>> export(HttpServletRequest request) {
+        ParamsDto paramsDto = getParamsDto(request);
+        return ResponseEntity.ok(recordManager.getRecordByTimeGap(paramsDto));
+    }
+
+    private ParamsDto getParamsDto(HttpServletRequest request) {
+        final LocalDate dateFrom = LocalDate.parse(request.getHeader("from"));
+        final LocalDate dateTo = LocalDate.parse(request.getHeader("to"));
+        return ParamsDto.builder().from(dateFrom.atStartOfDay().toInstant(ZoneOffset.UTC))
+                .to(dateTo.atTime(LocalTime.MAX).toInstant(ZoneOffset.UTC)).build();
+    }
 }
