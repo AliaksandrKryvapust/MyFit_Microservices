@@ -63,6 +63,10 @@ public class RecordMapper {
         return recordDtoOutput;
     }
 
+    public List<RecordDtoOutput> listOutputMapping(List<Record> records) {
+        return records.stream().map(this::outputMapping).collect(Collectors.toList());
+    }
+
     public PageDtoOutput<RecordDtoOutput> outputPageMapping(Page<Record> record) {
         List<RecordDtoOutput> outputs = record.getContent().stream().map(this::outputMapping).collect(Collectors.toList());
         return PageDtoOutput.<RecordDtoOutput>builder()
