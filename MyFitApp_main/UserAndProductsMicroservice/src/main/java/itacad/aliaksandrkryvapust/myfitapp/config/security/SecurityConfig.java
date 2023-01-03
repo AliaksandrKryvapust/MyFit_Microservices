@@ -49,6 +49,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/api/v1/users/registration", "/api/v1/users/login").permitAll()
                 .antMatchers("/api/users","/api/users/**").hasRole(UserRole.ADMIN.name())
+                .antMatchers("/api/v1/journal/food/export").hasAuthority("REPORT")
                 .anyRequest().authenticated()
                 .and()
                 // Set exception handler
