@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 import static aliaksandrkryvapust.reportmicroservice.core.Constants.JOB_IMPORT_URI;
 import static aliaksandrkryvapust.reportmicroservice.core.Constants.TOKEN_HEADER;
@@ -33,38 +34,48 @@ public class ReportLoadJob implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
-        log.info("Report Job started");
-        Report report;
+        Report report = new Report();
         try {
-            report = this.reportService.getReport(Status.LOADED, Type.JOURNAL_FOOD).orElseThrow();
-            log.info("New task was added");
-        } catch (NoSuchElementException e) {
-            log.info("Report job, there is no data to work with");
-            return;
+            log.info("Report Job started");
+            UUID id;
+            try {
+                report = this.reportService.getReport(Status.LOADED, Type.JOURNAL_FOOD).orElseThrow();
+                id = report.getId();
+                log.info("New task was added");
+            } catch (NoSuchElementException e) {
+                log.info("Report job, there is no data to work with");
+                return;
+            }
+            this.setProgressStatus(report, Status.PROGRESS, "Request was prepared");
+            Mono<List<RecordDto>> resp = this.prepareRequest(report);
+            report = this.reportService.get(id);
+            List<RecordDto> records = resp.blockOptional().orElseThrow();
+            log.info("Data from response was extracted");
+            // TODO map list to a file
+            this.setProgressStatus(report, Status.DONE, "Report Job finished");
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            report.setStatus(Status.ERROR);
+            this.reportService.save(report);
         }
-        report.setStatus(Status.PROGRESS);
-        this.reportService.save(report);
-        log.info("Request was prepared");
+    }
+
+    private Mono<List<RecordDto>> prepareRequest(Report report) {
         WebClient client = WebClient.create(JOB_IMPORT_URI);
         Mono<List<RecordDto>> resp = client.get()
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .header(TOKEN_HEADER, jwtSecret)
-                .header("from",report.getParams().getStart().toString())
+                .header("from", report.getParams().getStart().toString())
                 .header("to", report.getParams().getFinish().toString())
                 .retrieve().bodyToMono(new ParameterizedTypeReference<>() {
                 });
         log.info("Response was returned");
-        try {
-            List<RecordDto> records = resp.blockOptional().orElseThrow();
-            log.info("Data from response was extracted");
-        } catch (NoSuchElementException e) {
-            log.error("Data from response was corrupted");
-            report.setStatus(Status.ERROR);
-            this.reportService.save(report);
-        }
-        // TODO map list to a file
-        report.setStatus(Status.DONE);
+        return resp;
+    }
+
+    private void setProgressStatus(Report report, Status progress, String logInfo) {
+        report.setStatus(progress);
         this.reportService.save(report);
-        log.info("Report Job finished");
+        log.info(logInfo);
     }
 }
