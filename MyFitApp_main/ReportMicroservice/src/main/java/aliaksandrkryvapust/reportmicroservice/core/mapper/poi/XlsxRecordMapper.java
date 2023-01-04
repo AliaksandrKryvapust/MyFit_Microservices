@@ -25,7 +25,7 @@ public class XlsxRecordMapper {
     }
 
     public XlsxRecord inputMapping(RecordDto recordDtoInput) {
-        if (recordDtoInput.getRecipe() == null) {
+        if (recordDtoInput.getProduct() == null) {
             XlsxMeal meal = mealMapper.inputMapping(recordDtoInput.getRecipe());
             return XlsxRecord.builder()
                     .weight(recordDtoInput.getWeight())
