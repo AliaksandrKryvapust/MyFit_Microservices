@@ -33,7 +33,7 @@ public class QuartzConfig {
         SimpleTriggerFactoryBean factoryBean = new SimpleTriggerFactoryBean();
         factoryBean.setJobDetail(jobDetail);
         factoryBean.setStartDelay(60000);
-        factoryBean.setRepeatInterval(180000);
+        factoryBean.setRepeatInterval(300000);
         return factoryBean;
     }
 
