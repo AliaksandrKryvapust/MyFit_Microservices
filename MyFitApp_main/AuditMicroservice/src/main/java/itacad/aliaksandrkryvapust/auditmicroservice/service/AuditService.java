@@ -29,6 +29,11 @@ public class AuditService implements IAuditService {
     @Transactional
     public Audit save(Audit audit) {
         Optional<User> currentUser = this.userRepository.findById(audit.getUser().getId());
+        this.setUser(audit, currentUser);
+        return this.auditRepository.save(audit);
+    }
+
+    private void setUser(Audit audit, Optional<User> currentUser) {
         if (currentUser.isPresent()){
             if (!currentUser.get().equals(audit.getUser())){
                 User user = this.userRepository.saveAndFlush(audit.getUser());
@@ -37,7 +42,6 @@ public class AuditService implements IAuditService {
                 audit.setUser(currentUser.get());
             }
         }
-        return this.auditRepository.save(audit);
     }
 
     @Override
