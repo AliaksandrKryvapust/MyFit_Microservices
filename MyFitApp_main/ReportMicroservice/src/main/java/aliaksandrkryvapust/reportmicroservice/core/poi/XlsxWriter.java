@@ -1,30 +1,31 @@
 package aliaksandrkryvapust.reportmicroservice.core.poi;
 
-import aliaksandrkryvapust.reportmicroservice.core.poi.api.XlsxSheet;
 import aliaksandrkryvapust.reportmicroservice.core.poi.api.IXlsxWriter;
+import aliaksandrkryvapust.reportmicroservice.core.poi.api.XlsxSheet;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Method;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static aliaksandrkryvapust.reportmicroservice.core.poi.XlsxFileWriterService.getFieldNamesForClass;
+import static aliaksandrkryvapust.reportmicroservice.core.poi.XlsxWriterHelper.getFieldNamesForClass;
 
 @Slf4j
 @Component
 public class XlsxWriter implements IXlsxWriter {
 
-    private final XlsxFileWriterService fileWriterService;
+    private final XlsxWriterHelper fileWriterService;
 
-    public XlsxWriter(XlsxFileWriterService fileWriterService) {
+    public XlsxWriter(XlsxWriterHelper fileWriterService) {
         this.fileWriterService = fileWriterService;
     }
 
     @Override
-    public <T> void write(List<T> data, ByteArrayOutputStream bos, String[] columnTitles, Workbook workbook) {
+    public <T> void write(List<T> data, ByteArrayOutputStream outputStream, String[] columnTitles, Workbook workbook) {
         if (data.isEmpty()) {
             log.error("No data received to write Xls file..");
             return;
@@ -153,19 +154,17 @@ public class XlsxWriter implements IXlsxWriter {
             }
 //            auto sizing the columns of the whole sheet
             fileWriterService.autoSizeColumns(sheet, xlsColumnFields.size());
-            workbook.write(bos);
+            workbook.write(outputStream);
             log.info("Xls file generated in [{}] seconds", fileWriterService.processTime(start));
-
         } catch (Exception e) {
             log.info("Xls file write failed", e);
         }
     }
 
     private <T> Sheet setSheetName(List<T> data, Workbook workbook) {
-        XlsxSheet annotation = data.get(0).getClass().getAnnotation(XlsxSheet.class);
-        String sheetName = annotation.value();
-        return workbook.createSheet(sheetName);
+        XlsxSheet xlsxSheet = data.get(0).getClass().getAnnotation(XlsxSheet.class);
+        String sheetName = xlsxSheet.value();
+        String dateTime = LocalDateTime.now().toString().replaceAll(":", "_");
+        return workbook.createSheet(sheetName + dateTime);
     }
-
-
 }

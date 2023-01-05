@@ -17,7 +17,7 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class XlsxFileWriterService {
+public class XlsxWriterHelper {
 
     public void writeCompositeFieldRow(Object objectValue, XlsxField xlsCompositeColumnField, Row childRow,
                                         CellStyle currencyStyle, CellStyle centerAlignedStyle, CellStyle genericStyle,
