@@ -26,8 +26,6 @@ public class AppConfig implements WebMvcConfigurer {
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         ObjectMapper objectMapper = new Jackson2ObjectMapperBuilder()
                 .indentOutput(true)
-                .featuresToDisable(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS)
-                .featuresToDisable(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS)
                 .featuresToEnable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
                 .featuresToEnable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 .serializationInclusion(JsonInclude.Include.NON_EMPTY)
