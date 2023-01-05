@@ -1,43 +1,46 @@
 package aliaksandrkryvapust.reportmicroservice.core.mapper.poi;
 
 import aliaksandrkryvapust.reportmicroservice.core.dto.job.RecordDto;
-import aliaksandrkryvapust.reportmicroservice.core.dto.poi.XlsxMeal;
-import aliaksandrkryvapust.reportmicroservice.core.dto.poi.XlsxProduct;
+import aliaksandrkryvapust.reportmicroservice.core.dto.poi.XlsxIngredient;
 import aliaksandrkryvapust.reportmicroservice.core.dto.poi.XlsxRecord;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class XlsxRecordMapper {
-    private final XlsxProductMapper productMapper;
-    private final XlsxMealMapper mealMapper;
+    private final XlsxIngredientMapper ingredientMapper;
 
-    @Autowired
-    public XlsxRecordMapper(XlsxProductMapper productMapper, XlsxMealMapper mealMapper) {
-        this.productMapper = productMapper;
-        this.mealMapper = mealMapper;
+    public XlsxRecordMapper(XlsxIngredientMapper ingredientMapper) {
+        this.ingredientMapper = ingredientMapper;
     }
 
     public XlsxRecord inputMapping(RecordDto recordDtoInput) {
-        if (recordDtoInput.getProduct() == null) {
-            XlsxMeal meal = mealMapper.inputMapping(recordDtoInput.getRecipe());
+        if (recordDtoInput.getProduct()!=null) {
             return XlsxRecord.builder()
-                    .weight(recordDtoInput.getWeight())
+                    .recordWeight(recordDtoInput.getWeight())
                     .dtSupply(recordDtoInput.getDtSupply())
-                    .recipe(meal)
+                    .productTitle(recordDtoInput.getProduct().getTitle())
+                    .productCalories(recordDtoInput.getProduct().getCalories())
+                    .productProteins(recordDtoInput.getProduct().getProteins())
+                    .productFats(recordDtoInput.getProduct().getFats())
+                    .productCarbohydrates(recordDtoInput.getProduct().getCarbohydrates())
+                    .productWeight(recordDtoInput.getProduct().getWeight())
+                    .composition(new ArrayList<>())
                     .build();
         } else {
-            XlsxProduct product = productMapper.inputMapping(recordDtoInput.getProduct());
+            List<XlsxIngredient> ingredient = recordDtoInput.getRecipe().getComposition().stream()
+                    .map(ingredientMapper::inputMapping).collect(Collectors.toList());
             return XlsxRecord.builder()
-                    .weight(recordDtoInput.getWeight())
+                    .recordWeight(recordDtoInput.getWeight())
                     .dtSupply(recordDtoInput.getDtSupply())
-                    .product(product)
+                    .mealTitle(recordDtoInput.getRecipe().getTitle())
+                    .composition(ingredient)
                     .build();
         }
     }
