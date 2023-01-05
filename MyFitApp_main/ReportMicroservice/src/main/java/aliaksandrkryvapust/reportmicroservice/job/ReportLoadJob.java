@@ -17,9 +17,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.io.FileOutputStream;
+import java.util.*;
 
 import static aliaksandrkryvapust.reportmicroservice.core.Constants.JOB_IMPORT_URI;
 import static aliaksandrkryvapust.reportmicroservice.core.Constants.TOKEN_HEADER;
@@ -58,6 +57,9 @@ public class ReportLoadJob implements Job {
             List<RecordDto> records = resp.blockOptional().orElseThrow();
             log.info("Data from response was extracted");
             byte[] convertedFile = xlsxRecordService.getRecordXlsData(recordMapper.listInputMapping(records));
+            try (FileOutputStream fos = new FileOutputStream("G:\\test2.xlsx")) {
+                fos.write(convertedFile);
+            }
             this.setProgressStatus(report, Status.DONE, "Report Job finished");
         } catch (Exception e) {
             log.error(e.getMessage());
