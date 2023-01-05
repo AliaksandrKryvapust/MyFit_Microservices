@@ -1,6 +1,8 @@
 package aliaksandrkryvapust.reportmicroservice.repository.entity;
 
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -32,6 +34,10 @@ public class Report {
     private Params params;
     @Setter
     private String username;
+    @Fetch(FetchMode.SELECT)
+    @org.hibernate.annotations.Type(type="org.hibernate.type.BinaryType")
+    @Setter
+    private byte[] fileValue;
     @org.hibernate.annotations.Generated(GenerationTime.INSERT)
     private Instant dtCreate;
     @Version
