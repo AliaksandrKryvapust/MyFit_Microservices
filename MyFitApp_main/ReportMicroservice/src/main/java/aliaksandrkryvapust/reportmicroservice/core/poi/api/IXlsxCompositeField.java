@@ -3,8 +3,9 @@ package aliaksandrkryvapust.reportmicroservice.core.poi.api;
 import java.lang.annotation.*;
 
 @Documented
-@Target(ElementType.TYPE)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface XlsxSheet {
-    String value();
+public @interface IXlsxCompositeField {
+    int from();
+    int to();
 }
