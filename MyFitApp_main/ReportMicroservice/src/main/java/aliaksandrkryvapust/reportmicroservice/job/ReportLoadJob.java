@@ -1,10 +1,12 @@
 package aliaksandrkryvapust.reportmicroservice.job;
 
 import aliaksandrkryvapust.reportmicroservice.core.dto.job.RecordDto;
+import aliaksandrkryvapust.reportmicroservice.core.mapper.poi.XlsxRecordMapper;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.Report;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.Status;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.Type;
 import aliaksandrkryvapust.reportmicroservice.service.api.IReportService;
+import aliaksandrkryvapust.reportmicroservice.service.api.IXlsxRecordService;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -15,9 +17,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.io.FileOutputStream;
+import java.util.*;
 
 import static aliaksandrkryvapust.reportmicroservice.core.Constants.JOB_IMPORT_URI;
 import static aliaksandrkryvapust.reportmicroservice.core.Constants.TOKEN_HEADER;
@@ -27,9 +28,13 @@ import static aliaksandrkryvapust.reportmicroservice.core.Constants.TOKEN_HEADER
 public class ReportLoadJob implements Job {
     private static final String jwtSecret = "NDQ1ZjAzNjQtMzViZi00MDRjLTljZjQtNjNjYWIyZTU5ZDYw";
     private final IReportService reportService;
+    private final IXlsxRecordService xlsxRecordService;
+    private final XlsxRecordMapper recordMapper;
 
-    public ReportLoadJob(IReportService reportService) {
+    public ReportLoadJob(IReportService reportService, IXlsxRecordService xlsxRecordService, XlsxRecordMapper recordMapper) {
         this.reportService = reportService;
+        this.xlsxRecordService = xlsxRecordService;
+        this.recordMapper = recordMapper;
     }
 
     @Override
@@ -51,7 +56,10 @@ public class ReportLoadJob implements Job {
             report = this.reportService.get(id);
             List<RecordDto> records = resp.blockOptional().orElseThrow();
             log.info("Data from response was extracted");
-            // TODO map list to a file
+            byte[] convertedFile = xlsxRecordService.getRecordXlsData(recordMapper.listInputMapping(records));
+            try (FileOutputStream fos = new FileOutputStream("G:\\test2.xlsx")) {
+                fos.write(convertedFile);
+            }
             this.setProgressStatus(report, Status.DONE, "Report Job finished");
         } catch (Exception e) {
             log.error(e.getMessage());

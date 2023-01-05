@@ -4,6 +4,7 @@ import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.RecordDtoInput;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.MealDtoOutput;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.ProductDtoOutput;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.RecordDtoOutput;
+import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.microservices.RecordDto;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Record;
 import itacad.aliaksandrkryvapust.myfitapp.repository.entity.User;
@@ -13,12 +14,15 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class RecordMapper {
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private final ProductMapper productMapper;
     private final MealMapper mealMapper;
 
@@ -63,8 +67,8 @@ public class RecordMapper {
         return recordDtoOutput;
     }
 
-    public List<RecordDtoOutput> listOutputMapping(List<Record> records) {
-        return records.stream().map(this::outputMapping).collect(Collectors.toList());
+    public List<RecordDto> listOutputMapping(List<Record> records) {
+        return records.stream().map(this::jobOutputMapping).collect(Collectors.toList());
     }
 
     public PageDtoOutput<RecordDtoOutput> outputPageMapping(Page<Record> record) {
@@ -79,5 +83,21 @@ public class RecordMapper {
                 .last(record.isLast())
                 .content(outputs)
                 .build();
+    }
+
+    public RecordDto jobOutputMapping(Record record) {
+        RecordDto recordDto = RecordDto.builder()
+                .weight(record.getWeight())
+                .dtSupply(record.getDtSupply().atZone(ZoneId.of("UTC")).toLocalDateTime().format(formatter))
+                .build();
+        if (record.getProduct() != null) {
+            ProductDtoOutput productDtoOutput = this.productMapper.outputMapping(record.getProduct());
+            recordDto.setProduct(productDtoOutput);
+        }
+        if (record.getMeal() != null) {
+            MealDtoOutput mealDtoOutput = this.mealMapper.outputMapping(record.getMeal());
+            recordDto.setRecipe(mealDtoOutput);
+        }
+        return recordDto;
     }
 }
