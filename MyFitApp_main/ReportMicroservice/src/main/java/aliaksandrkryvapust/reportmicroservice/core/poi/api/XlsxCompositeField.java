@@ -5,6 +5,7 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface IXlsxSingleField {
-    int columnIndex();
+public @interface XlsxCompositeField {
+    int from();
+    int to();
 }
