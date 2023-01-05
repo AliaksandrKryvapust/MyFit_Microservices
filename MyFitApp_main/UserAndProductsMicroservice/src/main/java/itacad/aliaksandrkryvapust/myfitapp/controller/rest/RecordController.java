@@ -3,6 +3,7 @@ package itacad.aliaksandrkryvapust.myfitapp.controller.rest;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.export.ParamsDto;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.RecordDtoInput;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.RecordDtoOutput;
+import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.microservices.RecordDto;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.myfitapp.manager.api.IRecordManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class RecordController {
     }
 
     @GetMapping("/export")
-    protected ResponseEntity<List<RecordDtoOutput>> export(HttpServletRequest request) {
+    protected ResponseEntity<List<RecordDto>> export(HttpServletRequest request) {
         ParamsDto paramsDto = getParamsDto(request);
         return ResponseEntity.ok(recordManager.getRecordByTimeGap(paramsDto));
     }

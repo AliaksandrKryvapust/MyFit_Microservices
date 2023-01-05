@@ -6,6 +6,7 @@ import itacad.aliaksandrkryvapust.myfitapp.core.dto.export.ParamsDto;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.RecordDtoInput;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.RecordDtoOutput;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.microservices.AuditDto;
+import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.microservices.RecordDto;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.myfitapp.core.mapper.RecordMapper;
 import itacad.aliaksandrkryvapust.myfitapp.core.mapper.microservices.AuditMapper;
@@ -82,7 +83,7 @@ public class RecordManager implements IRecordManager {
     }
 
     @Override
-    public List<RecordDtoOutput> getRecordByTimeGap(ParamsDto paramsDto) {
+    public List<RecordDto> getRecordByTimeGap(ParamsDto paramsDto) {
         List<Record> records = this.recordService.getRecordByTimeGap(paramsDto);
         return this.recordMapper.listOutputMapping(records);
     }
