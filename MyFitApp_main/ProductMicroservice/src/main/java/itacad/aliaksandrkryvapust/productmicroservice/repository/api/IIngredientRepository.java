@@ -1,6 +1,6 @@
-package itacad.aliaksandrkryvapust.myfitapp.repository.api;
+package itacad.aliaksandrkryvapust.productmicroservice.repository.api;
 
-import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Ingredient;
+import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Ingredient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
