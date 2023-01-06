@@ -1,4 +1,4 @@
-package itacad.aliaksandrkryvapust.myfitapp.repository.entity;
+package itacad.aliaksandrkryvapust.productmicroservice.repository.entity;
 
 import lombok.*;
 import org.hibernate.annotations.GenerationTime;
@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -13,24 +14,18 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "products", schema = "app")
-public class Product {
+@Table(name = "meal", schema = "app")
+public class Meal {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "meal_id", referencedColumnName = "id", nullable = false)
+    @Setter
+    private List<Ingredient> ingredients;
     @Setter
     private String title;
-    @Setter
-    private Integer calories;
-    @Setter
-    private Double proteins;
-    @Setter
-    private Double fats;
-    @Setter
-    private Double carbohydrates;
-    @Setter
-    private Integer weight;
     @Column(updatable = false)
     @org.hibernate.annotations.Generated(GenerationTime.INSERT)
     private Instant dtCreate;

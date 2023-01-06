@@ -1,4 +1,4 @@
-package itacad.aliaksandrkryvapust.myfitapp.repository.entity;
+package itacad.aliaksandrkryvapust.productmicroservice.repository.entity;
 
 import lombok.*;
 import org.hibernate.annotations.GenerationTime;
@@ -13,20 +13,22 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "ingredients", schema = "app")
-public class Ingredient {
+@Table(name = "products", schema = "app")
+public class Product {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
-    @Column(name = "product_id", insertable = false, updatable = false)
-    private UUID productId;
-    @Column(name = "meal_id", insertable = false, updatable = false)
-    private UUID mealId;
-    @OneToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
     @Setter
-    private Product product;
+    private String title;
+    @Setter
+    private Integer calories;
+    @Setter
+    private Double proteins;
+    @Setter
+    private Double fats;
+    @Setter
+    private Double carbohydrates;
     @Setter
     private Integer weight;
     @Column(updatable = false)
