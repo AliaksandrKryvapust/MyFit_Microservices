@@ -1,7 +1,7 @@
-package itacad.aliaksandrkryvapust.myfitapp.core.dto.output.microservices;
+package itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.microservices;
 
-import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.MealDtoOutput;
-import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.ProductDtoOutput;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.MealDtoOutput;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.ProductDtoOutput;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
