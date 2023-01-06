@@ -1,4 +1,4 @@
-package itacad.aliaksandrkryvapust.myfitapp.manager.api;
+package itacad.aliaksandrkryvapust.productmicroservice.manager.api;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
