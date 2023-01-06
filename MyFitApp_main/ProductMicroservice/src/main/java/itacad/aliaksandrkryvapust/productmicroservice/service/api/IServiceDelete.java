@@ -1,4 +1,4 @@
-package itacad.aliaksandrkryvapust.myfitapp.service.api;
+package itacad.aliaksandrkryvapust.productmicroservice.service.api;
 
 import java.util.UUID;
 
