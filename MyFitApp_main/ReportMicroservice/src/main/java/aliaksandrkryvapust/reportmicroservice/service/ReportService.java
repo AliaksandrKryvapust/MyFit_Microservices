@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.AccessControlException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,13 +31,23 @@ public class ReportService implements IReportService {
     }
 
     @Override
-    public Page<Report> get(Pageable pageable) {
-        return this.reportRepository.findAll(pageable);
+    public Page<Report> get(Pageable pageable, String username) {
+        return this.reportRepository.findAllByUsername(pageable, username);
     }
 
     @Override
-    public Report get(UUID id) {
-        return this.reportRepository.findById(id).orElseThrow();
+    public Report get(UUID id, String username) {
+        Report report = this.reportRepository.findById(id).orElseThrow();
+        if (!report.getUsername().equals(username)) {
+            throw new AccessControlException("Forbidden, authorised user and report don`t match");
+        }
+        return report;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public byte[] exportFile(UUID id) {
+        return this.reportRepository.fileExport(id).getFileValue();
     }
 
     @Override
