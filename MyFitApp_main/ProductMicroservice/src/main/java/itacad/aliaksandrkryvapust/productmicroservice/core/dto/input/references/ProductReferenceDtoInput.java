@@ -1,4 +1,4 @@
-package itacad.aliaksandrkryvapust.myfitapp.core.dto.input.refrences;
+package itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.references;
 
 import lombok.Builder;
 import lombok.Data;

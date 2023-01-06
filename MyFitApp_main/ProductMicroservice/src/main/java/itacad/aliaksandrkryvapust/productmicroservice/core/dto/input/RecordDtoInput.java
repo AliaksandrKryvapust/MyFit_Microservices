@@ -1,7 +1,7 @@
-package itacad.aliaksandrkryvapust.myfitapp.core.dto.input;
+package itacad.aliaksandrkryvapust.productmicroservice.core.dto.input;
 
-import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.refrences.MealReferenceDtoInput;
-import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.refrences.ProductReferenceDtoInput;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.references.MealReferenceDtoInput;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.references.ProductReferenceDtoInput;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
