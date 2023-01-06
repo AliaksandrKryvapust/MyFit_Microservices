@@ -1,8 +1,8 @@
-package itacad.aliaksandrkryvapust.myfitapp.service;
+package itacad.aliaksandrkryvapust.productmicroservice.service;
 
-import itacad.aliaksandrkryvapust.myfitapp.repository.api.IProductRepository;
-import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Product;
-import itacad.aliaksandrkryvapust.myfitapp.service.api.IProductService;
+import itacad.aliaksandrkryvapust.productmicroservice.repository.api.IProductRepository;
+import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Product;
+import itacad.aliaksandrkryvapust.productmicroservice.service.api.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

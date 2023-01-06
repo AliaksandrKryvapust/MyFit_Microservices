@@ -1,14 +1,13 @@
-package itacad.aliaksandrkryvapust.myfitapp.service;
+package itacad.aliaksandrkryvapust.productmicroservice.service;
 
-import itacad.aliaksandrkryvapust.myfitapp.core.dto.export.ParamsDto;
-import itacad.aliaksandrkryvapust.myfitapp.repository.api.IRecordRepository;
-import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Meal;
-import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Product;
-import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Record;
-import itacad.aliaksandrkryvapust.myfitapp.service.api.IMealService;
-import itacad.aliaksandrkryvapust.myfitapp.service.api.IProductService;
-import itacad.aliaksandrkryvapust.myfitapp.service.api.IRecordService;
-import org.springframework.beans.factory.annotation.Autowired;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.export.ParamsDto;
+import itacad.aliaksandrkryvapust.productmicroservice.repository.api.IRecordRepository;
+import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Meal;
+import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Product;
+import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Record;
+import itacad.aliaksandrkryvapust.productmicroservice.service.api.IMealService;
+import itacad.aliaksandrkryvapust.productmicroservice.service.api.IProductService;
+import itacad.aliaksandrkryvapust.productmicroservice.service.api.IRecordService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,6 @@ public class RecordService implements IRecordService {
     private final IProductService productService;
     private final IMealService mealService;
 
-    @Autowired
     public RecordService(IRecordRepository recordRepository, IProductService productService, IMealService mealService) {
         this.recordRepository = recordRepository;
         this.productService = productService;
