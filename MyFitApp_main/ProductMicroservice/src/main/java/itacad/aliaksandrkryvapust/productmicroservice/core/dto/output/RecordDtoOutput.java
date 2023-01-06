@@ -1,4 +1,4 @@
-package itacad.aliaksandrkryvapust.myfitapp.core.dto.output;
+package itacad.aliaksandrkryvapust.productmicroservice.core.dto.output;
 
 import lombok.Builder;
 import lombok.Data;
