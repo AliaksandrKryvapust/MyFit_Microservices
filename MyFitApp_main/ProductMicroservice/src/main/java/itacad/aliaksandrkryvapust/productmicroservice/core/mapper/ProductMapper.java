@@ -1,9 +1,9 @@
-package itacad.aliaksandrkryvapust.myfitapp.core.mapper;
+package itacad.aliaksandrkryvapust.productmicroservice.core.mapper;
 
-import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.ProductDtoInput;
-import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.ProductDtoOutput;
-import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.pages.PageDtoOutput;
-import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Product;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.ProductDtoInput;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.ProductDtoOutput;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.pages.PageDtoOutput;
+import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Product;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Page;

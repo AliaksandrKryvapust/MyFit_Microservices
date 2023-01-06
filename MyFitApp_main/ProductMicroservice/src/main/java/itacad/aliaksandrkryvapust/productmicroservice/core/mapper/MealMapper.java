@@ -1,11 +1,11 @@
-package itacad.aliaksandrkryvapust.myfitapp.core.mapper;
+package itacad.aliaksandrkryvapust.productmicroservice.core.mapper;
 
-import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.MealDtoInput;
-import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.IngredientDtoOutput;
-import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.MealDtoOutput;
-import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.pages.PageDtoOutput;
-import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Ingredient;
-import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Meal;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.MealDtoInput;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.IngredientDtoOutput;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.MealDtoOutput;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.pages.PageDtoOutput;
+import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Ingredient;
+import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Meal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
