@@ -1,11 +1,11 @@
-package itacad.aliaksandrkryvapust.myfitapp.controller.rest;
+package itacad.aliaksandrkryvapust.productmicroservice.controller.rest;
 
-import itacad.aliaksandrkryvapust.myfitapp.core.dto.export.ParamsDto;
-import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.RecordDtoInput;
-import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.RecordDtoOutput;
-import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.microservices.RecordDto;
-import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.pages.PageDtoOutput;
-import itacad.aliaksandrkryvapust.myfitapp.manager.api.IRecordManager;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.export.ParamsDto;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.RecordDtoInput;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.RecordDtoOutput;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.microservices.RecordDto;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.pages.PageDtoOutput;
+import itacad.aliaksandrkryvapust.productmicroservice.manager.api.IRecordManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

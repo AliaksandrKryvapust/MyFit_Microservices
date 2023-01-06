@@ -1,9 +1,9 @@
-package itacad.aliaksandrkryvapust.myfitapp.controller.rest;
+package itacad.aliaksandrkryvapust.productmicroservice.controller.rest;
 
-import itacad.aliaksandrkryvapust.myfitapp.core.dto.input.MealDtoInput;
-import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.MealDtoOutput;
-import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.pages.PageDtoOutput;
-import itacad.aliaksandrkryvapust.myfitapp.manager.api.IMealManager;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.MealDtoInput;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.MealDtoOutput;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.pages.PageDtoOutput;
+import itacad.aliaksandrkryvapust.productmicroservice.manager.api.IMealManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
