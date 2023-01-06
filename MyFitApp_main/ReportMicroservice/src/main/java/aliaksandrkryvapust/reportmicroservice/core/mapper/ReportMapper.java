@@ -44,7 +44,7 @@ public class ReportMapper {
                 .from(report.getParams().getStart())
                 .to(report.getParams().getFinish()).build();
         return ReportDtoOutput.builder()
-                .id(report.getId())
+                .uuid(report.getId())
                 .params(paramsDto)
                 .description(report.getDescription())
                 .type(report.getType())
