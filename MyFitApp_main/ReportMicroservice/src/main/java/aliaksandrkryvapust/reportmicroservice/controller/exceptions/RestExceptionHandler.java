@@ -21,6 +21,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.persistence.OptimisticLockException;
+import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -51,6 +52,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         SingleExceptionDto message = SingleExceptionDto.builder().logref("error")
                 .message("To make a request to this address, you need to transfer an authorization token").build();
         return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler({AccessControlException.class})
+    public ResponseEntity<SingleExceptionDto> handleAccessDenied(Exception ex) {
+        this.makeLog(ex);
+        SingleExceptionDto message = SingleExceptionDto.builder().logref("error")
+                .message("This authorization token is prohibited from making requests to this address").build();
+        return new ResponseEntity<>(message, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler({OptimisticLockException.class})

@@ -34,6 +34,7 @@ public class Report {
     private Params params;
     @Setter
     private String username;
+    @Basic(fetch = FetchType.LAZY)
     @Fetch(FetchMode.SELECT)
     @org.hibernate.annotations.Type(type="org.hibernate.type.BinaryType")
     @Setter
@@ -42,4 +43,8 @@ public class Report {
     private Instant dtCreate;
     @Version
     private Instant dtUpdate;
+
+    public Report(byte[] fileValue) {
+        this.fileValue = fileValue;
+    }
 }

@@ -40,17 +40,21 @@ public class JwtFilter extends OncePerRequestFilter {
                 .retrieve().bodyToMono(TokenValidationDto.class);
         TokenValidationDto validationDto = resp.blockOptional().orElseThrow();
         if (validationDto.getAuthenticated()) {
-            List<GrantedAuthority> authorityList = new ArrayList<>();
-            authorityList.add(new SimpleGrantedAuthority(validationDto.getRole().name()));
-            UserDetails userDetails = new org.springframework.security.core.userdetails
-                    .User(validationDto.getUsername(), "qwerty", authorityList);
-            UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            this.prepareAuthenticationToken(request, validationDto);
             filterChain.doFilter(request, response);
         } else {
             logger.warn("Access denied");
         }
+    }
+
+    private void prepareAuthenticationToken(HttpServletRequest request, TokenValidationDto validationDto) {
+        List<GrantedAuthority> authorityList = new ArrayList<>();
+        authorityList.add(new SimpleGrantedAuthority(validationDto.getRole().name()));
+        UserDetails userDetails = new org.springframework.security.core.userdetails
+                .User(validationDto.getUsername(), "qwerty", authorityList);
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
 }
