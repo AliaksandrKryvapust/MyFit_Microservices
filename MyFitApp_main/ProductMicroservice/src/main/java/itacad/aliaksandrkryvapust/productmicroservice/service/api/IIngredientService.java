@@ -1,6 +1,6 @@
-package itacad.aliaksandrkryvapust.myfitapp.service.api;
+package itacad.aliaksandrkryvapust.productmicroservice.service.api;
 
-import itacad.aliaksandrkryvapust.myfitapp.repository.entity.Ingredient;
+import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Ingredient;
 
 import java.util.UUID;
 
