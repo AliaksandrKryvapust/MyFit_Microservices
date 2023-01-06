@@ -29,19 +29,30 @@ public class ReportManager implements IReportManager {
 
     @Override
     public ReportDtoOutput save(ParamsDto paramsDto, Type type) {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username =  userDetails.getUsername();
+        String username = this.getUsername();
         Report report = this.reportService.save(reportMapper.inputMapping(paramsDto, type, username));
         return this.reportMapper.outputMapping(report);
     }
 
+    private String getUsername() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userDetails.getUsername();
+    }
+
     @Override
     public PageDtoOutput get(Pageable pageable) {
-        return this.reportMapper.outputPageMapping(reportService.get(pageable));
+        String username = this.getUsername();
+        return this.reportMapper.outputPageMapping(reportService.get(pageable, username));
     }
 
     @Override
     public ReportDtoOutput get(UUID id) {
-        return this.reportMapper.outputMapping(reportService.get(id));
+        String username = this.getUsername();
+        return this.reportMapper.outputMapping(reportService.get(id, username));
+    }
+
+    @Override
+    public byte[] getReportFile(UUID id) {
+        return this.reportService.exportFile(id);
     }
 }
