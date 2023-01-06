@@ -1,11 +1,10 @@
-package itacad.aliaksandrkryvapust.myfitapp.core.dto.export;
+package itacad.aliaksandrkryvapust.productmicroservice.core.dto.export;
 
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 
 import java.time.Instant;
-import java.time.LocalDate;
 
 @Builder
 @Data
