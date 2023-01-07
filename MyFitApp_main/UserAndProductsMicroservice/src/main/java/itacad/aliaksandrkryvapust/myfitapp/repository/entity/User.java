@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "users", schema = "app")
+@Table(name = "users", schema = "users")
 public class User{
     @Id
     @GeneratedValue(generator = "uuid")
