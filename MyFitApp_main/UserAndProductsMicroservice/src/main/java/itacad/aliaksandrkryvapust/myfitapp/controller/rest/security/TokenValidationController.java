@@ -1,8 +1,7 @@
 package itacad.aliaksandrkryvapust.myfitapp.controller.rest.security;
 
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.TokenValidationDto;
-import itacad.aliaksandrkryvapust.myfitapp.service.security.TokenValidationService;
-import org.springframework.beans.factory.annotation.Autowired;
+import itacad.aliaksandrkryvapust.myfitapp.service.TokenValidationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 public class TokenValidationController {
     private final TokenValidationService tokenValidationService;
 
-    @Autowired
     public TokenValidationController(TokenValidationService tokenValidationService) {
         this.tokenValidationService = tokenValidationService;
     }
