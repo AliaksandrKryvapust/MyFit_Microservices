@@ -22,3 +22,16 @@ ALTER TABLE IF EXISTS users.users
 ALTER TABLE IF EXISTS users.users
     ADD CONSTRAINT "users_UK" UNIQUE (email)
         INCLUDE (username);
+
+CREATE TABLE IF NOT EXISTS users.token
+(
+    id        uuid,
+    token     character varying(200)      NOT NULL,
+    user_id   uuid                        NOT NULL REFERENCES users.users (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
+    dt_create timestamp without time zone NOT NULL DEFAULT now(),
+    dt_update timestamp without time zone NOT NULL DEFAULT now(),
+    PRIMARY KEY (id)
+);
+
+ALTER TABLE IF EXISTS users.token
+    OWNER to postgres;
