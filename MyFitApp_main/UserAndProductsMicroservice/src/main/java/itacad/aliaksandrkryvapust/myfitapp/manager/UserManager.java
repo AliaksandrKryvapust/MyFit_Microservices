@@ -15,7 +15,7 @@ import itacad.aliaksandrkryvapust.myfitapp.manager.api.IUserManager;
 import itacad.aliaksandrkryvapust.myfitapp.manager.audit.AuditManager;
 import itacad.aliaksandrkryvapust.myfitapp.repository.entity.User;
 import itacad.aliaksandrkryvapust.myfitapp.service.api.IUserService;
-import itacad.aliaksandrkryvapust.myfitapp.service.security.JwtUserDetailsService;
+import itacad.aliaksandrkryvapust.myfitapp.service.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.BadCredentialsException;

@@ -1,4 +1,4 @@
-package itacad.aliaksandrkryvapust.myfitapp.repository.entity;
+package itacad.aliaksandrkryvapust.productmicroservice.repository.entity;
 
 import lombok.*;
 import org.hibernate.annotations.GenerationTime;

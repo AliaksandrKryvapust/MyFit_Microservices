@@ -1,4 +1,4 @@
-package itacad.aliaksandrkryvapust.myfitapp.service.security;
+package itacad.aliaksandrkryvapust.myfitapp.service;
 
 import itacad.aliaksandrkryvapust.myfitapp.repository.api.IUserRepository;
 import itacad.aliaksandrkryvapust.myfitapp.repository.entity.User;
@@ -32,6 +32,4 @@ public class JwtUserDetailsService implements UserDetailsService {
         authorityList.add(new SimpleGrantedAuthority(user.getRole().name()));
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorityList);
     }
-
-
 }

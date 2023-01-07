@@ -1,11 +1,10 @@
-package itacad.aliaksandrkryvapust.myfitapp.service.security;
+package itacad.aliaksandrkryvapust.myfitapp.service;
 
 import itacad.aliaksandrkryvapust.myfitapp.controller.utils.JwtTokenUtil;
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.TokenValidationDto;
 import itacad.aliaksandrkryvapust.myfitapp.core.mapper.TokenMapper;
 import itacad.aliaksandrkryvapust.myfitapp.repository.entity.User;
 import itacad.aliaksandrkryvapust.myfitapp.repository.entity.UserRole;
-import itacad.aliaksandrkryvapust.myfitapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
