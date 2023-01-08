@@ -43,7 +43,7 @@ public class RegistrationListener implements ApplicationListener<EmailVerificati
 
     private SimpleMailMessage createEmail(EmailVerificationEvent event, User user, String token) {
         String addressToSend = user.getEmail();
-        String url = event.getAppUrl() + "/registrationConfirm?token=" + token;
+        String url = event.getAppUrl() + "/registration/confirm?token=" + token;
         String message = messageSource.getMessage("message.regSucc", null, event.getLocale());
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(addressToSend);
