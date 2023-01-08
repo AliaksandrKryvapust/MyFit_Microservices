@@ -7,24 +7,20 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
+import static itacad.aliaksandrkryvapust.usermicroservice.core.Constants.GMAIL_SMTP_HOST;
 import static itacad.aliaksandrkryvapust.usermicroservice.core.Constants.GMAIL_SMTP_PORT;
 
 @Configuration
 public class EmailConfiguration {
-
-    @Value("${email.host}")
-    private String host;
-
     @Value("${email.username}")
     private String username;
-
     @Value("${email.password}")
     private String password;
 
     @Bean
     public JavaMailSenderImpl getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost(host);
+        mailSender.setHost(GMAIL_SMTP_HOST);
         mailSender.setPort(GMAIL_SMTP_PORT);
         mailSender.setUsername(username);
         mailSender.setPassword(password);
