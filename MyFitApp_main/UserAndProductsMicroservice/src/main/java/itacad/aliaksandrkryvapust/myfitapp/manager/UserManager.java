@@ -11,12 +11,13 @@ import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.microservices.AuditDt
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.myfitapp.core.mapper.UserMapper;
 import itacad.aliaksandrkryvapust.myfitapp.core.mapper.microservices.AuditMapper;
+import itacad.aliaksandrkryvapust.myfitapp.event.EmailVerificationEvent;
 import itacad.aliaksandrkryvapust.myfitapp.manager.api.IUserManager;
 import itacad.aliaksandrkryvapust.myfitapp.manager.audit.AuditManager;
 import itacad.aliaksandrkryvapust.myfitapp.repository.entity.User;
-import itacad.aliaksandrkryvapust.myfitapp.service.api.IUserService;
 import itacad.aliaksandrkryvapust.myfitapp.service.JwtUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
+import itacad.aliaksandrkryvapust.myfitapp.service.api.IUserService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,12 +38,12 @@ public class UserManager implements IUserManager {
     private final JwtTokenUtil jwtTokenUtil;
     private final PasswordEncoder encoder;
     private final AuditManager auditManager;
-
     private final AuditMapper auditMapper;
+    private final ApplicationEventPublisher eventPublisher;
 
-    @Autowired
     public UserManager(JwtUserDetailsService jwtUserDetailsService, IUserService userService, UserMapper userMapper,
-                       JwtTokenUtil jwtTokenUtil, PasswordEncoder encoder, AuditManager auditManager, AuditMapper auditMapper) {
+                       JwtTokenUtil jwtTokenUtil, PasswordEncoder encoder, AuditManager auditManager,
+                       AuditMapper auditMapper, ApplicationEventPublisher eventPublisher) {
         this.jwtUserDetailsService = jwtUserDetailsService;
         this.userService = userService;
         this.userMapper = userMapper;
@@ -50,6 +51,7 @@ public class UserManager implements IUserManager {
         this.encoder = encoder;
         this.auditManager = auditManager;
         this.auditMapper = auditMapper;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -68,6 +70,8 @@ public class UserManager implements IUserManager {
             User user = this.userService.save(userMapper.userInputMapping(userDtoRegistration));
             AuditDto auditDto = this.auditMapper.userOutputMapping(user, userPost);
             this.auditManager.audit(auditDto);
+            String appUrl = request.getContextPath();
+            this.eventPublisher.publishEvent(new EmailVerificationEvent(appUrl, request.getLocale(), user));
             return userMapper.registerOutputMapping(user);
         } catch (URISyntaxException e) {
             throw new RuntimeException("URI to audit is incorrect");
