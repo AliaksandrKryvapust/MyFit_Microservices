@@ -26,7 +26,7 @@ public class EmailToken {
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    @org.hibernate.annotations.Generated(GenerationTime.ALWAYS)
+    @org.hibernate.annotations.Generated(GenerationTime.INSERT)
     private Instant dtCreate;
     @Version
     private Instant dtUpdate;
