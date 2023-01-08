@@ -55,7 +55,7 @@ public class UserLoginController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping(value = "/registration/resend/token", params = "token")
+    @GetMapping(value = "/registration/confirm/token", params = "token")
     protected ResponseEntity<UserLoginDtoOutput> resendToken(@RequestParam String token, WebRequest request) {
         this.tokenManager.resendToken(token, request);
         return new ResponseEntity<>(HttpStatus.OK);
