@@ -67,6 +67,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(message, HttpStatus.LOCKED);
     }
 
+    @ExceptionHandler({ExpiredEmailTokenException.class})
+    protected ResponseEntity<SingleExceptionDto> handleExpiredToken(Exception ex) {
+        this.makeLog(ex);
+        SingleExceptionDto message = SingleExceptionDto.builder().logref("token_has_expired")
+                .message("Token has been expired. Get new token and retry").build();
+        return new ResponseEntity<>(message, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler({Exception.class})
     public ResponseEntity<SingleExceptionDto> handleInternalServerError(Exception ex) {
         this.makeLog(ex);
