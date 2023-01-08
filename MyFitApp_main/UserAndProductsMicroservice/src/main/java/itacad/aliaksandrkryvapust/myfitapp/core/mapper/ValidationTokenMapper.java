@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class TokenMapper {
+public class ValidationTokenMapper {
 
     public TokenValidationDto outputMapping(String username, UserRole role) {
         return TokenValidationDto.builder()
