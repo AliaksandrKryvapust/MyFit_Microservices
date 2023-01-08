@@ -15,8 +15,10 @@
     <name>MyFitApp</name>
     <description>MyFitApp</description>
     <modules>
-        <module>UserAndProductsMicroservice</module>
+        <module>UserMicroservice</module>
+        <module>ProductMicroservice</module>
         <module>AuditMicroservice</module>
+        <module>ReportMicroservice</module>
     </modules>
     <properties>
         <java.version>11</java.version>
