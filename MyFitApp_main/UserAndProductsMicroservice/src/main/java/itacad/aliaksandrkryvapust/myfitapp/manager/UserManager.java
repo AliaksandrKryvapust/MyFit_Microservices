@@ -57,8 +57,8 @@ public class UserManager implements IUserManager {
     @Override
     public UserLoginDtoOutput login(UserDtoLogin userDtoLogin) {
         UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(userDtoLogin.getMail());
-        if (!encoder.matches(userDtoLogin.getPassword(), userDetails.getPassword())) {
-            throw new BadCredentialsException("User login or password is incorrect");
+        if (!encoder.matches(userDtoLogin.getPassword(), userDetails.getPassword()) || !userDetails.isEnabled()) {
+            throw new BadCredentialsException("User login or password is incorrect or user is not activated");
         }
         String token = jwtTokenUtil.generateToken(userDetails);
         return this.userMapper.loginOutputMapping(userDetails, token);

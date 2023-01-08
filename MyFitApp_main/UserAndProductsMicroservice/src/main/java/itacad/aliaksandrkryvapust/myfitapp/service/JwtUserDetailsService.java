@@ -2,6 +2,7 @@ package itacad.aliaksandrkryvapust.myfitapp.service;
 
 import itacad.aliaksandrkryvapust.myfitapp.repository.api.IUserRepository;
 import itacad.aliaksandrkryvapust.myfitapp.repository.entity.User;
+import itacad.aliaksandrkryvapust.myfitapp.repository.entity.UserStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,8 +29,11 @@ public class JwtUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new NoSuchElementException("There is no such user" + email);
         }
+        boolean enabled = user.getStatus().equals(UserStatus.ACTIVATED);
+        boolean nonLocked = !user.getStatus().equals(UserStatus.DEACTIVATED);
         List<GrantedAuthority> authorityList = new ArrayList<>();
         authorityList.add(new SimpleGrantedAuthority(user.getRole().name()));
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorityList);
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), enabled,
+                true, true, nonLocked, authorityList);
     }
 }
