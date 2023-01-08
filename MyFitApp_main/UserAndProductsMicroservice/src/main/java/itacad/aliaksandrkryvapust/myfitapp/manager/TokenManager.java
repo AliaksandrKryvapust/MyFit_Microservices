@@ -5,6 +5,7 @@ import itacad.aliaksandrkryvapust.myfitapp.controller.exceptions.ExpiredEmailTok
 import itacad.aliaksandrkryvapust.myfitapp.core.dto.output.microservices.AuditDto;
 import itacad.aliaksandrkryvapust.myfitapp.core.mapper.TokenMapper;
 import itacad.aliaksandrkryvapust.myfitapp.core.mapper.microservices.AuditMapper;
+import itacad.aliaksandrkryvapust.myfitapp.event.EmailVerificationEvent;
 import itacad.aliaksandrkryvapust.myfitapp.manager.api.ITokenManager;
 import itacad.aliaksandrkryvapust.myfitapp.manager.audit.AuditManager;
 import itacad.aliaksandrkryvapust.myfitapp.repository.entity.EmailToken;
@@ -12,7 +13,9 @@ import itacad.aliaksandrkryvapust.myfitapp.repository.entity.User;
 import itacad.aliaksandrkryvapust.myfitapp.repository.entity.UserStatus;
 import itacad.aliaksandrkryvapust.myfitapp.service.api.ITokenService;
 import itacad.aliaksandrkryvapust.myfitapp.service.api.IUserService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.WebRequest;
 
 import java.net.URISyntaxException;
 import java.time.Instant;
@@ -27,14 +30,16 @@ public class TokenManager implements ITokenManager {
     private final TokenMapper tokenMapper;
     private final AuditMapper auditMapper;
     private final AuditManager auditManager;
+    private final ApplicationEventPublisher eventPublisher;
 
     public TokenManager(ITokenService tokenService, IUserService userService, TokenMapper tokenMapper,
-                        AuditMapper auditMapper, AuditManager auditManager) {
+                        AuditMapper auditMapper, AuditManager auditManager, ApplicationEventPublisher eventPublisher) {
         this.tokenService = tokenService;
         this.userService = userService;
         this.tokenMapper = tokenMapper;
         this.auditMapper = auditMapper;
         this.auditManager = auditManager;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -48,6 +53,16 @@ public class TokenManager implements ITokenManager {
         EmailToken emailToken = this.tokenService.getToken(token);
         this.validate(token, emailToken);
         this.activateUser(emailToken);
+    }
+
+    @Override
+    public void resendToken(String token, WebRequest request) {
+        EmailToken emailToken = this.tokenService.getToken(token);
+        if (emailToken == null) {
+            throw new NoSuchElementException("Token is not exist " + token);
+        }
+        String appUrl = request.getContextPath();
+        this.eventPublisher.publishEvent(new EmailVerificationEvent(appUrl, request.getLocale(), emailToken.getUser()));
     }
 
     private void activateUser(EmailToken emailToken) {
