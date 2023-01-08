@@ -47,7 +47,8 @@ public class SecurityConfig {
         // we don't need CSRF because our token is invulnerable
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/v1/users/registration", "/api/v1/users/login").permitAll()
+                .antMatchers("/api/v1/users/registration", "/api/v1/users/registration/**",
+                        "/api/v1/users/login").permitAll()
                 .antMatchers("/api/users","/api/users/**").hasRole(UserRole.ADMIN.name())
                 .antMatchers("/api/v1/validateToken").hasAuthority("APP")
                 .anyRequest().authenticated()
