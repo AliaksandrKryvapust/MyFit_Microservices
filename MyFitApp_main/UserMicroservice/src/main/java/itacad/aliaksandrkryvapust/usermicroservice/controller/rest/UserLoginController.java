@@ -12,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -56,7 +55,7 @@ public class UserLoginController {
     }
 
     @GetMapping(value = "/registration/confirm/token", params = "token")
-    protected ResponseEntity<UserLoginDtoOutput> resendToken(@RequestParam String token, WebRequest request) {
+    protected ResponseEntity<UserLoginDtoOutput> resendToken(@RequestParam String token, HttpServletRequest request) {
         this.tokenManager.resendToken(token, request);
         return new ResponseEntity<>(HttpStatus.OK);
     }
