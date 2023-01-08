@@ -51,12 +51,20 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler({EmailSendException.class})
+    public ResponseEntity<SingleExceptionDto> handleSendException(Exception ex) {
+        this.makeLog(ex);
+        SingleExceptionDto message = SingleExceptionDto.builder().logref("error")
+                .message("Failed to send token. Email service is temporary unavailable").build();
+        return new ResponseEntity<>(message, HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
     @ExceptionHandler({OptimisticLockException.class})
     protected ResponseEntity<SingleExceptionDto> handleOptimisticLock(Exception ex) {
         this.makeLog(ex);
         SingleExceptionDto message = SingleExceptionDto.builder().logref("optimistic_lock")
                 .message("Version does not match. Get new data and retry").build();
-        return new ResponseEntity<>(message, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(message, HttpStatus.LOCKED);
     }
 
     @ExceptionHandler({Exception.class})
