@@ -7,6 +7,6 @@
         <artifactId>MyFitApp</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>UserAndProductsMicroservice</artifactId>
+    <artifactId>UserMicroservice</artifactId>
     <packaging>jar</packaging>
 </project>
