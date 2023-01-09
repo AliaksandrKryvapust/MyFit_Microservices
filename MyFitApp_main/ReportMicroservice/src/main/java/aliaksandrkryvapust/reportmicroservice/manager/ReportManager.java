@@ -31,7 +31,7 @@ public class ReportManager implements IReportManager {
     public ReportDtoOutput save(ParamsDto paramsDto, Type type) {
         String username = this.getUsername();
         Report report = this.reportService.save(reportMapper.inputMapping(paramsDto, type, username));
-        return this.reportMapper.outputMapping(report);
+        return this.reportMapper.outputMapping(report); //TODO add audit
     }
 
     private String getUsername() {
