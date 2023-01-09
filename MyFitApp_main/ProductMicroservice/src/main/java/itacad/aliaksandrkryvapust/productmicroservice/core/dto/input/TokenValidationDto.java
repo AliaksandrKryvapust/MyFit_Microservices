@@ -4,12 +4,14 @@ import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.EUserRol
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
+import lombok.extern.jackson.Jacksonized;
 
 import java.time.Instant;
 import java.util.UUID;
 
 @Builder
 @Data
+@Jacksonized
 public class TokenValidationDto {
     private final @NonNull UUID id;
     private final @NonNull Boolean authenticated;
