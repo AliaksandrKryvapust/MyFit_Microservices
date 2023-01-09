@@ -48,6 +48,16 @@ public class UserMapper {
                 .build();
     }
 
+    public User activationMapping(User user) {
+        return User.builder()
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .status(user.getStatus())
+                .build();
+    }
+
     public UserLoginDtoOutput registerOutputMapping(User user) {
         return UserLoginDtoOutput.builder()
                 .mail(user.getEmail())
