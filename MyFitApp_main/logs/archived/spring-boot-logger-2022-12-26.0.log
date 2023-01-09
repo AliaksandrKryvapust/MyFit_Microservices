@@ -18,11 +18,11 @@
 2022-12-26 12:04:16,374 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
 2022-12-26 12:04:16,412 INFO org.springframework.boot.StartupInfoLogger [main] Started MyFitApp in 6.268 seconds (JVM running for 8.037)
 2022-12-26 12:07:10,719 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-2] Initializing Spring DispatcherServlet 'dispatcherServlet'
-2022-12-26 12:07:10,750 WARN itacad.aliaksandrkryvapust.myfitapp.controller.filter.JwtFilter [http-nio-8080-exec-2] JWT token does not start with Bearer string
-2022-12-26 12:07:11,386 ERROR itacad.aliaksandrkryvapust.myfitapp.controller.exceptions.RestExceptionHandler [http-nio-8080-exec-2] There is no PasswordEncoder mapped for the id "null"	null
+2022-12-26 12:07:10,750 WARN itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter [http-nio-8080-exec-2] JWT token does not start with Bearer string
+2022-12-26 12:07:11,386 ERROR itacad.aliaksandrkryvapust.usermicroservice.controller.exceptions.RestExceptionHandler [http-nio-8080-exec-2] There is no PasswordEncoder mapped for the id "null"	null
 java.lang.IllegalArgumentException: There is no PasswordEncoder mapped for the id "null"
-2022-12-26 12:12:31,541 WARN itacad.aliaksandrkryvapust.myfitapp.controller.filter.JwtFilter [http-nio-8080-exec-4] JWT token does not start with Bearer string
-2022-12-26 12:12:31,558 ERROR itacad.aliaksandrkryvapust.myfitapp.controller.exceptions.RestExceptionHandler [http-nio-8080-exec-4] There is no PasswordEncoder mapped for the id "null"	null
+2022-12-26 12:12:31,541 WARN itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter [http-nio-8080-exec-4] JWT token does not start with Bearer string
+2022-12-26 12:12:31,558 ERROR itacad.aliaksandrkryvapust.usermicroservice.controller.exceptions.RestExceptionHandler [http-nio-8080-exec-4] There is no PasswordEncoder mapped for the id "null"	null
 java.lang.IllegalArgumentException: There is no PasswordEncoder mapped for the id "null"
 2022-12-26 12:12:53,456 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState [SpringApplicationShutdownHook] HHH10001008: Cleaning up connection pool [jdbc:postgresql://localhost:5432/my_fit]
 2022-12-26 12:13:03,222 INFO org.hibernate.validator.internal.util.Version [background-preinit] HV000001: Hibernate Validator 6.2.5.Final
@@ -45,24 +45,24 @@ java.lang.IllegalArgumentException: There is no PasswordEncoder mapped for the i
 2022-12-26 12:13:10,132 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
 2022-12-26 12:13:10,226 INFO org.springframework.boot.StartupInfoLogger [main] Started MyFitApp in 8.018 seconds (JVM running for 10.953)
 2022-12-26 12:13:21,167 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
-2022-12-26 12:13:21,215 WARN itacad.aliaksandrkryvapust.myfitapp.controller.filter.JwtFilter [http-nio-8080-exec-1] JWT token does not start with Bearer string
-2022-12-26 12:14:52,805 ERROR itacad.aliaksandrkryvapust.myfitapp.controller.exceptions.RestExceptionHandler [http-nio-8080-exec-1] There is no PasswordEncoder mapped for the id "null"	null
+2022-12-26 12:13:21,215 WARN itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter [http-nio-8080-exec-1] JWT token does not start with Bearer string
+2022-12-26 12:14:52,805 ERROR itacad.aliaksandrkryvapust.usermicroservice.controller.exceptions.RestExceptionHandler [http-nio-8080-exec-1] There is no PasswordEncoder mapped for the id "null"	null
 java.lang.IllegalArgumentException: There is no PasswordEncoder mapped for the id "null"
-2022-12-26 12:14:57,114 WARN itacad.aliaksandrkryvapust.myfitapp.controller.filter.JwtFilter [http-nio-8080-exec-4] JWT token does not start with Bearer string
-2022-12-26 12:19:20,249 ERROR itacad.aliaksandrkryvapust.myfitapp.controller.exceptions.RestExceptionHandler [http-nio-8080-exec-4] There is no PasswordEncoder mapped for the id "null"	null
+2022-12-26 12:14:57,114 WARN itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter [http-nio-8080-exec-4] JWT token does not start with Bearer string
+2022-12-26 12:19:20,249 ERROR itacad.aliaksandrkryvapust.usermicroservice.controller.exceptions.RestExceptionHandler [http-nio-8080-exec-4] There is no PasswordEncoder mapped for the id "null"	null
 java.lang.IllegalArgumentException: There is no PasswordEncoder mapped for the id "null"
-2022-12-26 12:19:54,656 WARN itacad.aliaksandrkryvapust.myfitapp.controller.filter.JwtFilter [http-nio-8080-exec-6] JWT token does not start with Bearer string
-2022-12-26 12:21:12,920 WARN itacad.aliaksandrkryvapust.myfitapp.controller.filter.JwtFilter [http-nio-8080-exec-9] JWT token does not start with Bearer string
+2022-12-26 12:19:54,656 WARN itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter [http-nio-8080-exec-6] JWT token does not start with Bearer string
+2022-12-26 12:21:12,920 WARN itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter [http-nio-8080-exec-9] JWT token does not start with Bearer string
 2022-12-26 12:24:10,282 ERROR org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-3] Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
 io.jsonwebtoken.security.SignatureException: JWT signature does not match locally computed signature. JWT validity cannot be asserted and should not be trusted.
 	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:399)
 	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:529)
 	at io.jsonwebtoken.impl.DefaultJwtParser.parseClaimsJws(DefaultJwtParser.java:589)
 	at io.jsonwebtoken.impl.ImmutableJwtParser.parseClaimsJws(ImmutableJwtParser.java:173)
-	at itacad.aliaksandrkryvapust.myfitapp.controller.utils.JwtTokenUtil.getAllClaims(JwtTokenUtil.java:36)
-	at itacad.aliaksandrkryvapust.myfitapp.controller.utils.JwtTokenUtil.getClaim(JwtTokenUtil.java:30)
-	at itacad.aliaksandrkryvapust.myfitapp.controller.utils.JwtTokenUtil.getUsername(JwtTokenUtil.java:22)
-	at itacad.aliaksandrkryvapust.myfitapp.controller.filter.JwtFilter.doFilterInternal(JwtFilter.java:44)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getAllClaims(JwtTokenUtil.java:36)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getClaim(JwtTokenUtil.java:30)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getUsername(JwtTokenUtil.java:22)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter.doFilterInternal(JwtFilter.java:44)
 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
 	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103)
@@ -110,7 +110,7 @@ io.jsonwebtoken.security.SignatureException: JWT signature does not match locall
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
 	at java.base/java.lang.Thread.run(Thread.java:829)
-2022-12-26 12:34:32,552 WARN itacad.aliaksandrkryvapust.myfitapp.controller.filter.JwtFilter [http-nio-8080-exec-10] JWT token does not start with Bearer string
+2022-12-26 12:34:32,552 WARN itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter [http-nio-8080-exec-10] JWT token does not start with Bearer string
 2022-12-26 12:44:50,513 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState [SpringApplicationShutdownHook] HHH10001008: Cleaning up connection pool [jdbc:postgresql://localhost:5432/my_fit]
 2022-12-26 21:27:52,702 INFO org.hibernate.validator.internal.util.Version [background-preinit] HV000001: Hibernate Validator 6.2.5.Final
 2022-12-26 21:27:52,734 INFO org.springframework.boot.StartupInfoLogger [main] Starting MyFitApp using Java 11.0.16.1 on Zodiac-PC with PID 14728 (G:\Java\MyFitApp_main\target\classes started by User in G:\Java\MyFitApp_main)
@@ -138,10 +138,10 @@ io.jsonwebtoken.security.SignatureException: JWT signature does not match locall
 	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:529)
 	at io.jsonwebtoken.impl.DefaultJwtParser.parseClaimsJws(DefaultJwtParser.java:589)
 	at io.jsonwebtoken.impl.ImmutableJwtParser.parseClaimsJws(ImmutableJwtParser.java:173)
-	at itacad.aliaksandrkryvapust.myfitapp.controller.utils.JwtTokenUtil.getAllClaims(JwtTokenUtil.java:36)
-	at itacad.aliaksandrkryvapust.myfitapp.controller.utils.JwtTokenUtil.getClaim(JwtTokenUtil.java:30)
-	at itacad.aliaksandrkryvapust.myfitapp.controller.utils.JwtTokenUtil.getUsername(JwtTokenUtil.java:22)
-	at itacad.aliaksandrkryvapust.myfitapp.controller.filter.JwtFilter.doFilterInternal(JwtFilter.java:44)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getAllClaims(JwtTokenUtil.java:36)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getClaim(JwtTokenUtil.java:30)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getUsername(JwtTokenUtil.java:22)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter.doFilterInternal(JwtFilter.java:44)
 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
 	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103)
@@ -189,17 +189,17 @@ io.jsonwebtoken.security.SignatureException: JWT signature does not match locall
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
 	at java.base/java.lang.Thread.run(Thread.java:829)
-2022-12-26 21:28:27,941 WARN itacad.aliaksandrkryvapust.myfitapp.controller.filter.JwtFilter [http-nio-8080-exec-3] JWT token does not start with Bearer string
+2022-12-26 21:28:27,941 WARN itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter [http-nio-8080-exec-3] JWT token does not start with Bearer string
 2022-12-26 21:29:10,337 ERROR org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-5] Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
 io.jsonwebtoken.security.SignatureException: JWT signature does not match locally computed signature. JWT validity cannot be asserted and should not be trusted.
 	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:399)
 	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:529)
 	at io.jsonwebtoken.impl.DefaultJwtParser.parseClaimsJws(DefaultJwtParser.java:589)
 	at io.jsonwebtoken.impl.ImmutableJwtParser.parseClaimsJws(ImmutableJwtParser.java:173)
-	at itacad.aliaksandrkryvapust.myfitapp.controller.utils.JwtTokenUtil.getAllClaims(JwtTokenUtil.java:36)
-	at itacad.aliaksandrkryvapust.myfitapp.controller.utils.JwtTokenUtil.getClaim(JwtTokenUtil.java:30)
-	at itacad.aliaksandrkryvapust.myfitapp.controller.utils.JwtTokenUtil.getUsername(JwtTokenUtil.java:22)
-	at itacad.aliaksandrkryvapust.myfitapp.controller.filter.JwtFilter.doFilterInternal(JwtFilter.java:44)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getAllClaims(JwtTokenUtil.java:36)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getClaim(JwtTokenUtil.java:30)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getUsername(JwtTokenUtil.java:22)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter.doFilterInternal(JwtFilter.java:44)
 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
 	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103)
@@ -274,10 +274,10 @@ io.jsonwebtoken.security.SignatureException: JWT signature does not match locall
 	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:529)
 	at io.jsonwebtoken.impl.DefaultJwtParser.parseClaimsJws(DefaultJwtParser.java:589)
 	at io.jsonwebtoken.impl.ImmutableJwtParser.parseClaimsJws(ImmutableJwtParser.java:173)
-	at itacad.aliaksandrkryvapust.myfitapp.controller.utils.JwtTokenUtil.getAllClaims(JwtTokenUtil.java:36)
-	at itacad.aliaksandrkryvapust.myfitapp.controller.utils.JwtTokenUtil.getClaim(JwtTokenUtil.java:30)
-	at itacad.aliaksandrkryvapust.myfitapp.controller.utils.JwtTokenUtil.getUsername(JwtTokenUtil.java:22)
-	at itacad.aliaksandrkryvapust.myfitapp.controller.filter.JwtFilter.doFilterInternal(JwtFilter.java:44)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getAllClaims(JwtTokenUtil.java:36)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getClaim(JwtTokenUtil.java:30)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getUsername(JwtTokenUtil.java:22)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter.doFilterInternal(JwtFilter.java:44)
 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
 	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103)
@@ -331,10 +331,10 @@ io.jsonwebtoken.security.SignatureException: JWT signature does not match locall
 	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:529)
 	at io.jsonwebtoken.impl.DefaultJwtParser.parseClaimsJws(DefaultJwtParser.java:589)
 	at io.jsonwebtoken.impl.ImmutableJwtParser.parseClaimsJws(ImmutableJwtParser.java:173)
-	at itacad.aliaksandrkryvapust.myfitapp.controller.utils.JwtTokenUtil.getAllClaims(JwtTokenUtil.java:36)
-	at itacad.aliaksandrkryvapust.myfitapp.controller.utils.JwtTokenUtil.getClaim(JwtTokenUtil.java:30)
-	at itacad.aliaksandrkryvapust.myfitapp.controller.utils.JwtTokenUtil.getUsername(JwtTokenUtil.java:22)
-	at itacad.aliaksandrkryvapust.myfitapp.controller.filter.JwtFilter.doFilterInternal(JwtFilter.java:44)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getAllClaims(JwtTokenUtil.java:36)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getClaim(JwtTokenUtil.java:30)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getUsername(JwtTokenUtil.java:22)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter.doFilterInternal(JwtFilter.java:44)
 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
 	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103)
@@ -382,7 +382,7 @@ io.jsonwebtoken.security.SignatureException: JWT signature does not match locall
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
 	at java.base/java.lang.Thread.run(Thread.java:829)
-2022-12-26 21:47:15,542 WARN itacad.aliaksandrkryvapust.myfitapp.controller.filter.JwtFilter [http-nio-8080-exec-4] JWT token does not start with Bearer string
+2022-12-26 21:47:15,542 WARN itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter [http-nio-8080-exec-4] JWT token does not start with Bearer string
 2022-12-26 21:48:03,116 ERROR org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-6] Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
 org.springframework.security.web.firewall.RequestRejectedException: The request was rejected because the URL contained a potentially malicious String "//"
 	at org.springframework.security.web.firewall.StrictHttpFirewall.rejectedBlocklistedUrls(StrictHttpFirewall.java:535)
@@ -464,5 +464,5 @@ org.springframework.security.web.firewall.RequestRejectedException: The request 
 2022-12-26 22:08:23,422 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
 2022-12-26 22:08:23,480 INFO org.springframework.boot.StartupInfoLogger [main] Started MyFitApp in 6.479 seconds (JVM running for 9.706)
 2022-12-26 22:08:54,555 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-2] Initializing Spring DispatcherServlet 'dispatcherServlet'
-2022-12-26 22:08:54,582 WARN itacad.aliaksandrkryvapust.myfitapp.controller.filter.JwtFilter [http-nio-8080-exec-2] JWT token does not start with Bearer string
+2022-12-26 22:08:54,582 WARN itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter [http-nio-8080-exec-2] JWT token does not start with Bearer string
 2022-12-26 23:43:23,077 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState [SpringApplicationShutdownHook] HHH10001008: Cleaning up connection pool [jdbc:postgresql://localhost:5432/my_fit]
