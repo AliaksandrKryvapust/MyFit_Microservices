@@ -4,7 +4,6 @@ import itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.TokenValidationDto;
 import itacad.aliaksandrkryvapust.usermicroservice.core.mapper.ValidationTokenMapper;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.User;
-import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -28,6 +27,6 @@ public class TokenValidationService {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION).substring("Bearer ".length());
         String username = jwtTokenUtil.getUsername(token);
         User user = this.userService.getUser(username);
-        return this.validationTokenMapper.outputMapping(username, UserRole.valueOf(user.getRole().name()));
+        return this.validationTokenMapper.outputMapping(user);
     }
 }
