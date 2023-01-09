@@ -6,6 +6,7 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil;
 import itacad.aliaksandrkryvapust.usermicroservice.service.JwtUserDetailsService;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,6 +30,7 @@ import static itacad.aliaksandrkryvapust.usermicroservice.core.Constants.TOKEN_H
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Component
+@Slf4j
 public class JwtFilter extends OncePerRequestFilter {
     private static final String jwtSecret = "NDQ1ZjAzNjQtMzViZi00MDRjLTljZjQtNjNjYWIyZTU5ZDYw";
     private final JwtUserDetailsService jwtUserDetailsService;
@@ -61,16 +63,16 @@ public class JwtFilter extends OncePerRequestFilter {
                     }
                 }
             } catch (MalformedJwtException e) {
-                logger.error("JWT token is invalid" + e.getMessage());
+                log.error("JWT token is invalid" + e.getMessage());
             } catch (UnsupportedJwtException e) {
-                logger.error("Unsupported JWT token" + e.getMessage());
+                log.error("Unsupported JWT token" + e.getMessage());
             } catch (ExpiredJwtException e) {
-                logger.error("JWT token is expired");
+                log.error("JWT token is expired");
             } catch (IllegalArgumentException e) {
-                logger.error("Unable to fetch JWT token");
+                log.error("Unable to fetch JWT token");
             }
         } else {
-            logger.warn("JWT token does not start with Bearer string");
+            log.warn("JWT token does not start with Bearer string");
         }
     }
 

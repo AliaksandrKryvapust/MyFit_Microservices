@@ -15,7 +15,7 @@ import java.util.function.Function;
 
 @Component
 public class JwtTokenUtil {
-    public static final long JWT_TOKEN_VALID_TIME = 1 * 60 * 60; // 1 hour
+    public static final long JWT_TOKEN_VALID_TIME = 60 * 60; // 1 hour
     private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     public String getUsername(String token) {
