@@ -80,8 +80,6 @@ public class UserManager implements IUserManager {
         }
     }
 
-
-
     @Override
     public UserDtoOutput getUser(String email) {
         User user = this.userService.getUser(email);
