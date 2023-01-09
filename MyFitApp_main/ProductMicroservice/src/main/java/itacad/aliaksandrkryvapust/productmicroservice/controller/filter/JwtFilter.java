@@ -80,7 +80,7 @@ public class JwtFilter extends OncePerRequestFilter {
         final String requestSecretHeader = request.getHeader(TOKEN_HEADER);
         if (requestSecretHeader != null) {
             if (requestSecretHeader.equals(jwtSecret)) {
-                this.setAuthentication("AUDIT", "audit@email", "audit", request, filterChain, response);
+                this.setAuthentication("REPORT", "report@email", "report", request, filterChain, response);
                 return true;
             }
         }
