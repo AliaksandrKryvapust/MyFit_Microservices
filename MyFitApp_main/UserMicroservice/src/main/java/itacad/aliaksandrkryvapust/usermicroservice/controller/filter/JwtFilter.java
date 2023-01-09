@@ -43,9 +43,18 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
+        if (validateEmptyHeaders(request, response, filterChain)) return;
         if (this.validateSecret(request, response, filterChain)) return;
         this.validateJwtToken(request);
         filterChain.doFilter(request, response);
+    }
+
+    private boolean validateEmptyHeaders(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+        if (request.getHeader(AUTHORIZATION) == null && request.getHeader(TOKEN_HEADER) == null) {
+            filterChain.doFilter(request, response);
+            return true;
+        }
+        return false;
     }
 
     private void validateJwtToken(HttpServletRequest request) {
@@ -57,10 +66,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 if (!username.isBlank() && SecurityContextHolder.getContext().getAuthentication() == null) {
                     UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
                     if (jwtTokenUtil.validate(jwtToken, userDetails)) {
-                        UsernamePasswordAuthenticationToken authenticationToken =
-                                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                        setAuthentication(request, userDetails);
                     }
                 }
             } catch (MalformedJwtException e) {
@@ -77,6 +83,13 @@ public class JwtFilter extends OncePerRequestFilter {
         }
     }
 
+    private void setAuthentication(HttpServletRequest request, UserDetails userDetails) {
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+    }
+
     private boolean validateSecret(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         final String requestSecretHeader = request.getHeader(TOKEN_HEADER);
         if (requestSecretHeader != null) {
@@ -85,10 +98,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 authorityList.add(new SimpleGrantedAuthority("APP"));
                 UserDetails userDetails = new org.springframework.security.core.userdetails
                         .User("report@email", "report", authorityList);
-                UsernamePasswordAuthenticationToken authenticationToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                setAuthentication(request, userDetails);
                 filterChain.doFilter(request, response);
                 return true;
             }
