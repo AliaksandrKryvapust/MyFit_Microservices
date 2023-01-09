@@ -43,18 +43,9 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
-        if (validateEmptyHeaders(request, response, filterChain)) return;
         if (this.validateSecret(request, response, filterChain)) return;
         this.validateJwtToken(request);
         filterChain.doFilter(request, response);
-    }
-
-    private boolean validateEmptyHeaders(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        if (request.getHeader(AUTHORIZATION) == null && request.getHeader(TOKEN_HEADER) == null) {
-            filterChain.doFilter(request, response);
-            return true;
-        }
-        return false;
     }
 
     private void validateJwtToken(HttpServletRequest request) {
