@@ -1,7 +1,7 @@
 package itacad.aliaksandrkryvapust.productmicroservice.controller.filter;
 
 
-import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.TokenValidationDto;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.TokenValidationDto;
 import lombok.NonNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
