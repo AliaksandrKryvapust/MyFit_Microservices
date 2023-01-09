@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import itacad.aliaksandrkryvapust.usermicroservice.controller.exceptions.ExpiredEmailTokenException;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.microservices.AuditDto;
 import itacad.aliaksandrkryvapust.usermicroservice.core.mapper.TokenMapper;
+import itacad.aliaksandrkryvapust.usermicroservice.core.mapper.UserMapper;
 import itacad.aliaksandrkryvapust.usermicroservice.core.mapper.microservices.AuditMapper;
 import itacad.aliaksandrkryvapust.usermicroservice.event.EmailVerificationEvent;
 import itacad.aliaksandrkryvapust.usermicroservice.manager.api.ITokenManager;
@@ -15,8 +16,8 @@ import itacad.aliaksandrkryvapust.usermicroservice.service.api.ITokenService;
 import itacad.aliaksandrkryvapust.usermicroservice.service.api.IUserService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.WebRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.NoSuchElementException;
@@ -28,15 +29,18 @@ public class TokenManager implements ITokenManager {
     private final ITokenService tokenService;
     private final IUserService userService;
     private final TokenMapper tokenMapper;
+    private final UserMapper userMapper;
     private final AuditMapper auditMapper;
     private final AuditManager auditManager;
     private final ApplicationEventPublisher eventPublisher;
 
     public TokenManager(ITokenService tokenService, IUserService userService, TokenMapper tokenMapper,
-                        AuditMapper auditMapper, AuditManager auditManager, ApplicationEventPublisher eventPublisher) {
+                        UserMapper userMapper, AuditMapper auditMapper, AuditManager auditManager,
+                        ApplicationEventPublisher eventPublisher) {
         this.tokenService = tokenService;
         this.userService = userService;
         this.tokenMapper = tokenMapper;
+        this.userMapper = userMapper;
         this.auditMapper = auditMapper;
         this.auditManager = auditManager;
         this.eventPublisher = eventPublisher;
@@ -56,7 +60,7 @@ public class TokenManager implements ITokenManager {
     }
 
     @Override
-    public void resendToken(String token, WebRequest request) {
+    public void resendToken(String token, HttpServletRequest request) {
         EmailToken emailToken = this.tokenService.getToken(token);
         if (emailToken == null) {
             throw new NoSuchElementException("Token is not exist " + token);
@@ -69,7 +73,8 @@ public class TokenManager implements ITokenManager {
         try {
             User user = emailToken.getUser();
             user.setStatus(UserStatus.ACTIVATED);
-            userService.save(user);
+            User userToSave = this.userMapper.activationMapping(user);
+            userService.update(userToSave, user.getId(), user.getDtUpdate().toEpochMilli());
             AuditDto auditDto = this.auditMapper.userOutputMapping(user, userPut);
             this.auditManager.audit(auditDto);
         } catch (URISyntaxException e) {
