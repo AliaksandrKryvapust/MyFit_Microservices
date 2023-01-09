@@ -7,7 +7,7 @@ import lombok.NonNull;
 
 @Builder
 @Data
-public class UserDtoOutput {
+public class UserDto {
     private final @NonNull String mail;
     private final @NonNull EUserRole role;
 }
