@@ -16,9 +16,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import javax.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
@@ -49,17 +48,13 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/api/v1/users/registration", "/api/v1/users/registration/**",
                         "/api/v1/users/login").permitAll()
-                .antMatchers("/api/users","/api/users/**").hasRole(UserRole.ADMIN.name())
+                .antMatchers("/api/v1/users", "/api/v1/users/**").hasAuthority(UserRole.ADMIN.name())
                 .antMatchers("/api/v1/validateToken").hasAuthority("APP")
                 .anyRequest().authenticated()
                 .and()
-                // Set exception handler
                 .exceptionHandling()
-                .authenticationEntryPoint((request, response, exception) -> {
-                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                    response.setHeader("content-type", "application/json");
-                    response.getWriter().write("This authorization token is prohibited from making requests to this address");
-                })
+                .accessDeniedHandler(accessDeniedHandler())
+                .authenticationEntryPoint(authenticationEntryPoint())
                 .and()
                 // don't create session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -71,5 +66,15 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
+    }
+
+    @Bean
+    RestAuthenticationEntryPoint authenticationEntryPoint() {
+        return new RestAuthenticationEntryPoint();
     }
 }
