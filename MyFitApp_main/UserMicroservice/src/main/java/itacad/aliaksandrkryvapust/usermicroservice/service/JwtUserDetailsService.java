@@ -26,14 +26,18 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) {
         User user = this.userRepository.findByEmail(email);
-        if (user == null) {
-            throw new NoSuchElementException("There is no such user" + email);
-        }
+        this.validate(email, user);
         boolean enabled = user.getStatus().equals(UserStatus.ACTIVATED);
         boolean nonLocked = !user.getStatus().equals(UserStatus.DEACTIVATED);
         List<GrantedAuthority> authorityList = new ArrayList<>();
         authorityList.add(new SimpleGrantedAuthority(user.getRole().name()));
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), enabled,
                 true, true, nonLocked, authorityList);
+    }
+
+    private void validate(String email, User user) {
+        if (user == null) {
+            throw new NoSuchElementException("There is no such user" + email);
+        }
     }
 }

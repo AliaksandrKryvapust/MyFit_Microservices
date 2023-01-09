@@ -49,12 +49,16 @@ public class UserService implements IUserService {
     public User update(User user, UUID id, Long version) {
         validate(user);
         User currentEntity = this.userRepository.findById(id).orElseThrow();
+        this.optimisticLockCheck(version, currentEntity);
+        updateEntityFields(user, currentEntity);
+        return this.userRepository.save(currentEntity);
+    }
+
+    private void optimisticLockCheck(Long version, User currentEntity) {
         Long currentVersion = currentEntity.getDtUpdate().toEpochMilli();
         if (!currentVersion.equals(version)) {
             throw new OptimisticLockException("user table update failed, version does not match update denied");
         }
-        updateEntityFields(user, currentEntity);
-        return this.userRepository.save(currentEntity);
     }
 
     private void updateEntityFields(User user, User currentEntity) {
