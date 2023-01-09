@@ -30,10 +30,10 @@ public class Profile {
     private Double target;
     @Enumerated(EnumType.STRING)
     @Setter
-    private ActivityType activityType;
+    private EActivityType activityType;
     @Enumerated(EnumType.STRING)
     @Setter
-    private ProfileSex sex;
+    private EProfileSex sex;
     @Setter
     @Embedded
     private User user;

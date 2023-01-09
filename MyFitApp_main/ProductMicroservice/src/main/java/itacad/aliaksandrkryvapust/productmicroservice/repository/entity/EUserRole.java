@@ -1,5 +1,5 @@
 package itacad.aliaksandrkryvapust.productmicroservice.repository.entity;
 
-public enum ProfileSex {
-    MALE, FEMALE
+public enum EUserRole {
+    USER, ADMIN
 }
