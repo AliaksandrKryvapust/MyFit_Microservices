@@ -34,14 +34,14 @@ public class IngredientService implements IIngredientService {
     }
 
     @Override
-    public Ingredient get(UUID id) {
+    public Ingredient get(UUID id, UUID userId) {
         return this.ingredientRepository.findById(id).orElseThrow();
     }
 
     @Override
     @Transactional
     public void delete(UUID id) {
-    this.ingredientRepository.deleteById(id);
+        this.ingredientRepository.deleteById(id);
     }
 
     @Override
@@ -49,21 +49,26 @@ public class IngredientService implements IIngredientService {
     public Ingredient update(Ingredient ingredient, UUID id, Long version) {
         validateInput(ingredient);
         Ingredient currentEntity = this.ingredientRepository.findById(id).orElseThrow();
+        checkOptimisticLock(version, currentEntity);
+        return this.ingredientRepository.save(ingredient);
+    }
+
+    @Override
+    public void deleteAllByMealId(UUID uuid) {
+        this.ingredientRepository.deleteAllByMealId(uuid);
+    }
+
+
+    private void checkOptimisticLock(Long version, Ingredient currentEntity) {
         Long currentVersion = currentEntity.getDtUpdate().toEpochMilli();
         if (!currentVersion.equals(version)) {
             throw new OptimisticLockException("menu_item table update failed, version does not match update denied");
         }
-        return this.ingredientRepository.save(ingredient);
     }
 
     private void validateInput(Ingredient ingredient) {
         if (ingredient.getProductId() != null) {
             throw new IllegalStateException("Ingredient id should be empty");
         }
-    }
-
-    @Override
-    public void deleteAllByMealId(UUID uuid) {
-        this.ingredientRepository.deleteAllByMealId(uuid);
     }
 }

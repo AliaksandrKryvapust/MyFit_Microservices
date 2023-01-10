@@ -1,11 +1,14 @@
 package itacad.aliaksandrkryvapust.productmicroservice.service;
 
+import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetails;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.api.IProductRepository;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Product;
 import itacad.aliaksandrkryvapust.productmicroservice.service.api.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,14 +35,50 @@ public class ProductService implements IProductService {
     @Override
     @Transactional
     public Product update(Product product, UUID id, Long version) {
-        validate(product);
+        this.validate(product);
         Product currentEntity = this.productRepository.findById(id).orElseThrow();
+        this.optimisticLockCheck(version, currentEntity);
+        this.checkCredentials(currentEntity);
+        this.updateEntityFields(product, currentEntity);
+        return this.productRepository.save(currentEntity);
+    }
+
+    @Override
+    public Page<Product> get(Pageable pageable) {
+        return this.productRepository.findAll(pageable);
+    }
+
+    @Override
+    public Product get(UUID id, UUID userId) {
+        return this.productRepository.findByIdAndUserId(id, userId).orElseThrow();
+    }
+
+    @Override
+    @Transactional
+    public void delete(UUID id) {
+        Product currentEntity = this.productRepository.findById(id).orElseThrow();
+        this.checkCredentials(currentEntity);
+        this.productRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Product> getByIds(List<UUID> uuids) {
+        return this.productRepository.findAllById(uuids);
+    }
+
+
+    private void checkCredentials(Product currentEntity) {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!currentEntity.getUserId().equals(userDetails.getId())){
+            throw new BadCredentialsException("It`s forbidden to modify not private data");
+        }
+    }
+
+    private void optimisticLockCheck(Long version, Product currentEntity) {
         Long currentVersion = currentEntity.getDtUpdate().toEpochMilli();
         if (!currentVersion.equals(version)) {
             throw new OptimisticLockException("product table update failed, version does not match update denied");
         }
-        updateEntityFields(product, currentEntity);
-        return this.productRepository.save(currentEntity);
     }
 
     private void validate(Product product) {
@@ -55,26 +94,5 @@ public class ProductService implements IProductService {
         currentEntity.setFats(product.getFats());
         currentEntity.setCarbohydrates(product.getCarbohydrates());
         currentEntity.setWeight(product.getWeight());
-    }
-
-    @Override
-    public Page<Product> get(Pageable pageable) {
-        return this.productRepository.findAll(pageable);
-    }
-
-    @Override
-    public Product get(UUID id) {
-        return this.productRepository.findById(id).orElseThrow();
-    }
-
-    @Override
-    @Transactional
-    public void delete(UUID id) {
-        this.productRepository.deleteById(id);
-    }
-
-    @Override
-    public List<Product> getByIds(List<UUID> uuids) {
-        return this.productRepository.findAllById(uuids);
     }
 }
