@@ -3,6 +3,7 @@ package itacad.aliaksandrkryvapust.productmicroservice.core.mapper.microservices
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.TokenValidationDto;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.UserDtoOutput;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.microservices.UserDto;
+import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetails;
 import itacad.aliaksandrkryvapust.productmicroservice.core.security.UserPrincipal;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.EUserRole;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.User;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserMapper {
-    public UserPrincipal inputMapping(TokenValidationDto dto){
+    public UserPrincipal inputValidationMapping(TokenValidationDto dto) {
         return UserPrincipal.builder()
                 .id(dto.getId())
                 .username(dto.getUsername())
@@ -23,14 +24,21 @@ public class UserMapper {
                 .dtUpdate(dto.getDtUpdate()).build();
     }
 
-    public UserDto outputAuditMapping(UserDetails userDetails){
+    public User inputMapping(MyUserDetails userDetails) {
+        return User.builder()
+                .user_id(userDetails.getId())
+                .username(userDetails.getUsername())
+                .version(userDetails.getVersion()).build();
+    }
+
+    public UserDto outputAuditMapping(UserDetails userDetails) {
         return UserDto.builder()
                 .mail(userDetails.getUsername())
                 .role(EUserRole.valueOf(userDetails.getAuthorities().stream().findFirst().orElseThrow().getAuthority()))
                 .build();
     }
 
-    public UserDtoOutput outputMapping(User user){
+    public UserDtoOutput outputMapping(User user) {
         return UserDtoOutput.builder()
                 .user_id(user.getUser_id())
                 .username(user.getUsername())
