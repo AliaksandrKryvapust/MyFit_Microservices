@@ -29,12 +29,16 @@ public class AuditManager {
 
     public void audit(AuditDto auditDto) throws JsonProcessingException, URISyntaxException {
         String requestBody = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(auditDto);
-        HttpRequest httpRequest = HttpRequest.newBuilder()
+        HttpRequest httpRequest = prepareRequest(requestBody);
+        HttpClient.newHttpClient().sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString());
+    }
+
+    private HttpRequest prepareRequest(String requestBody) throws URISyntaxException {
+        return HttpRequest.newBuilder()
                 .uri(new URI(AUDIT_URI))
                 .header(TOKEN_HEADER, jwtSecret)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
-        HttpClient.newHttpClient().sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString());
     }
 }
