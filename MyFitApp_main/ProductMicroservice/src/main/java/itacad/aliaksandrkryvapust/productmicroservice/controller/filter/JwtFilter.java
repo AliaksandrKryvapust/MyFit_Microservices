@@ -60,7 +60,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private void setAuthentication(TokenValidationDto validationDto,
                                    HttpServletRequest request, FilterChain filterChain, HttpServletResponse response)
             throws IOException, ServletException {
-        UserPrincipal userPrincipal = this.userMapper.inputMapping(validationDto);
+        UserPrincipal userPrincipal = this.userMapper.inputValidationMapping(validationDto);
         MyUserDetails userDetails = new MyUserDetails(userPrincipal);
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
