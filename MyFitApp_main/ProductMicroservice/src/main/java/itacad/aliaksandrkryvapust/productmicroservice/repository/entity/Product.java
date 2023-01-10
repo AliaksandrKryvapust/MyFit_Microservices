@@ -31,6 +31,8 @@ public class Product {
     private Double carbohydrates;
     @Setter
     private Integer weight;
+    @Setter
+    private UUID userId;
     @Column(updatable = false)
     @org.hibernate.annotations.Generated(GenerationTime.INSERT)
     private Instant dtCreate;
