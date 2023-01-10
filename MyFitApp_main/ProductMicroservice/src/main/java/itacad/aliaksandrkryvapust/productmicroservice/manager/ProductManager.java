@@ -7,13 +7,14 @@ import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.microservi
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.productmicroservice.core.mapper.ProductMapper;
 import itacad.aliaksandrkryvapust.productmicroservice.core.mapper.microservices.AuditMapper;
+import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetails;
 import itacad.aliaksandrkryvapust.productmicroservice.manager.api.IProductManager;
 import itacad.aliaksandrkryvapust.productmicroservice.manager.audit.AuditManager;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Product;
 import itacad.aliaksandrkryvapust.productmicroservice.service.api.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,18 +28,14 @@ public class ProductManager implements IProductManager {
     private final static String productDelete = "Product was deleted";
     private final ProductMapper productMapper;
     private final IProductService productService;
-    private final JwtTokenUtil jwtTokenUtil;
-    private final UserService userService;
     private final AuditMapper auditMapper;
     private final AuditManager auditManager;
 
     @Autowired
-    public ProductManager(ProductMapper productMapper, IProductService productService, JwtTokenUtil jwtTokenUtil,
-                          UserService userService, AuditMapper auditMapper, AuditManager auditManager) {
+    public ProductManager(ProductMapper productMapper, IProductService productService,
+                          AuditMapper auditMapper, AuditManager auditManager) {
         this.productMapper = productMapper;
         this.productService = productService;
-        this.jwtTokenUtil = jwtTokenUtil;
-        this.userService = userService;
         this.auditMapper = auditMapper;
         this.auditManager = auditManager;
     }
@@ -47,9 +44,7 @@ public class ProductManager implements IProductManager {
     public ProductDtoOutput save(ProductDtoInput menuItemDtoInput, HttpServletRequest request) {
         try {
             Product product = this.productService.save(productMapper.inputMapping(menuItemDtoInput));
-            User user = getUser(request);
-            AuditDto auditDto = this.auditMapper.productOutputMapping(product, user, productPost);
-            this.auditManager.audit(auditDto);
+            this.prepareAuditData(product, productPost);
             return productMapper.outputMapping(product);
         } catch (URISyntaxException e) {
             throw new RuntimeException("URI to audit is incorrect");
@@ -58,30 +53,23 @@ public class ProductManager implements IProductManager {
         }
     }
 
-    private User getUser(HttpServletRequest request) {
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION).substring("Bearer ".length());
-        String username = jwtTokenUtil.getUsername(token);
-        return this.userService.getUser(username);
-    }
-
     @Override
     public PageDtoOutput get(Pageable pageable) {
-        return productMapper.outputPageMapping(this.productService.get(pageable));
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return productMapper.outputPageMapping(this.productService.get(pageable, userDetails.getId()));
     }
 
     @Override
     public ProductDtoOutput get(UUID id) {
-        return productMapper.outputMapping(this.productService.get(id));
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return productMapper.outputMapping(this.productService.get(id, userDetails.getId()));
     }
 
     @Override
     public void delete(UUID id, HttpServletRequest request) {
         try {
             this.productService.delete(id);
-            User user = getUser(request);
-            Product product = Product.builder().id(id).build();
-            AuditDto auditDto = this.auditMapper.productOutputMapping(product, user, productDelete);
-            this.auditManager.audit(auditDto);
+            this.prepareAuditToSend(id);
         } catch (URISyntaxException e) {
             throw new RuntimeException("URI to audit is incorrect");
         } catch (JsonProcessingException e) {
@@ -93,14 +81,25 @@ public class ProductManager implements IProductManager {
     public ProductDtoOutput update(ProductDtoInput productDtoInput, UUID id, Long version, HttpServletRequest request) {
         try {
             Product product = this.productService.update(productMapper.inputMapping(productDtoInput), id, version);
-            User user = getUser(request);
-            AuditDto auditDto = this.auditMapper.productOutputMapping(product, user, productPut);
-            this.auditManager.audit(auditDto);
+            this.prepareAuditData(product, productPut);
             return productMapper.outputMapping(product);
         } catch (URISyntaxException e) {
             throw new RuntimeException("URI to audit is incorrect");
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to convert to JSON");
         }
+    }
+
+    private void prepareAuditData(Product product, String productMethod) throws JsonProcessingException, URISyntaxException {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AuditDto auditDto = this.auditMapper.productOutputMapping(product, userDetails, productMethod);
+        this.auditManager.audit(auditDto);
+    }
+
+    private void prepareAuditToSend(UUID id) throws JsonProcessingException, URISyntaxException {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Product product = Product.builder().id(id).build();
+        AuditDto auditDto = this.auditMapper.productOutputMapping(product, userDetails, productDelete);
+        this.auditManager.audit(auditDto);
     }
 }
