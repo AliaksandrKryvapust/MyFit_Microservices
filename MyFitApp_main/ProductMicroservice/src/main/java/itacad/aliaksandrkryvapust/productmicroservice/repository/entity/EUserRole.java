@@ -1,5 +1,5 @@
 package itacad.aliaksandrkryvapust.productmicroservice.repository.entity;
 
-public enum UserRole {
-    USER, ADMIN
+public enum EUserRole {
+    USER, ADMIN, REPORT
 }

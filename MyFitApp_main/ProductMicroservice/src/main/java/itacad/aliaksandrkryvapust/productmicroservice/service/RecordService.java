@@ -30,12 +30,12 @@ public class RecordService implements IRecordService {
     @Override
     public Record save(Record record) {
         validateInput(record);
-        setFieldsFromDatabase(record);
+        setFieldsFromDatabase(record); // TODO
         return this.recordRepository.save(record);
     }
 
     private void setFieldsFromDatabase(Record record) {
-        if (record.getProductId() != null) {
+        if (record.getProductId() != null) { // TODO add optional
             Product product = this.productService.get(record.getProductId());
             record.setProduct(product);
         }

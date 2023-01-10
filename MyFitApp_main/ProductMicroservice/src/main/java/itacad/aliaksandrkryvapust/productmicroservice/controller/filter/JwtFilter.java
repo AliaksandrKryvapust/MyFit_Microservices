@@ -1,15 +1,15 @@
 package itacad.aliaksandrkryvapust.productmicroservice.controller.filter;
 
 
-import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.TokenValidationDto;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.TokenValidationDto;
+import itacad.aliaksandrkryvapust.productmicroservice.core.mapper.microservices.UserMapper;
+import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetails;
+import itacad.aliaksandrkryvapust.productmicroservice.core.security.UserPrincipal;
 import lombok.NonNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -21,16 +21,22 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.Instant;
+import java.util.UUID;
 
 import static itacad.aliaksandrkryvapust.productmicroservice.core.Constants.TOKEN_HEADER;
 import static itacad.aliaksandrkryvapust.productmicroservice.core.Constants.TOKEN_VERIFICATION_URI;
+import static itacad.aliaksandrkryvapust.productmicroservice.repository.entity.EUserRole.REPORT;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
     private static final String jwtSecret = "NDQ1ZjAzNjQtMzViZi00MDRjLTljZjQtNjNjYWIyZTU5ZDYw";
+    private final UserMapper userMapper;
+
+    public JwtFilter(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
@@ -45,20 +51,17 @@ public class JwtFilter extends OncePerRequestFilter {
         final String requestTokenHeader = request.getHeader(AUTHORIZATION);
         TokenValidationDto validationDto = this.validateTokenThroughRequest(requestTokenHeader);
         if (validationDto.getAuthenticated()) {
-            this.setAuthentication(validationDto.getRole().name(), validationDto.getUsername(), "qwerty",
-                    request, filterChain, response);
+            this.setAuthentication(validationDto, request, filterChain, response);
         } else {
             logger.warn("Access denied");
         }
     }
 
-    private void setAuthentication(String role, String username, String password,
+    private void setAuthentication(TokenValidationDto validationDto,
                                    HttpServletRequest request, FilterChain filterChain, HttpServletResponse response)
             throws IOException, ServletException {
-        List<GrantedAuthority> authorityList = new ArrayList<>();
-        authorityList.add(new SimpleGrantedAuthority(role));
-        UserDetails userDetails = new org.springframework.security.core.userdetails
-                .User(username, password, authorityList);
+        UserPrincipal userPrincipal = this.userMapper.inputValidationMapping(validationDto);
+        MyUserDetails userDetails = new MyUserDetails(userPrincipal);
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -78,12 +81,23 @@ public class JwtFilter extends OncePerRequestFilter {
     private boolean checkMicroserviceToken(HttpServletRequest request, HttpServletResponse response,
                                            FilterChain filterChain) throws IOException, ServletException {
         final String requestSecretHeader = request.getHeader(TOKEN_HEADER);
+        TokenValidationDto validationDto = this.createTokenValidationDto();
         if (requestSecretHeader != null) {
             if (requestSecretHeader.equals(jwtSecret)) {
-                this.setAuthentication("AUDIT", "audit@email", "audit", request, filterChain, response);
+                this.setAuthentication(validationDto, request, filterChain, response);
                 return true;
             }
         }
         return false;
+    }
+
+    private TokenValidationDto createTokenValidationDto() {
+        return TokenValidationDto.builder()
+                .id(UUID.fromString("1f260e1116434bc792818b3974d1aa2e"))
+                .username("report@email")
+                .role(REPORT)
+                .authenticated(true)
+                .dtUpdate(Instant.now())
+                .build();
     }
 }

@@ -56,7 +56,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         this.makeLog(ex);
         SingleExceptionDto message = SingleExceptionDto.builder().logref("optimistic_lock")
                 .message("Version does not match. Get new data and retry").build();
-        return new ResponseEntity<>(message, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(message, HttpStatus.LOCKED);
     }
 
     @ExceptionHandler({Exception.class})

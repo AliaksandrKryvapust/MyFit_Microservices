@@ -57,3 +57,23 @@ CREATE TABLE IF NOT EXISTS app.records
 
 ALTER TABLE IF EXISTS app.records
     OWNER to postgres;
+
+CREATE TABLE IF NOT EXISTS app.profile
+(
+    id            uuid,
+    height        bigint                      NOT NULL,
+    weight        double precision            NOT NULL,
+    dt_birthday   date                        NOT NULL,
+    target        double precision            NOT NULL,
+    activity_type character varying(100)      NOT NULL,
+    sex           character varying(50)       NOT NULL,
+    dt_create     time without time zone      NOT NULL DEFAULT now(),
+    dt_update     time without time zone      NOT NULL DEFAULT now(),
+    user_id       uuid                        NOT NULL,
+    username      character varying(100)      NOT NULL,
+    version       timestamp without time zone NOT NULL DEFAULT now(),
+    PRIMARY KEY (id)
+);
+
+ALTER TABLE IF EXISTS app.profile
+    OWNER to postgres;
