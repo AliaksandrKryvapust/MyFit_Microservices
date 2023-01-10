@@ -1,10 +1,7 @@
 package itacad.aliaksandrkryvapust.productmicroservice.core.security;
 
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.EUserRole;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -13,6 +10,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class UserPrincipal {
     private UUID id;
     private Boolean authenticated;
