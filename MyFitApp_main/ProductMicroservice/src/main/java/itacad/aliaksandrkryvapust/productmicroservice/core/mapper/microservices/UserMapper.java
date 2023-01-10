@@ -9,7 +9,6 @@ import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.EUserRol
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.User;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -31,7 +30,7 @@ public class UserMapper {
                 .version(userDetails.getVersion()).build();
     }
 
-    public UserDto outputAuditMapping(UserDetails userDetails) {
+    public UserDto outputAuditMapping(MyUserDetails userDetails) {
         return UserDto.builder()
                 .mail(userDetails.getUsername())
                 .role(EUserRole.valueOf(userDetails.getAuthorities().stream().findFirst().orElseThrow().getAuthority()))

@@ -3,13 +3,14 @@ package itacad.aliaksandrkryvapust.productmicroservice.core.mapper.microservices
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.microservices.AuditDto;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.microservices.Type;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.microservices.UserDto;
+import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetails;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Meal;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Product;
+import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Profile;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,7 +23,7 @@ public class AuditMapper {
         this.userMapper = userMapper;
     }
 
-    public AuditDto recordOutputMapping(Record record, UserDetails userDetails, String text) {
+    public AuditDto recordOutputMapping(Record record, MyUserDetails userDetails, String text) {
         UserDto userDto = userMapper.outputAuditMapping(userDetails);
         return AuditDto.builder()
                 .id(String.valueOf(record.getId()))
@@ -32,7 +33,7 @@ public class AuditMapper {
                 .build();
     }
 
-    public AuditDto productOutputMapping(Product product, UserDetails userDetails, String text) {
+    public AuditDto productOutputMapping(Product product, MyUserDetails userDetails, String text) {
         UserDto userDto = userMapper.outputAuditMapping(userDetails);
         return AuditDto.builder()
                 .id(String.valueOf(product.getId()))
@@ -42,7 +43,7 @@ public class AuditMapper {
                 .build();
     }
 
-    public AuditDto mealOutputMapping(Meal meal, UserDetails userDetails, String text) {
+    public AuditDto mealOutputMapping(Meal meal, MyUserDetails userDetails, String text) {
         UserDto userDto = userMapper.outputAuditMapping(userDetails);
         return AuditDto.builder()
                 .id(String.valueOf(meal.getId()))
@@ -52,10 +53,10 @@ public class AuditMapper {
                 .build();
     }
 
-    public AuditDto profileOutputMapping(Meal meal, UserDetails userDetails, String text) {
+    public AuditDto profileOutputMapping(Profile profile, MyUserDetails userDetails, String text) {
         UserDto userDto = userMapper.outputAuditMapping(userDetails);
         return AuditDto.builder()
-                .id(String.valueOf(meal.getId()))
+                .id(String.valueOf(profile.getId()))
                 .user(userDto)
                 .text(text)
                 .type(Type.PROFILE)
