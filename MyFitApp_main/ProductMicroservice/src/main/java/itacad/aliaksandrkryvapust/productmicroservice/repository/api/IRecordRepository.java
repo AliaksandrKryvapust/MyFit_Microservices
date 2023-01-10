@@ -15,6 +15,6 @@ import java.util.UUID;
 public interface IRecordRepository extends JpaRepository<Record, UUID> {
     Optional<Record> findByIdAndUserId(UUID uuid, UUID userId);
     Page<Record> findAllByUserId(Pageable pageable, UUID userId);
-    @Query("SELECT rec FROM Record rec WHERE rec.dtCreate>=:from AND rec.dtCreate<=:to ORDER BY rec.id")
-    List<Record> getRecordByTimeGap(@Param("from") Instant start, @Param("to") Instant end);
+    @Query("SELECT rec FROM Record rec WHERE rec.dtCreate>=:from AND rec.dtCreate<=:to AND rec.userId=:id ORDER BY rec.id")
+    List<Record> getRecordByTimeGap(@Param("from") Instant start, @Param("to") Instant end, @Param("id") UUID id);
 }
