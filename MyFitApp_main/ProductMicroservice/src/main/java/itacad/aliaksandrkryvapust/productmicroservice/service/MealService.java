@@ -44,8 +44,8 @@ public class MealService implements IMealService {
     }
 
     @Override
-    public Page<Meal> get(Pageable pageable) {
-        return this.mealRepository.findAll(pageable);
+    public Page<Meal> get(Pageable pageable, UUID userId) {
+        return this.mealRepository.findAllByUserId(pageable, userId);
     }
 
     @Override

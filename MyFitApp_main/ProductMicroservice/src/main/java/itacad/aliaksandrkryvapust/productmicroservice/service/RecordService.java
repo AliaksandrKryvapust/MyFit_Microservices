@@ -55,8 +55,8 @@ public class RecordService implements IRecordService {
     }
 
     @Override
-    public Page<Record> get(Pageable pageable) {
-        return this.recordRepository.findAll(pageable);
+    public Page<Record> get(Pageable pageable, UUID userId) {
+        return this.recordRepository.findAllByUserId(pageable, userId);
     }
 
     @Override

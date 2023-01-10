@@ -29,7 +29,7 @@ public class IngredientService implements IIngredientService {
     }
 
     @Override
-    public Page<Ingredient> get(Pageable pageable) {
+    public Page<Ingredient> get(Pageable pageable, UUID userId) {
         return this.ingredientRepository.findAll(pageable);
     }
 

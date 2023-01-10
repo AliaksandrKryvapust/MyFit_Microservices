@@ -44,8 +44,8 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Page<Product> get(Pageable pageable) {
-        return this.productRepository.findAll(pageable);
+    public Page<Product> get(Pageable pageable, UUID userId) {
+        return this.productRepository.findAllByUserId(pageable, userId);
     }
 
     @Override

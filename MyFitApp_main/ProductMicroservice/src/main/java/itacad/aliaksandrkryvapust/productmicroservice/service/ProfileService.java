@@ -9,6 +9,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -27,8 +28,10 @@ public class ProfileService implements IProfileService {
     }
 
     @Override
-    public Page<Profile> get(Pageable pageable) {
-        return this.profileRepository.findAll(pageable);
+    public Page<Profile> get(Pageable pageable, UUID userId) {
+        Page<Profile> profiles = this.profileRepository.findAll(pageable);
+        this.checkCredentials(userId, profiles);
+        return profiles;
     }
 
     @Override
@@ -48,5 +51,13 @@ public class ProfileService implements IProfileService {
         if (!profile.getUser().getUser_id().equals(userId)){
             throw new BadCredentialsException("It`s forbidden to modify not private data");
         }
+    }
+
+    private void checkCredentials(UUID userId, Page<Profile> profiles) {
+        profiles.getContent().forEach((i)-> {
+            if (!i.getUser().getUser_id().equals(userId)){
+                throw new BadCredentialsException("It`s forbidden to modify not private data");
+            }
+        });
     }
 }
