@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS app.profile
     sex           character varying(50)       NOT NULL,
     dt_create     timestamp without time zone      NOT NULL DEFAULT now(),
     dt_update     timestamp without time zone      NOT NULL DEFAULT now(),
-    user_id       uuid                        NOT NULL,
+    user_id       uuid                        NOT NULL UNIQUE,
     username      character varying(100)      NOT NULL,
     version       timestamp without time zone NOT NULL DEFAULT now(),
     PRIMARY KEY (id)
