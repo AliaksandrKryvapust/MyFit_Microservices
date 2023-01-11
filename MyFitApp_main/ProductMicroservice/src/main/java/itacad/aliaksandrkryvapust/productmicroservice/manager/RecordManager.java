@@ -20,7 +20,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.UUID;
@@ -43,8 +42,8 @@ public class RecordManager implements IRecordManager {
     }
 
     @Override
-    public RecordDtoOutput save(RecordDtoInput dtoInput, HttpServletRequest request) {
-        if (dtoInput.getRecipe()==null && dtoInput.getProduct()==null){
+    public RecordDtoOutput save(RecordDtoInput dtoInput) {
+        if (dtoInput.getRecipe() == null && dtoInput.getProduct() == null) {
             throw new DataIntegrityViolationException("At least Meal or Recipe should not be null");
         }
         try {
