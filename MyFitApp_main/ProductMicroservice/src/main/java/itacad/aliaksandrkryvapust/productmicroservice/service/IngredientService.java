@@ -58,7 +58,6 @@ public class IngredientService implements IIngredientService {
         this.ingredientRepository.deleteAllByMealId(uuid);
     }
 
-
     private void checkOptimisticLock(Long version, Ingredient currentEntity) {
         Long currentVersion = currentEntity.getDtUpdate().toEpochMilli();
         if (!currentVersion.equals(version)) {

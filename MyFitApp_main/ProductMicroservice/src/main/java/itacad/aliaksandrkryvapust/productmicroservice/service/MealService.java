@@ -87,7 +87,6 @@ public class MealService implements IMealService {
         }
     }
 
-
     private void setProductsFromDatabase(Meal meal) {
         List<UUID> productIds = meal.getIngredients().stream().map(Ingredient::getProductId)
                 .collect(Collectors.toList());

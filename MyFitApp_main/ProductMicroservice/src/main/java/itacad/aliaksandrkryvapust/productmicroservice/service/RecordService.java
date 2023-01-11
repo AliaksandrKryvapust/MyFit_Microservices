@@ -32,26 +32,8 @@ public class RecordService implements IRecordService {
     @Override
     public Record save(Record record) {
         validateInput(record);
-        setFieldsFromDatabase(record); // TODO
+        setFieldsFromDatabase(record);
         return this.recordRepository.save(record);
-    }
-
-    private void setFieldsFromDatabase(Record record) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (record.getProductId() != null) { // TODO add optional
-            Product product = this.productService.get(record.getProductId(), userDetails.getId());
-            record.setProduct(product);
-        }
-        if (record.getMealId() != null) {
-            Meal meal = this.mealService.get(record.getMealId(), userDetails.getId());
-            record.setMeal(meal);
-        }
-    }
-
-    private void validateInput(Record record) {
-        if (record.getId() != null) {
-            throw new IllegalStateException("Record id should be empty");
-        }
     }
 
     @Override
@@ -68,4 +50,23 @@ public class RecordService implements IRecordService {
     public List<Record> getRecordByTimeGap(ParamsDto paramsDto, UUID userId) {
         return this.recordRepository.getRecordByTimeGap(paramsDto.getFrom(), paramsDto.getTo(), userId);
     }
+
+    private void setFieldsFromDatabase(Record record) {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (record.getProductId() != null) {
+            Product product = this.productService.get(record.getProductId(), userDetails.getId());
+            record.setProduct(product);
+        }
+        if (record.getMealId() != null) {
+            Meal meal = this.mealService.get(record.getMealId(), userDetails.getId());
+            record.setMeal(meal);
+        }
+    }
+
+    private void validateInput(Record record) {
+        if (record.getId() != null) {
+            throw new IllegalStateException("Record id should be empty");
+        }
+    }
+
 }
