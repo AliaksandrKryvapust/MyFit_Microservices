@@ -17,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URISyntaxException;
 import java.util.UUID;
 
@@ -41,10 +40,11 @@ public class ProductManager implements IProductManager {
     }
 
     @Override
-    public ProductDtoOutput save(ProductDtoInput menuItemDtoInput, HttpServletRequest request) {
+    public ProductDtoOutput save(ProductDtoInput menuItemDtoInput) {
         try {
-            Product product = this.productService.save(productMapper.inputMapping(menuItemDtoInput));
-            this.prepareAuditData(product, productPost);
+            MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Product product = this.productService.save(productMapper.inputMapping(menuItemDtoInput, userDetails));
+            this.prepareAuditData(product, productPost, userDetails);
             return productMapper.outputMapping(product);
         } catch (URISyntaxException e) {
             throw new RuntimeException("URI to audit is incorrect");
@@ -66,7 +66,7 @@ public class ProductManager implements IProductManager {
     }
 
     @Override
-    public void delete(UUID id, HttpServletRequest request) {
+    public void delete(UUID id) {
         try {
             this.productService.delete(id);
             this.prepareAuditToSend(id);
@@ -78,10 +78,11 @@ public class ProductManager implements IProductManager {
     }
 
     @Override
-    public ProductDtoOutput update(ProductDtoInput productDtoInput, UUID id, Long version, HttpServletRequest request) {
+    public ProductDtoOutput update(ProductDtoInput productDtoInput, UUID id, Long version) {
         try {
-            Product product = this.productService.update(productMapper.inputMapping(productDtoInput), id, version);
-            this.prepareAuditData(product, productPut);
+            MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Product product = this.productService.update(productMapper.inputMapping(productDtoInput, userDetails), id, version);
+            this.prepareAuditData(product, productPut, userDetails);
             return productMapper.outputMapping(product);
         } catch (URISyntaxException e) {
             throw new RuntimeException("URI to audit is incorrect");
@@ -90,8 +91,8 @@ public class ProductManager implements IProductManager {
         }
     }
 
-    private void prepareAuditData(Product product, String productMethod) throws JsonProcessingException, URISyntaxException {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    private void prepareAuditData(Product product, String productMethod, MyUserDetails userDetails)
+            throws JsonProcessingException, URISyntaxException {
         AuditDto auditDto = this.auditMapper.productOutputMapping(product, userDetails, productMethod);
         this.auditManager.audit(auditDto);
     }
