@@ -47,8 +47,8 @@ public class RecordService implements IRecordService {
     }
 
     @Override
-    public List<Record> getRecordByTimeGap(ParamsDto paramsDto, UUID userId) {
-        return this.recordRepository.getRecordByTimeGap(paramsDto.getFrom(), paramsDto.getTo(), userId);
+    public List<Record> getRecordByTimeGap(ParamsDto paramsDto) {
+        return this.recordRepository.getRecordByTimeGap(paramsDto.getFrom(), paramsDto.getTo(), paramsDto.getUserId());
     }
 
     private void setFieldsFromDatabase(Record record) {

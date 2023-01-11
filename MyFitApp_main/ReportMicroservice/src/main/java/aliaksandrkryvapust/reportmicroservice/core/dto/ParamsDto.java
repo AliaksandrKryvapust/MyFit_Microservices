@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Builder
 @Data
@@ -23,4 +24,5 @@ public class ParamsDto {
     @PastOrPresent(message = "end date should refer to moment in past")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private final LocalDate to;
+    private final UUID userId;
 }
