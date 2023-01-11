@@ -14,11 +14,11 @@ import java.util.UUID;
 @Data
 @Jacksonized
 public class UserDto {
-    private final @NonNull UUID uuid;
-    private final @NonNull String nick;
+    private final UUID uuid;
+    private final String nick;
     private final @NonNull String mail;
     private final @NonNull EUserRole role;
-    private final @NonNull EUserStatus status;
-    private final @NonNull Instant dtCreate;
-    private final @NonNull Instant dtUpdate;
+    private final EUserStatus status;
+    private final Instant dtCreate;
+    private final Instant dtUpdate;
 }
