@@ -1,5 +1,5 @@
 package aliaksandrkryvapust.reportmicroservice.repository.entity;
 
-public enum UserRole {
+public enum EUserRole {
     USER, ADMIN
 }
