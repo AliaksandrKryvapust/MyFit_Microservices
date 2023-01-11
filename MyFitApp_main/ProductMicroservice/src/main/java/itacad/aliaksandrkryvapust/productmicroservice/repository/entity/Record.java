@@ -3,6 +3,7 @@ package itacad.aliaksandrkryvapust.productmicroservice.repository.entity;
 import lombok.*;
 import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -26,11 +27,11 @@ public class Record {
     @OneToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     @Setter
-    private Product product;
+    private @Nullable Product product;
     @OneToOne
     @JoinColumn(name = "meal_id", referencedColumnName = "id")
     @Setter
-    private Meal meal;
+    private @Nullable Meal meal;
     @Setter
     private Instant dtSupply;
     @Setter
