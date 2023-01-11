@@ -1,6 +1,7 @@
 package itacad.aliaksandrkryvapust.auditmicroservice.manager;
 
 import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.AuditDto;
+import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.output.AuditDtoOutput;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.mapper.AuditMapper;
 import itacad.aliaksandrkryvapust.auditmicroservice.manager.api.IAuditManager;
@@ -24,7 +25,7 @@ public class AuditManager implements IAuditManager {
     }
 
     @Override
-    public AuditDto save(AuditDto auditDto) {
+    public AuditDtoOutput save(AuditDto auditDto) {
         Audit audit = this.auditService.save(auditMapper.inputMapping(auditDto));
         return this.auditMapper.outputMapping(audit);
     }
@@ -35,7 +36,7 @@ public class AuditManager implements IAuditManager {
     }
 
     @Override
-    public AuditDto get(UUID id) {
+    public AuditDtoOutput get(UUID id) {
         return this.auditMapper.outputMapping(auditService.get(id));
     }
 }

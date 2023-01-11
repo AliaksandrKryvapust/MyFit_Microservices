@@ -1,7 +1,8 @@
 package itacad.aliaksandrkryvapust.auditmicroservice.core.mapper;
 
 import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.AuditDto;
-import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.UserDto;
+import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.output.AuditDtoOutput;
+import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.output.UserDtoOutput;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.Audit;
 import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.User;
@@ -34,9 +35,9 @@ public class AuditMapper {
                 .build();
     }
 
-    public AuditDto outputMapping(Audit audit) {
-        UserDto userDto = userMapper.outputMapping(audit.getUser());
-        return AuditDto.builder()
+    public AuditDtoOutput outputMapping(Audit audit) {
+        UserDtoOutput userDto = userMapper.outputMapping(audit.getUser());
+        return AuditDtoOutput.builder()
                 .id(String.valueOf(audit.getUuid()))
                 .user(userDto)
                 .text(audit.getText())
@@ -44,9 +45,9 @@ public class AuditMapper {
                 .build();
     }
 
-    public PageDtoOutput<AuditDto> outputPageMapping(Page<Audit> audits) {
-        List<AuditDto> outputs = audits.getContent().stream().map(this::outputMapping).collect(Collectors.toList());
-        return PageDtoOutput.<AuditDto>builder()
+    public PageDtoOutput<AuditDtoOutput> outputPageMapping(Page<Audit> audits) {
+        List<AuditDtoOutput> outputs = audits.getContent().stream().map(this::outputMapping).collect(Collectors.toList());
+        return PageDtoOutput.<AuditDtoOutput>builder()
                 .number(audits.getNumber() + 1)
                 .size(audits.getSize())
                 .totalPages(audits.getTotalPages())
