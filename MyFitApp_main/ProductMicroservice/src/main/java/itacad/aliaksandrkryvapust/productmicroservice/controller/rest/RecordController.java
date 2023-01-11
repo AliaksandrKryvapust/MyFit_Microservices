@@ -46,8 +46,8 @@ public class RecordController {
     }
 
     @PostMapping
-    protected ResponseEntity<RecordDtoOutput> post(@RequestBody @Valid RecordDtoInput dtoInput, HttpServletRequest request) {
-        return new ResponseEntity<>(this.recordManager.save(dtoInput, request), HttpStatus.CREATED);
+    protected ResponseEntity<RecordDtoOutput> post(@RequestBody @Valid RecordDtoInput dtoInput) {
+        return new ResponseEntity<>(this.recordManager.save(dtoInput), HttpStatus.CREATED);
     }
 
     @GetMapping("/export")

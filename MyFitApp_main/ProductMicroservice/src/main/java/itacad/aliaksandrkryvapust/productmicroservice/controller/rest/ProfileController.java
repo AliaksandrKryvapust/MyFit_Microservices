@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.UUID;
 
@@ -28,7 +27,7 @@ public class ProfileController {
     }
 
     @PostMapping
-    protected ResponseEntity<ProfileDtoOutput> post(@RequestBody @Valid ProfileDtoInput dtoInput, HttpServletRequest request) {
-        return new ResponseEntity<>(this.profileManager.save(dtoInput, request), HttpStatus.CREATED);
+    protected ResponseEntity<ProfileDtoOutput> post(@RequestBody @Valid ProfileDtoInput dtoInput) {
+        return new ResponseEntity<>(this.profileManager.save(dtoInput), HttpStatus.CREATED);
     }
 }
