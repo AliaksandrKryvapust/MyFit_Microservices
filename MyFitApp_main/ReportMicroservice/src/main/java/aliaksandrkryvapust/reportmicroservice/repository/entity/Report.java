@@ -23,10 +23,10 @@ public class Report {
     private UUID id;
     @Enumerated(EnumType.STRING)
     @Setter
-    private Status status;
+    private EStatus status;
     @Enumerated(EnumType.STRING)
     @Setter
-    private Type type;
+    private EType type;
     @Setter
     private String description;
     @Setter

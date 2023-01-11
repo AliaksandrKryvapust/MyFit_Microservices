@@ -2,8 +2,8 @@ package aliaksandrkryvapust.reportmicroservice.service;
 
 import aliaksandrkryvapust.reportmicroservice.repository.api.IReportRepository;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.Report;
-import aliaksandrkryvapust.reportmicroservice.repository.entity.Status;
-import aliaksandrkryvapust.reportmicroservice.repository.entity.Type;
+import aliaksandrkryvapust.reportmicroservice.repository.entity.EStatus;
+import aliaksandrkryvapust.reportmicroservice.repository.entity.EType;
 import aliaksandrkryvapust.reportmicroservice.service.api.IReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -51,7 +51,7 @@ public class ReportService implements IReportService {
     }
 
     @Override
-    public Optional<Report> getReport(Status status, Type type) {
+    public Optional<Report> getReport(EStatus status, EType type) {
         return this.reportRepository.findByStatusAndType(status, type);
     }
 }

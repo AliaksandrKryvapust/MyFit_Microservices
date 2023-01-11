@@ -3,10 +3,10 @@ package aliaksandrkryvapust.reportmicroservice.core.mapper;
 import aliaksandrkryvapust.reportmicroservice.core.dto.ParamsDto;
 import aliaksandrkryvapust.reportmicroservice.core.dto.ReportDtoOutput;
 import aliaksandrkryvapust.reportmicroservice.core.dto.pages.PageDtoOutput;
+import aliaksandrkryvapust.reportmicroservice.repository.entity.EType;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.Params;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.Report;
-import aliaksandrkryvapust.reportmicroservice.repository.entity.Status;
-import aliaksandrkryvapust.reportmicroservice.repository.entity.Type;
+import aliaksandrkryvapust.reportmicroservice.repository.entity.EStatus;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Page;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class ReportMapper {
 
-    public Report inputMapping(ParamsDto paramsDto, Type type, String username) {
+    public Report inputMapping(ParamsDto paramsDto, EType type, String username) {
         String from = paramsDto.getFrom().toString();
         String to = paramsDto.getTo().toString();
         Params params = Params.builder()
@@ -31,10 +31,10 @@ public class ReportMapper {
                     .params(params)
                     .type(type)
                     .username(username)
-                    .status(Status.LOADED)
+                    .status(EStatus.LOADED)
                     .description(description).build();
         } else {
-            throw new IllegalStateException("Type field is not enum value");
+            throw new IllegalStateException("EType field is not enum value");
         }
 
     }

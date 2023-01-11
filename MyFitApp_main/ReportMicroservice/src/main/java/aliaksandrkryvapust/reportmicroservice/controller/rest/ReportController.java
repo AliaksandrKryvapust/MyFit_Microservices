@@ -3,7 +3,7 @@ package aliaksandrkryvapust.reportmicroservice.controller.rest;
 import aliaksandrkryvapust.reportmicroservice.core.dto.ParamsDto;
 import aliaksandrkryvapust.reportmicroservice.core.dto.pages.PageDtoOutput;
 import aliaksandrkryvapust.reportmicroservice.manager.api.IReportManager;
-import aliaksandrkryvapust.reportmicroservice.repository.entity.Type;
+import aliaksandrkryvapust.reportmicroservice.repository.entity.EType;
 import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -55,7 +55,7 @@ public class ReportController {
     }
 
     @PostMapping("/{type}")
-    protected ResponseEntity<Object> post(@PathVariable("type") Type type, @RequestBody @Valid ParamsDto paramsDto) {
+    protected ResponseEntity<Object> post(@PathVariable("type") EType type, @RequestBody @Valid ParamsDto paramsDto) {
         this.reportManager.save(paramsDto, type);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

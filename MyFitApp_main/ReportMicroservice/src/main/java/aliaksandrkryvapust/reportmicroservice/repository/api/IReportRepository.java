@@ -1,8 +1,8 @@
 package aliaksandrkryvapust.reportmicroservice.repository.api;
 
 import aliaksandrkryvapust.reportmicroservice.repository.entity.Report;
-import aliaksandrkryvapust.reportmicroservice.repository.entity.Status;
-import aliaksandrkryvapust.reportmicroservice.repository.entity.Type;
+import aliaksandrkryvapust.reportmicroservice.repository.entity.EStatus;
+import aliaksandrkryvapust.reportmicroservice.repository.entity.EType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,5 +19,5 @@ public interface IReportRepository extends JpaRepository<Report, UUID> {
 
     Page<Report> findAllByUsername(Pageable pageable, String username);
 
-    Optional<Report> findByStatusAndType(Status status, Type type);
+    Optional<Report> findByStatusAndType(EStatus status, EType type);
 }

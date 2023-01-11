@@ -1,7 +1,7 @@
 package aliaksandrkryvapust.reportmicroservice.core.dto;
 
-import aliaksandrkryvapust.reportmicroservice.repository.entity.Status;
-import aliaksandrkryvapust.reportmicroservice.repository.entity.Type;
+import aliaksandrkryvapust.reportmicroservice.repository.entity.EStatus;
+import aliaksandrkryvapust.reportmicroservice.repository.entity.EType;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
@@ -12,8 +12,8 @@ import java.util.UUID;
 @Data
 public class ReportDtoOutput {
     private final @NonNull UUID uuid;
-    private final @NonNull Status status;
-    private final @NonNull Type type;
+    private final @NonNull EStatus status;
+    private final @NonNull EType type;
     private final @NonNull String description;
     private final @NonNull ParamsDto params;
     private final @NonNull Long dtCreate;

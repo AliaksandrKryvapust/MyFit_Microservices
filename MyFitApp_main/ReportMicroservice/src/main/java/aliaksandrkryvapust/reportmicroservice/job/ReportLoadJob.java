@@ -2,9 +2,9 @@ package aliaksandrkryvapust.reportmicroservice.job;
 
 import aliaksandrkryvapust.reportmicroservice.core.dto.job.RecordDto;
 import aliaksandrkryvapust.reportmicroservice.core.mapper.poi.XlsxRecordMapper;
+import aliaksandrkryvapust.reportmicroservice.repository.entity.EType;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.Report;
-import aliaksandrkryvapust.reportmicroservice.repository.entity.Status;
-import aliaksandrkryvapust.reportmicroservice.repository.entity.Type;
+import aliaksandrkryvapust.reportmicroservice.repository.entity.EStatus;
 import aliaksandrkryvapust.reportmicroservice.service.api.IReportService;
 import aliaksandrkryvapust.reportmicroservice.service.api.IXlsxRecordService;
 import lombok.extern.slf4j.Slf4j;
@@ -46,14 +46,14 @@ public class ReportLoadJob implements Job {
             log.info("Report Job started");
             UUID id;
             try {
-                report = this.reportService.getReport(Status.LOADED, Type.JOURNAL_FOOD).orElseThrow();
+                report = this.reportService.getReport(EStatus.LOADED, EType.JOURNAL_FOOD).orElseThrow();
                 id = report.getId();
                 log.info("New task was added");
             } catch (NoSuchElementException e) {
                 log.info("Report job, there is no data to work with");
                 return;
             }
-            this.setProgressStatus(report, Status.PROGRESS, "Request was prepared");
+            this.setProgressStatus(report, EStatus.PROGRESS, "Request was prepared");
             Mono<List<RecordDto>> resp = this.prepareRequest(report);
             report = this.reportService.get(id, report.getUsername());
             List<RecordDto> records = resp.blockOptional().orElseThrow();
@@ -61,7 +61,7 @@ public class ReportLoadJob implements Job {
             this.saveRecordAsFile(report, records);
         } catch (Exception e) {
             log.error(e.getMessage());
-            report.setStatus(Status.ERROR);
+            report.setStatus(EStatus.ERROR);
             this.reportService.save(report);
         }
     }
@@ -69,7 +69,7 @@ public class ReportLoadJob implements Job {
     private void saveRecordAsFile(Report report, List<RecordDto> records) throws IOException {
         byte[] convertedFile = xlsxRecordService.getRecordXlsData(recordMapper.listInputMapping(records));
         report.setFileValue(convertedFile);
-        this.setProgressStatus(report, Status.DONE, "Report Job finished");
+        this.setProgressStatus(report, EStatus.DONE, "Report Job finished");
     }
 
     private Mono<List<RecordDto>> prepareRequest(Report report) {
@@ -85,7 +85,7 @@ public class ReportLoadJob implements Job {
         return resp;
     }
 
-    private void setProgressStatus(Report report, Status progress, String logInfo) {
+    private void setProgressStatus(Report report, EStatus progress, String logInfo) {
         report.setStatus(progress);
         this.reportService.save(report);
         log.info(logInfo);

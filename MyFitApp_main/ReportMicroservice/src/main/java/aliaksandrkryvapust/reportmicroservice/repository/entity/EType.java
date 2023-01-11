@@ -1,5 +1,5 @@
 package aliaksandrkryvapust.reportmicroservice.repository.entity;
 
-public enum Type {
+public enum EType {
     JOURNAL_FOOD
 }

@@ -1,12 +1,12 @@
 package aliaksandrkryvapust.reportmicroservice.controller.validation;
 
-import aliaksandrkryvapust.reportmicroservice.repository.entity.Type;
+import aliaksandrkryvapust.reportmicroservice.repository.entity.EType;
 import org.springframework.core.convert.converter.Converter;
 
-public class StringToTypeConverter implements Converter<String, Type> {
+public class StringToTypeConverter implements Converter<String, EType> {
 
     @Override
-    public Type convert(String source) {
-        return Type.valueOf(source.toUpperCase());
+    public EType convert(String source) {
+        return EType.valueOf(source.toUpperCase());
     }
 }
