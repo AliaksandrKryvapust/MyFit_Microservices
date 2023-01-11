@@ -42,7 +42,6 @@ public class JwtFilter extends OncePerRequestFilter {
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         if (this.checkMicroserviceToken(request, response, filterChain)) return;
         this.checkJwtToken(request, response, filterChain);
-
     }
 
     private void checkJwtToken(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
