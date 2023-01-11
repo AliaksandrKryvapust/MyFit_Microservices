@@ -14,7 +14,7 @@ import java.util.UUID;
 @Data
 @Jacksonized
 public class UserDto {
-    private final UUID uuid;
+    private final @NonNull UUID uuid;
     private final String nick;
     private final @NonNull String mail;
     private final @NonNull EUserRole role;
