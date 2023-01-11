@@ -26,6 +26,8 @@ public class Meal {
     private List<Ingredient> ingredients;
     @Setter
     private String title;
+    @Setter
+    private UUID userId;
     @Column(updatable = false)
     @org.hibernate.annotations.Generated(GenerationTime.INSERT)
     private Instant dtCreate;

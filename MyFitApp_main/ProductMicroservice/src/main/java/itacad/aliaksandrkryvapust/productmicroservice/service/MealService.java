@@ -1,5 +1,6 @@
 package itacad.aliaksandrkryvapust.productmicroservice.service;
 
+import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetails;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.api.IMealRepository;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Ingredient;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Meal;
@@ -10,6 +11,8 @@ import itacad.aliaksandrkryvapust.productmicroservice.service.api.IProductServic
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +43,51 @@ public class MealService implements IMealService {
         return meal;
     }
 
+    @Override
+    public Page<Meal> get(Pageable pageable, UUID userId) {
+        return this.mealRepository.findAllByUserId(pageable, userId);
+    }
+
+    @Override
+    public Meal get(UUID id, UUID userId) {
+        return this.mealRepository.findByIdAndUserId(id, userId).orElseThrow();
+    }
+
+    @Override
+    @Transactional
+    public void delete(UUID id) {
+        Meal currentEntity = this.mealRepository.findById(id).orElseThrow();
+        this.checkCredentials(currentEntity);
+        this.ingredientService.deleteAllByMealId(id);
+        this.mealRepository.deleteById(id);
+    }
+
+    private void checkCredentials(Meal currentEntity) {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!currentEntity.getUserId().equals(userDetails.getId())){
+            throw new BadCredentialsException("It`s forbidden to modify not private data");
+        }
+    }
+
+    @Override
+    @Transactional
+    public Meal update(Meal meal, UUID id, Long version) {
+        this.validateInput(meal);
+        Meal currentEntity = this.mealRepository.findById(id).orElseThrow();
+        this.checkOptimisticLock(version, currentEntity);
+        this.checkCredentials(currentEntity);
+        this.delete(id);
+        return this.save(meal);
+    }
+
+    private void checkOptimisticLock(Long version, Meal currentEntity) {
+        Long currentVersion = currentEntity.getDtUpdate().toEpochMilli();
+        if (!currentVersion.equals(version)) {
+            throw new OptimisticLockException("meal table update failed, version does not match update denied");
+        }
+    }
+
+
     private void setProductsFromDatabase(Meal meal) {
         List<UUID> productIds = meal.getIngredients().stream().map(Ingredient::getProductId)
                 .collect(Collectors.toList());
@@ -55,34 +103,5 @@ public class MealService implements IMealService {
         if (meal.getId() != null || meal.getDtUpdate() != null) {
             throw new IllegalStateException("Meal id & version should be empty");
         }
-    }
-
-    @Override
-    public Page<Meal> get(Pageable pageable) {
-        return this.mealRepository.findAll(pageable);
-    }
-
-    @Override
-    public Meal get(UUID id) {
-        return this.mealRepository.findById(id).orElseThrow();
-    }
-
-    @Override
-    @Transactional
-    public void delete(UUID id) {
-        this.ingredientService.deleteAllByMealId(id);
-        this.mealRepository.deleteById(id);
-    }
-
-    @Override
-    @Transactional
-    public Meal update(Meal meal, UUID id, Long version) {
-        Meal currentEntity = this.mealRepository.findById(id).orElseThrow();
-        Long currentVersion = currentEntity.getDtUpdate().toEpochMilli();
-        if (!currentVersion.equals(version)) {
-            throw new OptimisticLockException("meal table update failed, version does not match update denied");
-        }
-        this.delete(id);
-        return this.save(meal);
     }
 }

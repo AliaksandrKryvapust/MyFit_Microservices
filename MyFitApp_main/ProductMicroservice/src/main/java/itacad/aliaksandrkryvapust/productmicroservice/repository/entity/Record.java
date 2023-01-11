@@ -33,12 +33,8 @@ public class Record {
     private Meal meal;
     @Setter
     private Instant dtSupply;
-    @Column(name = "meal_id", insertable = false, updatable = false)
-    private UUID userId;
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
     @Setter
-    private User user;
+    private UUID userId;
     @Setter
     private Integer weight;
     @Column(updatable = false)

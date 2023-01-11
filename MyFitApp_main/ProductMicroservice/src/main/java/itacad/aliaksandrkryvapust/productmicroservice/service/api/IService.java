@@ -7,6 +7,6 @@ import java.util.UUID;
 
 public interface IService<TYPE> {
     TYPE save(TYPE type);
-    Page<TYPE> get(Pageable pageable);
-    TYPE get(UUID id);
+    Page<TYPE> get(Pageable pageable, UUID userId);
+    TYPE get(UUID id, UUID userId);
 }

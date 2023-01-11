@@ -1,6 +1,7 @@
 package itacad.aliaksandrkryvapust.productmicroservice.service;
 
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.export.ParamsDto;
+import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetails;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.api.IRecordRepository;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Meal;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Product;
@@ -10,6 +11,7 @@ import itacad.aliaksandrkryvapust.productmicroservice.service.api.IProductServic
 import itacad.aliaksandrkryvapust.productmicroservice.service.api.IRecordService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,12 +37,13 @@ public class RecordService implements IRecordService {
     }
 
     private void setFieldsFromDatabase(Record record) {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (record.getProductId() != null) { // TODO add optional
-            Product product = this.productService.get(record.getProductId());
+            Product product = this.productService.get(record.getProductId(), userDetails.getId());
             record.setProduct(product);
         }
         if (record.getMealId() != null) {
-            Meal meal = this.mealService.get(record.getMealId());
+            Meal meal = this.mealService.get(record.getMealId(), userDetails.getId());
             record.setMeal(meal);
         }
     }
@@ -52,17 +55,17 @@ public class RecordService implements IRecordService {
     }
 
     @Override
-    public Page<Record> get(Pageable pageable) {
-        return this.recordRepository.findAll(pageable);
+    public Page<Record> get(Pageable pageable, UUID userId) {
+        return this.recordRepository.findAllByUserId(pageable, userId);
     }
 
     @Override
-    public Record get(UUID id) {
-        return this.recordRepository.findById(id).orElseThrow();
+    public Record get(UUID id, UUID userId) {
+        return this.recordRepository.findByIdAndUserId(id, userId).orElseThrow();
     }
 
     @Override
-    public List<Record> getRecordByTimeGap(ParamsDto paramsDto) {
-        return this.recordRepository.getRecordByTimeGap(paramsDto.getFrom(), paramsDto.getTo());
+    public List<Record> getRecordByTimeGap(ParamsDto paramsDto, UUID userId) {
+        return this.recordRepository.getRecordByTimeGap(paramsDto.getFrom(), paramsDto.getTo(), userId);
     }
 }

@@ -7,13 +7,14 @@ import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.microservi
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.productmicroservice.core.mapper.MealMapper;
 import itacad.aliaksandrkryvapust.productmicroservice.core.mapper.microservices.AuditMapper;
+import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetails;
 import itacad.aliaksandrkryvapust.productmicroservice.manager.api.IMealManager;
 import itacad.aliaksandrkryvapust.productmicroservice.manager.audit.AuditManager;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Meal;
 import itacad.aliaksandrkryvapust.productmicroservice.service.api.IMealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,18 +28,14 @@ public class MealManager implements IMealManager {
     private final static String mealDelete = "Meal was deleted";
     private final MealMapper mealMapper;
     private final IMealService mealService;
-    private final JwtTokenUtil jwtTokenUtil;
-    private final UserService userService;
     private final AuditMapper auditMapper;
     private final AuditManager auditManager;
 
     @Autowired
-    public MealManager(MealMapper mealMapper, IMealService mealService, JwtTokenUtil jwtTokenUtil,
-                       UserService userService, AuditMapper auditMapper, AuditManager auditManager) {
+    public MealManager(MealMapper mealMapper, IMealService mealService,
+                       AuditMapper auditMapper, AuditManager auditManager) {
         this.mealMapper = mealMapper;
         this.mealService = mealService;
-        this.jwtTokenUtil = jwtTokenUtil;
-        this.userService = userService;
         this.auditMapper = auditMapper;
         this.auditManager = auditManager;
     }
@@ -47,9 +44,7 @@ public class MealManager implements IMealManager {
     public MealDtoOutput save(MealDtoInput dtoInput, HttpServletRequest request) {
         try {
             Meal meal = this.mealService.save(mealMapper.inputMapping(dtoInput));
-            User user = getUser(request);
-            AuditDto auditDto = this.auditMapper.mealOutputMapping(meal, user, mealPost);
-            this.auditManager.audit(auditDto);
+            this.prepareAuditToSend(meal, mealPost);
             return mealMapper.outputMapping(meal);
         } catch (URISyntaxException e) {
             throw new RuntimeException("URI to audit is incorrect");
@@ -58,30 +53,23 @@ public class MealManager implements IMealManager {
         }
     }
 
-    private User getUser(HttpServletRequest request) {
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION).substring("Bearer ".length());
-        String username = jwtTokenUtil.getUsername(token);
-        return this.userService.getUser(username);
-    }
-
     @Override
     public PageDtoOutput get(Pageable pageable) {
-        return mealMapper.outputPageMapping(this.mealService.get(pageable));
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return mealMapper.outputPageMapping(this.mealService.get(pageable, userDetails.getId()));
     }
 
     @Override
     public MealDtoOutput get(UUID id) {
-        return mealMapper.outputMapping(this.mealService.get(id));
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return mealMapper.outputMapping(this.mealService.get(id, userDetails.getId()));
     }
 
     @Override
     public void delete(UUID id, HttpServletRequest request) {
         try {
             this.mealService.delete(id);
-            User user = getUser(request);
-            Meal meal = Meal.builder().id(id).build();
-            AuditDto auditDto = this.auditMapper.mealOutputMapping(meal, user, mealDelete);
-            this.auditManager.audit(auditDto);
+            this.prepareAuditToSend(id);
         } catch (URISyntaxException e) {
             throw new RuntimeException("URI to audit is incorrect");
         } catch (JsonProcessingException e) {
@@ -90,17 +78,28 @@ public class MealManager implements IMealManager {
     }
 
     @Override
-    public MealDtoOutput update(MealDtoInput dtoInput, UUID id, Long version, HttpServletRequest request) {
+    public MealDtoOutput update(MealDtoInput dtoInput, UUID id, Long version, HttpServletRequest request) { // TODO remove request
         try {
             Meal meal = this.mealService.update(mealMapper.inputMapping(dtoInput), id, version);
-            User user = getUser(request);
-            AuditDto auditDto = this.auditMapper.mealOutputMapping(meal, user, mealPut);
-            this.auditManager.audit(auditDto);
+            this.prepareAuditToSend(meal, mealPut);
             return mealMapper.outputMapping(meal);
         } catch (URISyntaxException e) {
             throw new RuntimeException("URI to audit is incorrect");
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to convert to JSON");
         }
+    }
+
+    private void prepareAuditToSend(Meal meal, String mealMethod) throws JsonProcessingException, URISyntaxException {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AuditDto auditDto = this.auditMapper.mealOutputMapping(meal, userDetails, mealMethod);
+        this.auditManager.audit(auditDto);
+    }
+
+    private void prepareAuditToSend(UUID id) throws JsonProcessingException, URISyntaxException {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Meal meal = Meal.builder().id(id).build();
+        AuditDto auditDto = this.auditMapper.mealOutputMapping(meal, userDetails, mealDelete);
+        this.auditManager.audit(auditDto);
     }
 }

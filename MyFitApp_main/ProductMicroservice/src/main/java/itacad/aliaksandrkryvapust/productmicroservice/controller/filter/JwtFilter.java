@@ -93,7 +93,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private TokenValidationDto createTokenValidationDto() {
         return TokenValidationDto.builder()
-                .id(UUID.fromString("1f260e1116434bc792818b3974d1aa2e"))
+                .id(UUID.fromString("6639d1e8-7e73-4888-a489-9ca9247d2826"))
                 .username("report@email")
                 .role(REPORT)
                 .authenticated(true)

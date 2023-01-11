@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS app.products
     fats          double precision            NOT NULL,
     carbohydrates double precision            NOT NULL,
     weight        bigint                      NOT NULL,
+    user_id       uuid                        NOT NULL,
     dt_create     timestamp without time zone NOT NULL DEFAULT now(),
     dt_update     timestamp without time zone NOT NULL DEFAULT now(),
     PRIMARY KEY (id)
@@ -24,6 +25,7 @@ CREATE TABLE IF NOT EXISTS app.meal
 (
     id        uuid,
     title     character varying(100)      NOT NULL,
+    user_id   uuid                        NOT NULL,
     dt_create timestamp without time zone NOT NULL DEFAULT now(),
     dt_update timestamp without time zone NOT NULL DEFAULT now(),
     PRIMARY KEY (id)
@@ -51,7 +53,7 @@ CREATE TABLE IF NOT EXISTS app.records
     weight     bigint                      NOT NULL,
     dt_create  timestamp without time zone NOT NULL DEFAULT now(),
     dt_supply  timestamp without time zone NOT NULL,
-    user_id    uuid                        NOT NULL REFERENCES app.users (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
+    user_id    uuid                        NOT NULL,
     PRIMARY KEY (id)
 );
 

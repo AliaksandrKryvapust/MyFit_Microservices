@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -31,19 +32,19 @@ public class RecordMapper {
         this.mealMapper = mealMapper;
     }
 
-    public Record inputMapping(RecordDtoInput recordDtoInput, User user) {
+    public Record inputMapping(RecordDtoInput recordDtoInput, UUID userId) {
         if (recordDtoInput.getRecipe() == null) {
             return Record.builder().productId(recordDtoInput.getProduct().getUuid())
                     .weight(recordDtoInput.getWeight())
                     .dtSupply(recordDtoInput.getDtSupply())
-                    .user(user)
+                    .userId(userId)
                     .build();
         } else {
             return Record.builder()
                     .mealId(recordDtoInput.getRecipe().getUuid())
                     .weight(recordDtoInput.getWeight())
                     .dtSupply(recordDtoInput.getDtSupply())
-                    .user(user)
+                    .userId(userId)
                     .build();
         }
     }
