@@ -16,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URISyntaxException;
 import java.util.UUID;
 
@@ -37,12 +36,11 @@ public class ProfileManager implements IProfileManager {
     }
 
     @Override
-    public ProfileDtoOutput save(ProfileDtoInput dtoInput, HttpServletRequest request) {
+    public ProfileDtoOutput save(ProfileDtoInput dtoInput) {
         try {
             MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Profile profile = this.profileService.save(profileMapper.inputMapping(dtoInput, userDetails));
-            AuditDto auditDto = this.auditMapper.profileOutputMapping(profile, userDetails, profilePost);
-            this.auditManager.audit(auditDto);
+            this.prepareAuditToSend(userDetails, profile);
             return this.profileMapper.outputMapping(profile);
         } catch (
                 URISyntaxException e) {
@@ -63,5 +61,10 @@ public class ProfileManager implements IProfileManager {
     public ProfileDtoOutput get(UUID id) {
         MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return this.profileMapper.outputMapping(profileService.get(id, userDetails.getId()));
+    }
+
+    private void prepareAuditToSend(MyUserDetails userDetails, Profile profile) throws JsonProcessingException, URISyntaxException {
+        AuditDto auditDto = this.auditMapper.profileOutputMapping(profile, userDetails, profilePost);
+        this.auditManager.audit(auditDto);
     }
 }
