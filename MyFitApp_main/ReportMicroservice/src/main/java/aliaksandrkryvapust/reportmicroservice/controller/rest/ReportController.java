@@ -44,7 +44,7 @@ public class ReportController {
             this.prepareHeadersAndOutputStream(uuid, response, data);
             response.flushBuffer();
         } catch (IOException e) {
-            throw new RuntimeException("Ошибка формирования выгрузки отчёта");
+            throw new RuntimeException("Error during xlsx export");
         }
     }
 
