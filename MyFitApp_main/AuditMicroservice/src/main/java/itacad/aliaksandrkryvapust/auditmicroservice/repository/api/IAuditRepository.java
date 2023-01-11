@@ -7,5 +7,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface IAuditRepository extends JpaRepository<Audit, UUID> {
-    Optional<Audit> findByUserId(UUID id);
+    Optional<Audit> findByUuid(UUID id);
 }
