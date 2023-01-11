@@ -8,9 +8,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import javax.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
@@ -27,21 +26,27 @@ public class SecurityConfig {
         // we don't need CSRF because our token is invulnerable
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-//                .antMatchers(HttpMethod.GET, "/api/v1/report", "/api/v1/report/**").hasAuthority(UserRole.ADMIN.name())
                 .anyRequest().authenticated()
                 .and()
                 // Set exception handler
                 .exceptionHandling()
-                .authenticationEntryPoint((request, response, exception) -> {
-                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                    response.setHeader("content-type", "application/json");
-                    response.getWriter().write("This authorization token is prohibited from making requests to this address");
-                })
+                .accessDeniedHandler(accessDeniedHandler())
+                .authenticationEntryPoint(authenticationEntryPoint())
                 .and()
                 // don't create session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
+    }
+
+    @Bean
+    RestAuthenticationEntryPoint authenticationEntryPoint() {
+        return new RestAuthenticationEntryPoint();
     }
 }
