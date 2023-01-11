@@ -1,11 +1,10 @@
 package itacad.aliaksandrkryvapust.auditmicroservice.controller.filter;
 
 
-import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.TokenValidationDto;
+import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.input.TokenValidationDto;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.mapper.UserMapper;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.security.MyUserDetails;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.security.UserPrincipal;
-import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.EUserRole;
 import lombok.NonNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -94,7 +93,7 @@ public class JwtFilter extends OncePerRequestFilter {
         return TokenValidationDto.builder()
                 .id(UUID.fromString("6639d1e8-7e73-4888-a489-9ca9247d2826"))
                 .username("audit@email")
-                .role(EUserRole.AUDIT)
+                .role("AUDIT")
                 .authenticated(true)
                 .build();
     }
