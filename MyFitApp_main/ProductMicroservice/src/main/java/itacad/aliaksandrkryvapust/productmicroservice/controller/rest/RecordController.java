@@ -24,7 +24,7 @@ import java.util.UUID;
 
 @RestController
 @Validated
-@RequestMapping("/api/v1/journal/food")
+@RequestMapping("/api/v1")
 public class RecordController {
     private final IRecordManager recordManager;
 
@@ -33,24 +33,21 @@ public class RecordController {
         this.recordManager = recordManager;
     }
 
-    @GetMapping(params = {"page", "size"})
+    @GetMapping(path = "profile/{uuid_profile}/journal/food",params = {"page", "size"})
     protected ResponseEntity<PageDtoOutput> getPage(@RequestParam("page") int page,
-                                                    @RequestParam("size") int size) {
+                                                    @RequestParam("size") int size,
+                                                    @PathVariable (name = "uuid_profile") UUID uuidProfile) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(recordManager.get(pageable));
+        return ResponseEntity.ok(recordManager.get(pageable, uuidProfile));
     }
 
-    @GetMapping("/{id}")
-    protected ResponseEntity<RecordDtoOutput> get(@PathVariable UUID id) {
-        return ResponseEntity.ok(recordManager.get(id));
+    @PostMapping("profile/{uuid_profile}/journal/food")
+    protected ResponseEntity<RecordDtoOutput> post(@RequestBody @Valid RecordDtoInput dtoInput,
+                                                   @PathVariable (name = "uuid_profile") UUID uuidProfile) {
+        return new ResponseEntity<>(this.recordManager.save(dtoInput, uuidProfile), HttpStatus.CREATED);
     }
 
-    @PostMapping
-    protected ResponseEntity<RecordDtoOutput> post(@RequestBody @Valid RecordDtoInput dtoInput, HttpServletRequest request) {
-        return new ResponseEntity<>(this.recordManager.save(dtoInput, request), HttpStatus.CREATED);
-    }
-
-    @GetMapping("/export")
+    @GetMapping("/journal/food/export")
     protected ResponseEntity<List<RecordDto>> export(HttpServletRequest request) {
         ParamsDto paramsDto = getParamsDto(request);
         return ResponseEntity.ok(recordManager.getRecordByTimeGap(paramsDto));

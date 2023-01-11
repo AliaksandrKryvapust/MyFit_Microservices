@@ -6,6 +6,8 @@ import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.UserDtoOut
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.productmicroservice.core.mapper.microservices.UserMapper;
 import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetails;
+import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.EActivityType;
+import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.EProfileSex;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Profile;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.User;
 import org.springframework.context.annotation.Scope;
@@ -32,8 +34,8 @@ public class ProfileMapper {
                 .weight(dtoInput.getWeight())
                 .dtBirthday(dtoInput.getDtBirthday())
                 .target(dtoInput.getTarget())
-                .activityType(dtoInput.getActivityType())
-                .sex(dtoInput.getSex())
+                .activityType(EActivityType.valueOf(dtoInput.getActivityType()))
+                .sex(EProfileSex.valueOf(dtoInput.getSex()))
                 .user(user).build();
     }
 

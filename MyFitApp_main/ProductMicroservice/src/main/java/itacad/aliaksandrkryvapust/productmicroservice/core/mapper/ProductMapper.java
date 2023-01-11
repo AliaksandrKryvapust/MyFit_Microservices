@@ -3,6 +3,7 @@ package itacad.aliaksandrkryvapust.productmicroservice.core.mapper;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.ProductDtoInput;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.ProductDtoOutput;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.pages.PageDtoOutput;
+import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetails;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Product;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -15,13 +16,14 @@ import java.util.stream.Collectors;
 @Component
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class ProductMapper {
-    public Product inputMapping(ProductDtoInput productDtoInput) {
+    public Product inputMapping(ProductDtoInput productDtoInput, MyUserDetails userDetails) {
         return Product.builder().title(productDtoInput.getTitle())
                 .calories(productDtoInput.getCalories())
                 .proteins(productDtoInput.getProteins())
                 .fats(productDtoInput.getFats())
                 .carbohydrates(productDtoInput.getCarbohydrates())
-                .weight(productDtoInput.getWeight()).build();
+                .weight(productDtoInput.getWeight())
+                .userId(userDetails.getId()).build();
     }
 
     public ProductDtoOutput outputMapping(Product product) {

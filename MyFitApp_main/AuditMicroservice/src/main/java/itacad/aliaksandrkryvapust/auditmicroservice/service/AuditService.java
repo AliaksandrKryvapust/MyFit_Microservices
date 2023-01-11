@@ -35,7 +35,7 @@ public class AuditService implements IAuditService {
 
     private void setUser(Audit audit, Optional<User> currentUser) {
         if (currentUser.isPresent()){
-            if (!currentUser.get().equals(audit.getUser())){
+            if (!currentUser.get().equals(audit.getUser()) && audit.getUser().getDtCreate()!=null){
                 User user = this.userRepository.saveAndFlush(audit.getUser());
                 audit.setUser(user);
             } else {

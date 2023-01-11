@@ -1,7 +1,10 @@
 package itacad.aliaksandrkryvapust.auditmicroservice.core.mapper;
 
+import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.TokenValidationDto;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.UserDto;
+import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.output.UserDtoOutput;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.pages.PageDtoOutput;
+import itacad.aliaksandrkryvapust.auditmicroservice.core.security.UserPrincipal;
 import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.User;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -15,6 +18,15 @@ import java.util.stream.Collectors;
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserMapper {
 
+    public UserPrincipal inputValidationMapping(TokenValidationDto dto) {
+        return UserPrincipal.builder()
+                .id(dto.getId())
+                .username(dto.getUsername())
+                .authenticated(dto.getAuthenticated())
+                .role(dto.getRole())
+                .build();
+    }
+
     public User inputMapping(UserDto userDto) {
         return User.builder().id(userDto.getUuid())
                 .username(userDto.getNick())
@@ -26,8 +38,8 @@ public class UserMapper {
                 .build();
     }
 
-    public UserDto outputMapping(User user) {
-        return UserDto.builder()
+    public UserDtoOutput outputMapping(User user) {
+        return UserDtoOutput.builder()
                 .uuid(user.getId())
                 .dtCreate(user.getDtCreate())
                 .dtUpdate(user.getDtUpdate())
@@ -38,9 +50,9 @@ public class UserMapper {
                 .build();
     }
 
-    public PageDtoOutput<UserDto> outputPageMapping(Page<User> record) {
-        List<UserDto> outputs = record.getContent().stream().map(this::outputMapping).collect(Collectors.toList());
-        return PageDtoOutput.<UserDto>builder()
+    public PageDtoOutput<UserDtoOutput> outputPageMapping(Page<User> record) {
+        List<UserDtoOutput> outputs = record.getContent().stream().map(this::outputMapping).collect(Collectors.toList());
+        return PageDtoOutput.<UserDtoOutput>builder()
                 .number(record.getNumber() + 1)
                 .size(record.getSize())
                 .totalPages(record.getTotalPages())

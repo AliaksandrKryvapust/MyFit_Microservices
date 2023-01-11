@@ -22,9 +22,9 @@ public class User{
     @Column(nullable = false, unique = true)
     private String email;
     @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private EUserRole role;
     @Enumerated(EnumType.STRING)
-    private UserStatus status;
+    private EUserStatus status;
     private Instant dtCreate;
     private Instant dtUpdate;
 

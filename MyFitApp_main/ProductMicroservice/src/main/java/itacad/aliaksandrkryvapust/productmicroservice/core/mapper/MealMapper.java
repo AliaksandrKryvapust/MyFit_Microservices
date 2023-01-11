@@ -4,6 +4,7 @@ import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.MealDtoInpu
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.IngredientDtoOutput;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.MealDtoOutput;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.pages.PageDtoOutput;
+import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetails;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Ingredient;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Meal;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +26,12 @@ public class MealMapper {
         this.ingredientMapper = ingredientMapper;
     }
 
-    public Meal inputMapping(MealDtoInput mealDtoInput) {
+    public Meal inputMapping(MealDtoInput mealDtoInput, MyUserDetails userDetails) {
         List<Ingredient> ingredient = mealDtoInput.getComposition().stream().map(ingredientMapper::inputMapping)
                 .collect(Collectors.toList());
         return Meal.builder().ingredients(ingredient)
                 .title(mealDtoInput.getTitle())
+                .userId(userDetails.getId())
                 .build();
     }
 

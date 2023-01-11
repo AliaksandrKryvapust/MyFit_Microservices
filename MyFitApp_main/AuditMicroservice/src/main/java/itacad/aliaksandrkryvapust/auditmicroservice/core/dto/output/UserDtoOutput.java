@@ -1,24 +1,22 @@
-package itacad.aliaksandrkryvapust.auditmicroservice.core.dto;
+package itacad.aliaksandrkryvapust.auditmicroservice.core.dto.output;
 
 import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.EUserRole;
 import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.EUserStatus;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
-import lombok.extern.jackson.Jacksonized;
 
 import java.time.Instant;
 import java.util.UUID;
 
-@Builder
 @Data
-@Jacksonized
-public class UserDto {
+@Builder
+public class UserDtoOutput {
     private final @NonNull UUID uuid;
-    private final String nick;
+    private final @NonNull String nick;
     private final @NonNull String mail;
     private final @NonNull EUserRole role;
-    private final EUserStatus status;
-    private final Instant dtCreate;
-    private final Instant dtUpdate;
+    private final @NonNull EUserStatus status;
+    private final @NonNull Instant dtCreate;
+    private final @NonNull Instant dtUpdate;
 }

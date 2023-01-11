@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.UUID;
 
@@ -40,19 +39,19 @@ public class ProductController {
     }
 
     @PostMapping
-    protected ResponseEntity<ProductDtoOutput> post(@RequestBody @Valid ProductDtoInput dtoInput, HttpServletRequest request) {
-        return new ResponseEntity<>(this.productManager.save(dtoInput, request), HttpStatus.CREATED);
+    protected ResponseEntity<ProductDtoOutput> post(@RequestBody @Valid ProductDtoInput dtoInput) {
+        return new ResponseEntity<>(this.productManager.save(dtoInput), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}/dt_update/{version}")
     protected ResponseEntity<ProductDtoOutput> put(@PathVariable UUID id, @PathVariable(name = "version")
-    String version, @Valid @RequestBody ProductDtoInput dtoInput, HttpServletRequest request) {
-        return ResponseEntity.ok(this.productManager.update(dtoInput, id, Long.parseLong(version), request));
+    String version, @Valid @RequestBody ProductDtoInput dtoInput) {
+        return ResponseEntity.ok(this.productManager.update(dtoInput, id, Long.parseLong(version)));
     }
 
     @DeleteMapping("/{id}")
-    protected ResponseEntity<Object> delete(@PathVariable UUID id, HttpServletRequest request) {
-        productManager.delete(id, request);
+    protected ResponseEntity<Object> delete(@PathVariable UUID id) {
+        productManager.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

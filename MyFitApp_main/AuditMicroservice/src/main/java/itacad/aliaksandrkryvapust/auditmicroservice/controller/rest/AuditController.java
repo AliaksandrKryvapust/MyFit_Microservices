@@ -1,6 +1,7 @@
 package itacad.aliaksandrkryvapust.auditmicroservice.controller.rest;
 
 import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.AuditDto;
+import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.output.AuditDtoOutput;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.auditmicroservice.manager.api.IAuditManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class AuditController {
     }
 
     @GetMapping("/{uuid}")
-    protected ResponseEntity<AuditDto> get(@PathVariable UUID uuid) {
+    protected ResponseEntity<AuditDtoOutput> get(@PathVariable UUID uuid) {
         return ResponseEntity.ok(auditManager.get(uuid));
     }
 

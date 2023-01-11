@@ -13,14 +13,13 @@ import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetail
 import itacad.aliaksandrkryvapust.productmicroservice.manager.api.IRecordManager;
 import itacad.aliaksandrkryvapust.productmicroservice.manager.audit.AuditManager;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Record;
+import itacad.aliaksandrkryvapust.productmicroservice.service.api.IProfileService;
 import itacad.aliaksandrkryvapust.productmicroservice.service.api.IRecordService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.UUID;
@@ -30,25 +29,27 @@ public class RecordManager implements IRecordManager {
     private final static String recordPost = "New record was created";
     private final RecordMapper recordMapper;
     private final IRecordService recordService;
+    private final IProfileService profileService;
     private final AuditMapper auditMapper;
     private final AuditManager auditManager;
 
-    @Autowired
-    public RecordManager(RecordMapper recordMapper, IRecordService recordService,
+    public RecordManager(RecordMapper recordMapper, IRecordService recordService, IProfileService profileService,
                          AuditMapper auditMapper, AuditManager auditManager) {
         this.recordMapper = recordMapper;
         this.recordService = recordService;
+        this.profileService = profileService;
         this.auditMapper = auditMapper;
         this.auditManager = auditManager;
     }
 
     @Override
-    public RecordDtoOutput save(RecordDtoInput dtoInput, HttpServletRequest request) {
-        if (dtoInput.getRecipe()==null && dtoInput.getProduct()==null){
+    public RecordDtoOutput save(RecordDtoInput dtoInput, UUID uuid_profile) {
+        if (dtoInput.getRecipe() == null && dtoInput.getProduct() == null) {
             throw new DataIntegrityViolationException("At least Meal or Recipe should not be null");
         }
         try {
             MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            this.checkCredentials(uuid_profile, userDetails);
             Record record = this.recordService.save(recordMapper.inputMapping(dtoInput, userDetails.getId()));
             AuditDto auditDto = this.auditMapper.recordOutputMapping(record, userDetails, recordPost);
             this.auditManager.audit(auditDto);
@@ -61,12 +62,12 @@ public class RecordManager implements IRecordManager {
     }
 
     @Override
-    public PageDtoOutput get(Pageable pageable) {
+    public PageDtoOutput get(Pageable pageable, UUID uuidProfile) {
         MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        this.checkCredentials(uuidProfile, userDetails);
         return recordMapper.outputPageMapping(this.recordService.get(pageable, userDetails.getId()));
     }
 
-    @Override
     public RecordDtoOutput get(UUID id) {
         MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return recordMapper.outputMapping(this.recordService.get(id, userDetails.getId()));
@@ -78,4 +79,9 @@ public class RecordManager implements IRecordManager {
         List<Record> records = this.recordService.getRecordByTimeGap(paramsDto, userDetails.getId());
         return this.recordMapper.listOutputMapping(records);
     }
+
+    private void checkCredentials(UUID uuidProfile, MyUserDetails userDetails) {
+        this.profileService.get(uuidProfile, userDetails.getId());
+    }
+
 }
