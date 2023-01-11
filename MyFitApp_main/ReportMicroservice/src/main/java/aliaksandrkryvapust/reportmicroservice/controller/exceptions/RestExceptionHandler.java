@@ -50,8 +50,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<SingleExceptionDto> handleBadCredentials(Exception ex) {
         this.makeLog(ex);
         SingleExceptionDto message = SingleExceptionDto.builder().logref("error")
-                .message("To make a request to this address, you need to transfer an authorization token").build();
-        return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
+                .message("This authorization token is prohibited from making requests to this address").build();
+        return new ResponseEntity<>(message, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler({AccessControlException.class})
