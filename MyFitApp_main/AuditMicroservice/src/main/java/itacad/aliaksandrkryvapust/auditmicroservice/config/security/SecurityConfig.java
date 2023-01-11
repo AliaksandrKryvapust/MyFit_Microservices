@@ -1,7 +1,7 @@
 package itacad.aliaksandrkryvapust.auditmicroservice.config.security;
 
 import itacad.aliaksandrkryvapust.auditmicroservice.controller.filter.JwtFilter;
-import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.UserRole;
+import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.EUserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +29,7 @@ public class SecurityConfig {
         // we don't need CSRF because our token is invulnerable
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/v1/audit", "/api/v1/audit/**").hasAuthority(UserRole.ADMIN.name())
+                .antMatchers(HttpMethod.GET, "/api/v1/audit", "/api/v1/audit/**").hasAuthority(EUserRole.ADMIN.name())
                 .anyRequest().authenticated()
                 .and()
                 // Set exception handler

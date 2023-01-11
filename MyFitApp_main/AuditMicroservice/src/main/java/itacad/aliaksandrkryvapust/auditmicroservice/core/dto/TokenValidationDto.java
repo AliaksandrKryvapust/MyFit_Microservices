@@ -1,6 +1,6 @@
 package itacad.aliaksandrkryvapust.auditmicroservice.core.dto;
 
-import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.UserRole;
+import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.EUserRole;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
@@ -12,5 +12,5 @@ import lombok.extern.jackson.Jacksonized;
 public class TokenValidationDto {
     private final @NonNull Boolean authenticated;
     private final @NonNull String username;
-    private final @NonNull UserRole role;
+    private final @NonNull EUserRole role;
 }

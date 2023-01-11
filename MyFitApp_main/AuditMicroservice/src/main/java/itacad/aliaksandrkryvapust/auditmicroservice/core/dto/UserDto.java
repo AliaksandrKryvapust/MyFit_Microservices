@@ -1,7 +1,7 @@
 package itacad.aliaksandrkryvapust.auditmicroservice.core.dto;
 
-import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.UserRole;
-import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.UserStatus;
+import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.EUserRole;
+import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.EUserStatus;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
@@ -17,8 +17,8 @@ public class UserDto {
     private final @NonNull UUID uuid;
     private final @NonNull String nick;
     private final @NonNull String mail;
-    private final @NonNull UserRole role;
-    private final @NonNull UserStatus status;
+    private final @NonNull EUserRole role;
+    private final @NonNull EUserStatus status;
     private final @NonNull Instant dtCreate;
     private final @NonNull Instant dtUpdate;
 }

@@ -29,7 +29,7 @@ public class Audit {
     private String text;
     @Enumerated(EnumType.STRING)
     @Setter
-    private Type type;
+    private EType type;
     @org.hibernate.annotations.Generated(GenerationTime.INSERT)
     @Setter
     private Instant dtCreate;
