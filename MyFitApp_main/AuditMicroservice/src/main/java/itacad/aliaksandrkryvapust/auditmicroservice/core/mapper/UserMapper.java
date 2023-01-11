@@ -1,10 +1,12 @@
 package itacad.aliaksandrkryvapust.auditmicroservice.core.mapper;
 
-import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.TokenValidationDto;
-import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.UserDto;
+import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.input.TokenValidationDto;
+import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.input.UserDto;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.output.UserDtoOutput;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.security.UserPrincipal;
+import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.EUserRole;
+import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.EUserStatus;
 import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.User;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -23,7 +25,7 @@ public class UserMapper {
                 .id(dto.getId())
                 .username(dto.getUsername())
                 .authenticated(dto.getAuthenticated())
-                .role(dto.getRole())
+                .role(EUserRole.valueOf(dto.getRole()))
                 .build();
     }
 
@@ -31,8 +33,8 @@ public class UserMapper {
         return User.builder().id(userDto.getUuid())
                 .username(userDto.getNick())
                 .email(userDto.getMail())
-                .role(userDto.getRole())
-                .status(userDto.getStatus())
+                .role(EUserRole.valueOf(userDto.getRole()))
+                .status(EUserStatus.valueOf(userDto.getStatus()))
                 .dtCreate(userDto.getDtCreate())
                 .dtUpdate(userDto.getDtUpdate())
                 .build();

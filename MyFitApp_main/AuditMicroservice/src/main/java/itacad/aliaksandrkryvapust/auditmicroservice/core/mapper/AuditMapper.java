@@ -1,10 +1,11 @@
 package itacad.aliaksandrkryvapust.auditmicroservice.core.mapper;
 
-import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.AuditDto;
+import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.input.AuditDto;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.output.AuditDtoOutput;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.output.UserDtoOutput;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.Audit;
+import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.EType;
 import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -31,7 +32,7 @@ public class AuditMapper {
         return Audit.builder().uuid(UUID.fromString(auditDto.getId()))
                 .user(user)
                 .text(auditDto.getText())
-                .type(auditDto.getType())
+                .type(EType.valueOf(auditDto.getType()))
                 .build();
     }
 
