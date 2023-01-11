@@ -1,5 +1,7 @@
 package itacad.aliaksandrkryvapust.productmicroservice.core.dto.input;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import itacad.aliaksandrkryvapust.productmicroservice.controller.validator.api.IValidEnum;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.EUserRole;
 import lombok.Builder;
@@ -15,6 +17,7 @@ import java.util.UUID;
 @Builder
 @Data
 @Jacksonized
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TokenValidationDto {
     @NotNull(message = "id cannot be null")
     @Size(min = 2, max = 200, message = "id should contain from 2 to 200 letters")
