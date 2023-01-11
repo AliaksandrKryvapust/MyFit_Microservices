@@ -1,7 +1,7 @@
 package itacad.aliaksandrkryvapust.productmicroservice.core.mapper.microservices;
 
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.microservices.AuditDto;
-import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.microservices.Type;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.microservices.EType;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.microservices.UserDto;
 import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetails;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Meal;
@@ -29,7 +29,7 @@ public class AuditMapper {
                 .id(String.valueOf(record.getId()))
                 .user(userDto)
                 .text(text)
-                .type(Type.JOURNAL_FOOD)
+                .type(EType.JOURNAL_FOOD)
                 .build();
     }
 
@@ -39,7 +39,7 @@ public class AuditMapper {
                 .id(String.valueOf(product.getId()))
                 .user(userDto)
                 .text(text)
-                .type(Type.PRODUCT)
+                .type(EType.PRODUCT)
                 .build();
     }
 
@@ -49,7 +49,7 @@ public class AuditMapper {
                 .id(String.valueOf(meal.getId()))
                 .user(userDto)
                 .text(text)
-                .type(Type.RECIPE)
+                .type(EType.RECIPE)
                 .build();
     }
 
@@ -59,7 +59,7 @@ public class AuditMapper {
                 .id(String.valueOf(profile.getId()))
                 .user(userDto)
                 .text(text)
-                .type(Type.PROFILE)
+                .type(EType.PROFILE)
                 .build();
     }
 }
