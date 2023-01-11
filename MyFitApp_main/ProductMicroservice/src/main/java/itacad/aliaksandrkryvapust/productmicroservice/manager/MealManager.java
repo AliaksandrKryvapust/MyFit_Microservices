@@ -17,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URISyntaxException;
 import java.util.UUID;
 
@@ -41,10 +40,11 @@ public class MealManager implements IMealManager {
     }
 
     @Override
-    public MealDtoOutput save(MealDtoInput dtoInput, HttpServletRequest request) {
+    public MealDtoOutput save(MealDtoInput dtoInput) {
         try {
-            Meal meal = this.mealService.save(mealMapper.inputMapping(dtoInput));
-            this.prepareAuditToSend(meal, mealPost);
+            MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Meal meal = this.mealService.save(mealMapper.inputMapping(dtoInput, userDetails));
+            this.prepareAuditToSend(meal, mealPost, userDetails);
             return mealMapper.outputMapping(meal);
         } catch (URISyntaxException e) {
             throw new RuntimeException("URI to audit is incorrect");
@@ -66,7 +66,7 @@ public class MealManager implements IMealManager {
     }
 
     @Override
-    public void delete(UUID id, HttpServletRequest request) {
+    public void delete(UUID id) {
         try {
             this.mealService.delete(id);
             this.prepareAuditToSend(id);
@@ -78,10 +78,11 @@ public class MealManager implements IMealManager {
     }
 
     @Override
-    public MealDtoOutput update(MealDtoInput dtoInput, UUID id, Long version, HttpServletRequest request) { // TODO remove request
+    public MealDtoOutput update(MealDtoInput dtoInput, UUID id, Long version) {
         try {
-            Meal meal = this.mealService.update(mealMapper.inputMapping(dtoInput), id, version);
-            this.prepareAuditToSend(meal, mealPut);
+            MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Meal meal = this.mealService.update(mealMapper.inputMapping(dtoInput, userDetails), id, version);
+            this.prepareAuditToSend(meal, mealPut, userDetails);
             return mealMapper.outputMapping(meal);
         } catch (URISyntaxException e) {
             throw new RuntimeException("URI to audit is incorrect");
@@ -90,8 +91,8 @@ public class MealManager implements IMealManager {
         }
     }
 
-    private void prepareAuditToSend(Meal meal, String mealMethod) throws JsonProcessingException, URISyntaxException {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    private void prepareAuditToSend(Meal meal, String mealMethod, MyUserDetails userDetails)
+            throws JsonProcessingException, URISyntaxException {
         AuditDto auditDto = this.auditMapper.mealOutputMapping(meal, userDetails, mealMethod);
         this.auditManager.audit(auditDto);
     }
