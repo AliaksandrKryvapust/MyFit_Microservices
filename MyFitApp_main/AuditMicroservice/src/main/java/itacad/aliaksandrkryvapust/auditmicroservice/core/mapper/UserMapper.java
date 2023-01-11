@@ -1,8 +1,10 @@
 package itacad.aliaksandrkryvapust.auditmicroservice.core.mapper;
 
+import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.TokenValidationDto;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.UserDto;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.output.UserDtoOutput;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.pages.PageDtoOutput;
+import itacad.aliaksandrkryvapust.auditmicroservice.core.security.UserPrincipal;
 import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.User;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -15,6 +17,15 @@ import java.util.stream.Collectors;
 @Component
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserMapper {
+
+    public UserPrincipal inputValidationMapping(TokenValidationDto dto) {
+        return UserPrincipal.builder()
+                .id(dto.getId())
+                .username(dto.getUsername())
+                .authenticated(dto.getAuthenticated())
+                .role(dto.getRole())
+                .build();
+    }
 
     public User inputMapping(UserDto userDto) {
         return User.builder().id(userDto.getUuid())
