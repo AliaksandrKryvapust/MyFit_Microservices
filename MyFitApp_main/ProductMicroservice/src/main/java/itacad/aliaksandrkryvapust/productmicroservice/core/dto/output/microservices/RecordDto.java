@@ -5,12 +5,13 @@ import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.ProductDto
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
+import org.springframework.lang.Nullable;
 
 @Builder
 @Data
 public class RecordDto {
     private final @NonNull Integer weight;
     private final @NonNull String dtSupply;
-    private ProductDtoOutput product;
-    private MealDtoOutput recipe;
+    private @Nullable ProductDtoOutput product;
+    private @Nullable MealDtoOutput recipe;
 }

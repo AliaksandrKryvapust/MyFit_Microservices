@@ -26,7 +26,6 @@ import java.util.UUID;
 
 import static itacad.aliaksandrkryvapust.productmicroservice.core.Constants.TOKEN_HEADER;
 import static itacad.aliaksandrkryvapust.productmicroservice.core.Constants.TOKEN_VERIFICATION_URI;
-import static itacad.aliaksandrkryvapust.productmicroservice.repository.entity.EUserRole.REPORT;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Component
@@ -95,7 +94,7 @@ public class JwtFilter extends OncePerRequestFilter {
         return TokenValidationDto.builder()
                 .id(UUID.fromString("6639d1e8-7e73-4888-a489-9ca9247d2826"))
                 .username("report@email")
-                .role(REPORT)
+                .role("REPORT")
                 .authenticated(true)
                 .dtUpdate(Instant.now())
                 .build();
