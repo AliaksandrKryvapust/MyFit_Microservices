@@ -33,6 +33,16 @@ public class AuditService implements IAuditService {
         return this.auditRepository.save(audit);
     }
 
+    @Override
+    public Page<Audit> get(Pageable pageable) {
+        return this.auditRepository.findAll(pageable);
+    }
+
+    @Override
+    public Audit get(UUID id) {
+        return this.auditRepository.findByUuid(id).orElseThrow();
+    }
+
     private void setUser(Audit audit, Optional<User> currentUser) {
         if (currentUser.isPresent()){
             if (!currentUser.get().equals(audit.getUser()) && audit.getUser().getDtCreate()!=null){
@@ -42,15 +52,5 @@ public class AuditService implements IAuditService {
                 audit.setUser(currentUser.get());
             }
         }
-    }
-
-    @Override
-    public Page<Audit> get(Pageable pageable) {
-        return this.auditRepository.findAll(pageable);
-    }
-
-    @Override
-    public Audit get(UUID id) {
-        return this.auditRepository.findByUuid(id).orElseThrow();
     }
 }
