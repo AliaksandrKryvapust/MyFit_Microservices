@@ -1,6 +1,6 @@
 package itacad.aliaksandrkryvapust.auditmicroservice.manager;
 
-import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.AuditDto;
+import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.input.AuditDto;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.output.AuditDtoOutput;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.mapper.AuditMapper;
