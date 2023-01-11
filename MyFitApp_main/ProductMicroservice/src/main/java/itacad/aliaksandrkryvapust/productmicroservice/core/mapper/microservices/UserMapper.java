@@ -32,6 +32,7 @@ public class UserMapper {
 
     public UserDto outputAuditMapping(MyUserDetails userDetails) {
         return UserDto.builder()
+                .uuid(userDetails.getId())
                 .mail(userDetails.getUsername())
                 .role(EUserRole.valueOf(userDetails.getAuthorities().stream().findFirst().orElseThrow().getAuthority()))
                 .build();
