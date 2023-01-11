@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface IRecordService extends IService<Record>{
-    List<Record> getRecordByTimeGap(ParamsDto paramsDto, UUID id);
+    List<Record> getRecordByTimeGap(ParamsDto paramsDto);
 }

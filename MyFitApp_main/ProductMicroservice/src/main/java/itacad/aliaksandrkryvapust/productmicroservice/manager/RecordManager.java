@@ -44,15 +44,12 @@ public class RecordManager implements IRecordManager {
 
     @Override
     public RecordDtoOutput save(RecordDtoInput dtoInput, UUID uuid_profile) {
-        if (dtoInput.getRecipe() == null && dtoInput.getProduct() == null) {
-            throw new DataIntegrityViolationException("At least Meal or Recipe should not be null");
-        }
+        this.validateInput(dtoInput);
         try {
             MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             this.checkCredentials(uuid_profile, userDetails);
             Record record = this.recordService.save(recordMapper.inputMapping(dtoInput, userDetails.getId()));
-            AuditDto auditDto = this.auditMapper.recordOutputMapping(record, userDetails, recordPost);
-            this.auditManager.audit(auditDto);
+            this.prepareDataForAudit(userDetails, record);
             return recordMapper.outputMapping(record);
         } catch (URISyntaxException e) {
             throw new RuntimeException("URI to audit is incorrect");
@@ -75,8 +72,7 @@ public class RecordManager implements IRecordManager {
 
     @Override
     public List<RecordDto> getRecordByTimeGap(ParamsDto paramsDto) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<Record> records = this.recordService.getRecordByTimeGap(paramsDto, userDetails.getId());
+        List<Record> records = this.recordService.getRecordByTimeGap(paramsDto);
         return this.recordMapper.listOutputMapping(records);
     }
 
@@ -84,4 +80,14 @@ public class RecordManager implements IRecordManager {
         this.profileService.get(uuidProfile, userDetails.getId());
     }
 
+    private void prepareDataForAudit(MyUserDetails userDetails, Record record) throws JsonProcessingException, URISyntaxException {
+        AuditDto auditDto = this.auditMapper.recordOutputMapping(record, userDetails, recordPost);
+        this.auditManager.audit(auditDto);
+    }
+
+    private void validateInput(RecordDtoInput dtoInput) {
+        if (dtoInput.getRecipe() == null && dtoInput.getProduct() == null) {
+            throw new DataIntegrityViolationException("At least Meal or Recipe should not be null");
+        }
+    }
 }

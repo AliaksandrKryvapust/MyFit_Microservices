@@ -5,6 +5,7 @@ import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.references.
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
+import org.springframework.lang.Nullable;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -20,9 +21,9 @@ public class RecordDtoInput {
     @Past(message = "supply date should refer to moment in the past")
     private final Instant dtSupply;
     @Valid
-    private final ProductReferenceDtoInput product;
+    private final @Nullable ProductReferenceDtoInput product;
     @Valid
-    private final MealReferenceDtoInput recipe;
+    private final @Nullable MealReferenceDtoInput recipe;
     @NotNull(message = "proteins cannot be null")
     @Positive(message = "proteins should be positive")
     private final Integer weight;

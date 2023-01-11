@@ -29,7 +29,7 @@ public class TokenValidationDto {
     private final String username;
     @NotNull(message = "user role cannot be null")
     @IValidEnum(enumClass = EUserRole.class, message = "user role does not match")
-    private final EUserRole role;
+    private final String role;
     @NotNull(message = "dtUpdate cannot be null")
     @Past(message = "dtUpdate should refer to moment in the past")
     private final Instant dtUpdate;

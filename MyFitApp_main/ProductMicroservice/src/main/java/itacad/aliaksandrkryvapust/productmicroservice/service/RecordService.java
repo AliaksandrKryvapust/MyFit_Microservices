@@ -32,13 +32,28 @@ public class RecordService implements IRecordService {
     @Override
     public Record save(Record record) {
         validateInput(record);
-        setFieldsFromDatabase(record); // TODO
+        setFieldsFromDatabase(record);
         return this.recordRepository.save(record);
+    }
+
+    @Override
+    public Page<Record> get(Pageable pageable, UUID userId) {
+        return this.recordRepository.findAllByUserId(pageable, userId);
+    }
+
+    @Override
+    public Record get(UUID id, UUID userId) {
+        return this.recordRepository.findByIdAndUserId(id, userId).orElseThrow();
+    }
+
+    @Override
+    public List<Record> getRecordByTimeGap(ParamsDto paramsDto) {
+        return this.recordRepository.getRecordByTimeGap(paramsDto.getFrom(), paramsDto.getTo(), paramsDto.getUserId());
     }
 
     private void setFieldsFromDatabase(Record record) {
         MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (record.getProductId() != null) { // TODO add optional
+        if (record.getProductId() != null) {
             Product product = this.productService.get(record.getProductId(), userDetails.getId());
             record.setProduct(product);
         }
@@ -54,18 +69,4 @@ public class RecordService implements IRecordService {
         }
     }
 
-    @Override
-    public Page<Record> get(Pageable pageable, UUID userId) {
-        return this.recordRepository.findAllByUserId(pageable, userId);
-    }
-
-    @Override
-    public Record get(UUID id, UUID userId) {
-        return this.recordRepository.findByIdAndUserId(id, userId).orElseThrow();
-    }
-
-    @Override
-    public List<Record> getRecordByTimeGap(ParamsDto paramsDto, UUID userId) {
-        return this.recordRepository.getRecordByTimeGap(paramsDto.getFrom(), paramsDto.getTo(), userId);
-    }
 }

@@ -19,7 +19,7 @@ public class UserMapper {
                 .id(dto.getId())
                 .username(dto.getUsername())
                 .authenticated(dto.getAuthenticated())
-                .role(dto.getRole())
+                .role(EUserRole.valueOf(dto.getRole()))
                 .dtUpdate(dto.getDtUpdate()).build();
     }
 

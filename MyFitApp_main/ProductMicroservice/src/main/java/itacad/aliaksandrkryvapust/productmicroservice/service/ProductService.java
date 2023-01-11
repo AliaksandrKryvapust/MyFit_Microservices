@@ -66,7 +66,6 @@ public class ProductService implements IProductService {
         return this.productRepository.findAllById(uuids);
     }
 
-
     private void checkCredentials(Product currentEntity) {
         MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!currentEntity.getUserId().equals(userDetails.getId())){

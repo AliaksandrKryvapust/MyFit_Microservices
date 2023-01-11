@@ -56,7 +56,10 @@ public class RecordController {
     private ParamsDto getParamsDto(HttpServletRequest request) {
         final LocalDate dateFrom = LocalDate.parse(request.getHeader("from"));
         final LocalDate dateTo = LocalDate.parse(request.getHeader("to"));
-        return ParamsDto.builder().from(dateFrom.atStartOfDay().toInstant(ZoneOffset.UTC))
-                .to(dateTo.atTime(LocalTime.MAX).toInstant(ZoneOffset.UTC)).build();
+        final UUID userId = UUID.fromString(request.getHeader("id"));
+        return ParamsDto.builder()
+                .from(dateFrom.atStartOfDay().toInstant(ZoneOffset.UTC))
+                .to(dateTo.atTime(LocalTime.MAX).toInstant(ZoneOffset.UTC))
+                .userId(userId).build();
     }
 }
