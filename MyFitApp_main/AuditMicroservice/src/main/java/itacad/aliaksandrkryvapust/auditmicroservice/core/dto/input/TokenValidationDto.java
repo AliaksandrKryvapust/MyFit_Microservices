@@ -1,4 +1,4 @@
-package itacad.aliaksandrkryvapust.auditmicroservice.core.dto;
+package itacad.aliaksandrkryvapust.auditmicroservice.core.dto.input;
 
 import itacad.aliaksandrkryvapust.auditmicroservice.controller.validator.api.IValidEnum;
 import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.EUserRole;
@@ -24,5 +24,5 @@ public class TokenValidationDto {
     private final String username;
     @NotNull(message = "user role cannot be null")
     @IValidEnum(enumClass = EUserRole.class, message = "user role does not match")
-    private final EUserRole role;
+    private final String role;
 }
