@@ -1,5 +1,6 @@
 package aliaksandrkryvapust.reportmicroservice.repository.entity;
 
+import aliaksandrkryvapust.reportmicroservice.core.dto.output.microservices.EType;
 import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -33,7 +34,8 @@ public class Report {
     @Embedded
     private Params params;
     @Setter
-    private String username;
+    @Embedded
+    private User user;
     @Basic(fetch = FetchType.LAZY)
     @Fetch(FetchMode.SELECT)
     @org.hibernate.annotations.Type(type="org.hibernate.type.BinaryType")
