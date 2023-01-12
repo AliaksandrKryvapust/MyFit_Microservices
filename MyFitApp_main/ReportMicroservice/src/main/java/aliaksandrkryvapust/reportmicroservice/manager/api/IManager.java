@@ -1,7 +1,7 @@
 package aliaksandrkryvapust.reportmicroservice.manager.api;
 
-import aliaksandrkryvapust.reportmicroservice.core.dto.pages.PageDtoOutput;
-import aliaksandrkryvapust.reportmicroservice.repository.entity.EType;
+import aliaksandrkryvapust.reportmicroservice.core.dto.output.microservices.EType;
+import aliaksandrkryvapust.reportmicroservice.core.dto.output.pages.PageDtoOutput;
 import org.springframework.data.domain.Pageable;
 
 import java.util.UUID;

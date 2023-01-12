@@ -1,7 +1,7 @@
 package aliaksandrkryvapust.reportmicroservice.manager.api;
 
-import aliaksandrkryvapust.reportmicroservice.core.dto.ParamsDto;
-import aliaksandrkryvapust.reportmicroservice.core.dto.ReportDtoOutput;
+import aliaksandrkryvapust.reportmicroservice.core.dto.input.ParamsDto;
+import aliaksandrkryvapust.reportmicroservice.core.dto.output.ReportDtoOutput;
 
 import java.util.UUID;
 
