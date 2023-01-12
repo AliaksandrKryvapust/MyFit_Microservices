@@ -25,7 +25,4 @@ public class ParamsDto {
     @PastOrPresent(message = "end date should refer to moment in past")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private final LocalDate to;
-    @NotNull(message = "userId cannot be null")
-    @Size(min = 10, max = 100, message = "userId should contain from 2 to 100 letters")
-    private final UUID userId;
 }

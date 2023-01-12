@@ -1,9 +1,11 @@
 package aliaksandrkryvapust.reportmicroservice.core.mapper;
 
-import aliaksandrkryvapust.reportmicroservice.core.dto.ParamsDto;
-import aliaksandrkryvapust.reportmicroservice.core.dto.ReportDtoOutput;
-import aliaksandrkryvapust.reportmicroservice.core.dto.pages.PageDtoOutput;
-import aliaksandrkryvapust.reportmicroservice.repository.entity.EType;
+import aliaksandrkryvapust.reportmicroservice.core.dto.input.ParamsDto;
+import aliaksandrkryvapust.reportmicroservice.core.dto.output.ParamsDtoOutput;
+import aliaksandrkryvapust.reportmicroservice.core.dto.output.ReportDtoOutput;
+import aliaksandrkryvapust.reportmicroservice.core.dto.output.microservices.EType;
+import aliaksandrkryvapust.reportmicroservice.core.dto.output.pages.PageDtoOutput;
+import aliaksandrkryvapust.reportmicroservice.core.security.MyUserDetails;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.Params;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.Report;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.EStatus;
@@ -19,18 +21,18 @@ import java.util.stream.Collectors;
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class ReportMapper {
 
-    public Report inputMapping(ParamsDto paramsDto, EType type, String username) {
+    public Report inputMapping(ParamsDto paramsDto, EType type, MyUserDetails userDetails) {
         String from = paramsDto.getFrom().toString();
         String to = paramsDto.getTo().toString();
         Params params = Params.builder()
                 .start((paramsDto.getFrom()))
                 .finish(paramsDto.getTo()).build();
         if (type.name().equals("JOURNAL_FOOD")) {
-            String description = String.format("Meal records of user %s from %s to %s.", username, from, to);
+            String description = String.format("Meal records of user %s from %s to %s.", userDetails.getUsername(), from, to);
             return Report.builder()
                     .params(params)
                     .type(type)
-                    .username(username)
+                    .username(userDetails.getUsername())
                     .status(EStatus.LOADED)
                     .description(description).build();
         } else {
@@ -40,7 +42,7 @@ public class ReportMapper {
     }
 
     public ReportDtoOutput outputMapping(Report report) {
-        ParamsDto paramsDto = ParamsDto.builder()
+        ParamsDtoOutput paramsDto = ParamsDtoOutput.builder()
                 .from(report.getParams().getStart())
                 .to(report.getParams().getFinish()).build();
         return ReportDtoOutput.builder()
