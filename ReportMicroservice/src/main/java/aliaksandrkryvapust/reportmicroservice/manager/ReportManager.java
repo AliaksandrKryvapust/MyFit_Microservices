@@ -53,13 +53,13 @@ public class ReportManager implements IReportManager {
     @Override
     public PageDtoOutput get(Pageable pageable) {
         MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return this.reportMapper.outputPageMapping(reportService.get(pageable, userDetails.getUsername()));
+        return this.reportMapper.outputPageMapping(reportService.get(pageable, userDetails));
     }
 
     @Override
     public ReportDtoOutput get(UUID id) {
         MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return this.reportMapper.outputMapping(reportService.get(id, userDetails.getUsername()));
+        return this.reportMapper.outputMapping(reportService.get(id, userDetails));
     }
 
     @Override
