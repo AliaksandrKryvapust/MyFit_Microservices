@@ -1,8 +1,7 @@
 package aliaksandrkryvapust.reportmicroservice.core.dto.output;
 
-import aliaksandrkryvapust.reportmicroservice.core.dto.input.ParamsDto;
+import aliaksandrkryvapust.reportmicroservice.core.dto.output.microservices.EType;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.EStatus;
-import aliaksandrkryvapust.reportmicroservice.repository.entity.EType;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;

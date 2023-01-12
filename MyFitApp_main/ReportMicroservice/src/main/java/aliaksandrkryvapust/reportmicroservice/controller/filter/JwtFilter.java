@@ -1,7 +1,7 @@
 package aliaksandrkryvapust.reportmicroservice.controller.filter;
 
 import aliaksandrkryvapust.reportmicroservice.core.dto.input.TokenValidationDto;
-import aliaksandrkryvapust.reportmicroservice.core.mapper.UserMapper;
+import aliaksandrkryvapust.reportmicroservice.core.mapper.microservices.UserMapper;
 import aliaksandrkryvapust.reportmicroservice.core.security.MyUserDetails;
 import aliaksandrkryvapust.reportmicroservice.core.security.UserPrincipal;
 import lombok.NonNull;
