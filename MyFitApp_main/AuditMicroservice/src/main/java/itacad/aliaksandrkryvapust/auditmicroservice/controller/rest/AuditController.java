@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -32,8 +33,8 @@ public class AuditController {
     }
 
     @GetMapping("/{uuid}")
-    protected ResponseEntity<AuditDtoOutput> get(@PathVariable UUID uuid) {
-        return ResponseEntity.ok(auditManager.get(uuid));
+    protected ResponseEntity<List<AuditDtoOutput>> get(@PathVariable UUID uuid) {
+        return ResponseEntity.ok(auditManager.getByRecord(uuid));
     }
 
     @PostMapping
