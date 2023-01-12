@@ -56,6 +56,11 @@ public class ReportService implements IReportService {
         return this.reportRepository.findByStatusAndType(status, type);
     }
 
+    @Override
+    public Report getWithoutCredentialsCheck(UUID id) {
+        return this.reportRepository.findById(id).orElseThrow();
+    }
+
     private void checkCredentials(MyUserDetails userDetails, Page<Report> reports) {
         reports.forEach((i) -> this.checkCredential(userDetails, i));
     }

@@ -55,7 +55,7 @@ public class ReportLoadJob implements Job {
             }
             this.setProgressStatus(report, EStatus.PROGRESS, "Request was prepared");
             Mono<List<RecordDto>> resp = this.prepareRequest(report);
-            report = this.reportService.get(id, report.getUser().getUsername());
+            report = this.reportService.getWithoutCredentialsCheck(id);
             List<RecordDto> records = resp.blockOptional().orElseThrow();
             log.info("Data from response was extracted");
             this.saveRecordAsFile(report, records);
