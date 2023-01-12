@@ -1,4 +1,4 @@
-package aliaksandrkryvapust.reportmicroservice.core.dto.pages;
+package aliaksandrkryvapust.reportmicroservice.core.dto.output.pages;
 
 import lombok.Builder;
 import lombok.Data;

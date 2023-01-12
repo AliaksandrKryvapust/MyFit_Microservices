@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.extern.jackson.Jacksonized;
+import org.springframework.lang.Nullable;
 
 @Builder
 @Data
@@ -14,6 +15,6 @@ import lombok.extern.jackson.Jacksonized;
 public class RecordDto {
     private final @NonNull Integer weight;
     private final @NonNull String dtSupply;
-    private ProductDto product;
-    private MealDto recipe;
+    private @Nullable ProductDto product;
+    private @Nullable MealDto recipe;
 }
