@@ -1,0 +1,468 @@
+2022-12-26 12:04:10,948 INFO org.hibernate.validator.internal.util.Version [background-preinit] HV000001: Hibernate Validator 6.2.5.Final
+2022-12-26 12:04:10,974 INFO org.springframework.boot.StartupInfoLogger [main] Starting MyFitApp using Java 11.0.16.1 on Zodiac-PC with PID 2088 (G:\Java\MyFitApp_main\target\classes started by User in G:\Java\MyFitApp_main)
+2022-12-26 12:04:10,977 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-12-26 12:04:13,412 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2022-12-26 12:04:13,413 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-12-26 12:04:13,414 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.69]
+2022-12-26 12:04:13,582 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-12-26 12:04:13,700 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-12-26 12:04:13,762 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.6.14.Final
+2022-12-26 12:04:13,897 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-12-26 12:04:14,186 WARN org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2022-12-26 12:04:14,190 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001005: using driver [org.postgresql.Driver] at URL [jdbc:postgresql://localhost:5432/my_fit]
+2022-12-26 12:04:14,191 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001001: Connection properties: {password=****, user=postgres}
+2022-12-26 12:04:14,192 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001003: Autocommit mode: false
+2022-12-26 12:04:14,196 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections [main] HHH000115: Hibernate connection pool size: 10 (min=1)
+2022-12-26 12:04:14,405 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2022-12-26 12:04:15,171 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-12-26 12:04:16,374 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2022-12-26 12:04:16,412 INFO org.springframework.boot.StartupInfoLogger [main] Started MyFitApp in 6.268 seconds (JVM running for 8.037)
+2022-12-26 12:07:10,719 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-2] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-12-26 12:07:10,750 WARN itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter [http-nio-8080-exec-2] JWT token does not start with Bearer string
+2022-12-26 12:07:11,386 ERROR itacad.aliaksandrkryvapust.usermicroservice.controller.exceptions.RestExceptionHandler [http-nio-8080-exec-2] There is no PasswordEncoder mapped for the id "null"	null
+java.lang.IllegalArgumentException: There is no PasswordEncoder mapped for the id "null"
+2022-12-26 12:12:31,541 WARN itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter [http-nio-8080-exec-4] JWT token does not start with Bearer string
+2022-12-26 12:12:31,558 ERROR itacad.aliaksandrkryvapust.usermicroservice.controller.exceptions.RestExceptionHandler [http-nio-8080-exec-4] There is no PasswordEncoder mapped for the id "null"	null
+java.lang.IllegalArgumentException: There is no PasswordEncoder mapped for the id "null"
+2022-12-26 12:12:53,456 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState [SpringApplicationShutdownHook] HHH10001008: Cleaning up connection pool [jdbc:postgresql://localhost:5432/my_fit]
+2022-12-26 12:13:03,222 INFO org.hibernate.validator.internal.util.Version [background-preinit] HV000001: Hibernate Validator 6.2.5.Final
+2022-12-26 12:13:03,254 INFO org.springframework.boot.StartupInfoLogger [main] Starting MyFitApp using Java 11.0.16.1 on Zodiac-PC with PID 2864 (G:\Java\MyFitApp_main\target\classes started by User in G:\Java\MyFitApp_main)
+2022-12-26 12:13:03,254 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-12-26 12:13:06,292 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2022-12-26 12:13:06,292 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-12-26 12:13:06,307 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.69]
+2022-12-26 12:13:06,479 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-12-26 12:13:06,620 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-12-26 12:13:06,854 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.6.14.Final
+2022-12-26 12:13:07,120 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-12-26 12:13:07,386 WARN org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2022-12-26 12:13:07,386 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001005: using driver [org.postgresql.Driver] at URL [jdbc:postgresql://localhost:5432/my_fit]
+2022-12-26 12:13:07,386 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001001: Connection properties: {password=****, user=postgres}
+2022-12-26 12:13:07,386 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001003: Autocommit mode: false
+2022-12-26 12:13:07,401 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections [main] HHH000115: Hibernate connection pool size: 10 (min=1)
+2022-12-26 12:13:07,605 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2022-12-26 12:13:08,601 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-12-26 12:13:10,132 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2022-12-26 12:13:10,226 INFO org.springframework.boot.StartupInfoLogger [main] Started MyFitApp in 8.018 seconds (JVM running for 10.953)
+2022-12-26 12:13:21,167 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-12-26 12:13:21,215 WARN itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter [http-nio-8080-exec-1] JWT token does not start with Bearer string
+2022-12-26 12:14:52,805 ERROR itacad.aliaksandrkryvapust.usermicroservice.controller.exceptions.RestExceptionHandler [http-nio-8080-exec-1] There is no PasswordEncoder mapped for the id "null"	null
+java.lang.IllegalArgumentException: There is no PasswordEncoder mapped for the id "null"
+2022-12-26 12:14:57,114 WARN itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter [http-nio-8080-exec-4] JWT token does not start with Bearer string
+2022-12-26 12:19:20,249 ERROR itacad.aliaksandrkryvapust.usermicroservice.controller.exceptions.RestExceptionHandler [http-nio-8080-exec-4] There is no PasswordEncoder mapped for the id "null"	null
+java.lang.IllegalArgumentException: There is no PasswordEncoder mapped for the id "null"
+2022-12-26 12:19:54,656 WARN itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter [http-nio-8080-exec-6] JWT token does not start with Bearer string
+2022-12-26 12:21:12,920 WARN itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter [http-nio-8080-exec-9] JWT token does not start with Bearer string
+2022-12-26 12:24:10,282 ERROR org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-3] Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+io.jsonwebtoken.security.SignatureException: JWT signature does not match locally computed signature. JWT validity cannot be asserted and should not be trusted.
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:399)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:529)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parseClaimsJws(DefaultJwtParser.java:589)
+	at io.jsonwebtoken.impl.ImmutableJwtParser.parseClaimsJws(ImmutableJwtParser.java:173)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getAllClaims(JwtTokenUtil.java:36)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getClaim(JwtTokenUtil.java:30)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getUsername(JwtTokenUtil.java:22)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter.doFilterInternal(JwtFilter.java:44)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:89)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:112)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:82)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:55)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:221)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:186)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:354)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:267)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:177)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:135)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:360)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:399)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:891)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1784)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2022-12-26 12:34:32,552 WARN itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter [http-nio-8080-exec-10] JWT token does not start with Bearer string
+2022-12-26 12:44:50,513 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState [SpringApplicationShutdownHook] HHH10001008: Cleaning up connection pool [jdbc:postgresql://localhost:5432/my_fit]
+2022-12-26 21:27:52,702 INFO org.hibernate.validator.internal.util.Version [background-preinit] HV000001: Hibernate Validator 6.2.5.Final
+2022-12-26 21:27:52,734 INFO org.springframework.boot.StartupInfoLogger [main] Starting MyFitApp using Java 11.0.16.1 on Zodiac-PC with PID 14728 (G:\Java\MyFitApp_main\target\classes started by User in G:\Java\MyFitApp_main)
+2022-12-26 21:27:52,737 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-12-26 21:27:55,059 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2022-12-26 21:27:55,060 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-12-26 21:27:55,061 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.69]
+2022-12-26 21:27:55,232 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-12-26 21:27:55,363 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-12-26 21:27:55,429 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.6.14.Final
+2022-12-26 21:27:55,605 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-12-26 21:27:55,864 WARN org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2022-12-26 21:27:55,868 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001005: using driver [org.postgresql.Driver] at URL [jdbc:postgresql://localhost:5432/my_fit]
+2022-12-26 21:27:55,869 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001001: Connection properties: {password=****, user=postgres}
+2022-12-26 21:27:55,870 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001003: Autocommit mode: false
+2022-12-26 21:27:55,874 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections [main] HHH000115: Hibernate connection pool size: 10 (min=1)
+2022-12-26 21:27:56,098 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2022-12-26 21:27:56,930 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-12-26 21:27:58,182 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2022-12-26 21:27:58,220 INFO org.springframework.boot.StartupInfoLogger [main] Started MyFitApp in 6.309 seconds (JVM running for 9.931)
+2022-12-26 21:28:18,533 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-12-26 21:28:18,642 ERROR org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+io.jsonwebtoken.security.SignatureException: JWT signature does not match locally computed signature. JWT validity cannot be asserted and should not be trusted.
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:399)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:529)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parseClaimsJws(DefaultJwtParser.java:589)
+	at io.jsonwebtoken.impl.ImmutableJwtParser.parseClaimsJws(ImmutableJwtParser.java:173)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getAllClaims(JwtTokenUtil.java:36)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getClaim(JwtTokenUtil.java:30)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getUsername(JwtTokenUtil.java:22)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter.doFilterInternal(JwtFilter.java:44)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:89)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:112)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:82)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:55)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:221)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:186)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:354)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:267)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:177)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:135)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:360)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:399)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:891)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1784)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2022-12-26 21:28:27,941 WARN itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter [http-nio-8080-exec-3] JWT token does not start with Bearer string
+2022-12-26 21:29:10,337 ERROR org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-5] Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+io.jsonwebtoken.security.SignatureException: JWT signature does not match locally computed signature. JWT validity cannot be asserted and should not be trusted.
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:399)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:529)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parseClaimsJws(DefaultJwtParser.java:589)
+	at io.jsonwebtoken.impl.ImmutableJwtParser.parseClaimsJws(ImmutableJwtParser.java:173)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getAllClaims(JwtTokenUtil.java:36)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getClaim(JwtTokenUtil.java:30)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getUsername(JwtTokenUtil.java:22)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter.doFilterInternal(JwtFilter.java:44)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:89)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:112)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:82)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:55)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:221)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:186)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:354)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:267)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:177)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:135)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:360)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:399)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:891)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1784)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2022-12-26 21:39:33,416 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState [SpringApplicationShutdownHook] HHH10001008: Cleaning up connection pool [jdbc:postgresql://localhost:5432/my_fit]
+2022-12-26 21:45:39,618 INFO org.hibernate.validator.internal.util.Version [background-preinit] HV000001: Hibernate Validator 6.2.5.Final
+2022-12-26 21:45:39,642 INFO org.springframework.boot.StartupInfoLogger [main] Starting MyFitApp using Java 11.0.16.1 on Zodiac-PC with PID 16528 (G:\Java\MyFitApp_main\target\classes started by User in G:\Java\MyFitApp_main)
+2022-12-26 21:45:39,645 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-12-26 21:45:41,801 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2022-12-26 21:45:41,802 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-12-26 21:45:41,803 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.69]
+2022-12-26 21:45:41,970 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-12-26 21:45:42,093 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-12-26 21:45:42,159 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.6.14.Final
+2022-12-26 21:45:42,331 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-12-26 21:45:42,565 WARN org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2022-12-26 21:45:42,569 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001005: using driver [org.postgresql.Driver] at URL [jdbc:postgresql://localhost:5432/my_fit]
+2022-12-26 21:45:42,570 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001001: Connection properties: {password=****, user=postgres}
+2022-12-26 21:45:42,570 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001003: Autocommit mode: false
+2022-12-26 21:45:42,573 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections [main] HHH000115: Hibernate connection pool size: 10 (min=1)
+2022-12-26 21:45:42,776 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2022-12-26 21:45:43,565 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-12-26 21:45:44,747 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2022-12-26 21:45:44,791 INFO org.springframework.boot.StartupInfoLogger [main] Started MyFitApp in 5.907 seconds (JVM running for 8.021)
+2022-12-26 21:46:43,544 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-12-26 21:46:43,649 ERROR org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+io.jsonwebtoken.security.SignatureException: JWT signature does not match locally computed signature. JWT validity cannot be asserted and should not be trusted.
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:399)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:529)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parseClaimsJws(DefaultJwtParser.java:589)
+	at io.jsonwebtoken.impl.ImmutableJwtParser.parseClaimsJws(ImmutableJwtParser.java:173)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getAllClaims(JwtTokenUtil.java:36)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getClaim(JwtTokenUtil.java:30)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getUsername(JwtTokenUtil.java:22)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter.doFilterInternal(JwtFilter.java:44)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:89)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:112)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:82)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:55)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:221)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:186)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:354)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:267)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:177)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:135)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:360)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:399)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:891)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1784)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2022-12-26 21:47:08,488 ERROR org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-3] Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+io.jsonwebtoken.security.SignatureException: JWT signature does not match locally computed signature. JWT validity cannot be asserted and should not be trusted.
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:399)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:529)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parseClaimsJws(DefaultJwtParser.java:589)
+	at io.jsonwebtoken.impl.ImmutableJwtParser.parseClaimsJws(ImmutableJwtParser.java:173)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getAllClaims(JwtTokenUtil.java:36)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getClaim(JwtTokenUtil.java:30)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.getUsername(JwtTokenUtil.java:22)
+	at itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter.doFilterInternal(JwtFilter.java:44)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:89)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:112)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:82)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:55)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:221)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:186)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:354)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:267)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:177)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:135)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:360)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:399)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:891)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1784)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2022-12-26 21:47:15,542 WARN itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter [http-nio-8080-exec-4] JWT token does not start with Bearer string
+2022-12-26 21:48:03,116 ERROR org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-6] Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+org.springframework.security.web.firewall.RequestRejectedException: The request was rejected because the URL contained a potentially malicious String "//"
+	at org.springframework.security.web.firewall.StrictHttpFirewall.rejectedBlocklistedUrls(StrictHttpFirewall.java:535)
+	at org.springframework.security.web.firewall.StrictHttpFirewall.getFirewalledRequest(StrictHttpFirewall.java:505)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:206)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:186)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:354)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:267)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:177)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:135)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:360)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:399)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:891)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1784)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2022-12-26 21:48:18,186 ERROR org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-7] Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+org.springframework.security.web.firewall.RequestRejectedException: The request was rejected because the URL contained a potentially malicious String "//"
+	at org.springframework.security.web.firewall.StrictHttpFirewall.rejectedBlocklistedUrls(StrictHttpFirewall.java:535)
+	at org.springframework.security.web.firewall.StrictHttpFirewall.getFirewalledRequest(StrictHttpFirewall.java:505)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:206)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:186)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:354)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:267)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:177)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:135)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:360)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:399)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:891)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1784)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2022-12-26 21:57:04,893 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState [SpringApplicationShutdownHook] HHH10001008: Cleaning up connection pool [jdbc:postgresql://localhost:5432/my_fit]
+2022-12-26 22:08:17,750 INFO org.hibernate.validator.internal.util.Version [background-preinit] HV000001: Hibernate Validator 6.2.5.Final
+2022-12-26 22:08:17,772 INFO org.springframework.boot.StartupInfoLogger [main] Starting MyFitApp using Java 11.0.16.1 on Zodiac-PC with PID 13504 (G:\Java\MyFitApp_main\target\classes started by User in G:\Java\MyFitApp_main)
+2022-12-26 22:08:17,775 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-12-26 22:08:19,911 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2022-12-26 22:08:19,912 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-12-26 22:08:19,912 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.69]
+2022-12-26 22:08:20,072 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-12-26 22:08:20,190 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-12-26 22:08:20,252 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.6.14.Final
+2022-12-26 22:08:20,444 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-12-26 22:08:20,716 WARN org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2022-12-26 22:08:20,720 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001005: using driver [org.postgresql.Driver] at URL [jdbc:postgresql://localhost:5432/my_fit]
+2022-12-26 22:08:20,721 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001001: Connection properties: {password=****, user=postgres}
+2022-12-26 22:08:20,721 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl [main] HHH10001003: Autocommit mode: false
+2022-12-26 22:08:20,725 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections [main] HHH000115: Hibernate connection pool size: 10 (min=1)
+2022-12-26 22:08:20,919 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2022-12-26 22:08:21,832 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-12-26 22:08:23,422 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2022-12-26 22:08:23,480 INFO org.springframework.boot.StartupInfoLogger [main] Started MyFitApp in 6.479 seconds (JVM running for 9.706)
+2022-12-26 22:08:54,555 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-2] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-12-26 22:08:54,582 WARN itacad.aliaksandrkryvapust.usermicroservice.controller.filter.JwtFilter [http-nio-8080-exec-2] JWT token does not start with Bearer string
+2022-12-26 23:43:23,077 INFO org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState [SpringApplicationShutdownHook] HHH10001008: Cleaning up connection pool [jdbc:postgresql://localhost:5432/my_fit]
