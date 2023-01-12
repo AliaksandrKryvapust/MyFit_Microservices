@@ -26,7 +26,7 @@ public class AuditMapper {
                 .id(String.valueOf(report.getId()))
                 .user(userDto)
                 .text(text)
-                .type(EType.JOURNAL_FOOD)
+                .type(EType.REPORT)
                 .build();
     }
 }
