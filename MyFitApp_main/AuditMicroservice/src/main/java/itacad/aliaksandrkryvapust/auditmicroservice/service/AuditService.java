@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -40,7 +41,12 @@ public class AuditService implements IAuditService {
 
     @Override
     public Audit get(UUID id) {
-        return this.auditRepository.findByUuid(id).orElseThrow();
+        return this.auditRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public List<Audit> getByRecord(UUID id) {
+        return this.auditRepository.findByUuid(id);
     }
 
     private void setUser(Audit audit, Optional<User> currentUser) {
