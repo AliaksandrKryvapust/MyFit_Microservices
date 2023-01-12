@@ -1,6 +1,6 @@
 package aliaksandrkryvapust.reportmicroservice.service.api;
 
-import aliaksandrkryvapust.reportmicroservice.repository.entity.EType;
+import aliaksandrkryvapust.reportmicroservice.core.dto.output.microservices.EType;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.Report;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.EStatus;
 

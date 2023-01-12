@@ -1,9 +1,9 @@
 package aliaksandrkryvapust.reportmicroservice.service;
 
+import aliaksandrkryvapust.reportmicroservice.core.dto.output.microservices.EType;
 import aliaksandrkryvapust.reportmicroservice.repository.api.IReportRepository;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.Report;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.EStatus;
-import aliaksandrkryvapust.reportmicroservice.repository.entity.EType;
 import aliaksandrkryvapust.reportmicroservice.service.api.IReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,13 +32,13 @@ public class ReportService implements IReportService {
 
     @Override
     public Page<Report> get(Pageable pageable, String username) {
-        return this.reportRepository.findAllByUsername(pageable, username);
+        return this.reportRepository.findAllByUser_Username(pageable, username);
     }
 
     @Override
     public Report get(UUID id, String username) {
         Report report = this.reportRepository.findById(id).orElseThrow();
-        if (!report.getUsername().equals(username)) {
+        if (!report.getUser().getUsername().equals(username)) {
             throw new AccessControlException("Forbidden, authorised user and report don`t match");
         }
         return report;
