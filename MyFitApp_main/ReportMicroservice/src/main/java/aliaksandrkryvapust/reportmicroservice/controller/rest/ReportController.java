@@ -1,6 +1,6 @@
 package aliaksandrkryvapust.reportmicroservice.controller.rest;
 
-import aliaksandrkryvapust.reportmicroservice.core.dto.ParamsDto;
+import aliaksandrkryvapust.reportmicroservice.core.dto.input.ParamsDto;
 import aliaksandrkryvapust.reportmicroservice.core.dto.pages.PageDtoOutput;
 import aliaksandrkryvapust.reportmicroservice.manager.api.IReportManager;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.EType;
