@@ -1,5 +1,6 @@
-package aliaksandrkryvapust.reportmicroservice.core.dto;
+package aliaksandrkryvapust.reportmicroservice.core.dto.output;
 
+import aliaksandrkryvapust.reportmicroservice.core.dto.input.ParamsDto;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.EStatus;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.EType;
 import lombok.Builder;
@@ -15,7 +16,7 @@ public class ReportDtoOutput {
     private final @NonNull EStatus status;
     private final @NonNull EType type;
     private final @NonNull String description;
-    private final @NonNull ParamsDto params;
+    private final @NonNull ParamsDtoOutput params;
     private final @NonNull Long dtCreate;
     private final @NonNull Long dtUpdate;
 }
