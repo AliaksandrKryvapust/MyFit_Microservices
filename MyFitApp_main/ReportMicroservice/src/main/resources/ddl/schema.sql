@@ -13,7 +13,9 @@ CREATE TABLE IF NOT EXISTS report.report
     description character varying(200)      NOT NULL,
     start       date                        NOT NULL,
     "end"       date                        NOT NULL,
+    user_id     uuid                        NOT NULL,
     username    character varying(200)      NOT NULL,
+    role        character varying(100)      NOT NULL,
     file_value  bytea,
     PRIMARY KEY (id)
 );
