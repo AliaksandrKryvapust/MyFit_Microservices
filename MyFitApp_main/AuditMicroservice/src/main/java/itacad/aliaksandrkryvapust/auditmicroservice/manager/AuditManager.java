@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -38,5 +39,10 @@ public class AuditManager implements IAuditManager {
     @Override
     public AuditDtoOutput get(UUID id) {
         return this.auditMapper.outputMapping(auditService.get(id));
+    }
+
+    @Override
+    public List<AuditDtoOutput> getByRecord(UUID id) {
+        return this.auditMapper.outputListMapping(auditService.getByRecord(id));
     }
 }

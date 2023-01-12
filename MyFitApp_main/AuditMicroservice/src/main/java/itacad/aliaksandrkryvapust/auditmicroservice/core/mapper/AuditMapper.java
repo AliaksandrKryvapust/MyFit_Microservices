@@ -46,6 +46,10 @@ public class AuditMapper {
                 .build();
     }
 
+    public List<AuditDtoOutput> outputListMapping(List<Audit> audit) {
+        return audit.stream().map(this::outputMapping).collect(Collectors.toList());
+    }
+
     public PageDtoOutput<AuditDtoOutput> outputPageMapping(Page<Audit> audits) {
         List<AuditDtoOutput> outputs = audits.getContent().stream().map(this::outputMapping).collect(Collectors.toList());
         return PageDtoOutput.<AuditDtoOutput>builder()
