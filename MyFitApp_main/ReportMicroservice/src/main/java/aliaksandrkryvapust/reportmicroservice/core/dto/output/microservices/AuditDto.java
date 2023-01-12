@@ -1,8 +1,9 @@
-package itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.microservices;
+package aliaksandrkryvapust.reportmicroservice.core.dto.output.microservices;
 
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
+import lombok.extern.jackson.Jacksonized;
 
 @Builder
 @Data
