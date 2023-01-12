@@ -1,6 +1,8 @@
-package aliaksandrkryvapust.reportmicroservice.core.mapper;
+package aliaksandrkryvapust.reportmicroservice.core.mapper.microservices;
 
 import aliaksandrkryvapust.reportmicroservice.core.dto.input.TokenValidationDto;
+import aliaksandrkryvapust.reportmicroservice.core.dto.output.microservices.UserDto;
+import aliaksandrkryvapust.reportmicroservice.core.security.MyUserDetails;
 import aliaksandrkryvapust.reportmicroservice.core.security.UserPrincipal;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.EUserRole;
 import org.springframework.context.annotation.Scope;
@@ -16,6 +18,14 @@ public class UserMapper {
                 .username(dto.getUsername())
                 .authenticated(dto.getAuthenticated())
                 .role(EUserRole.valueOf(dto.getRole()))
+                .build();
+    }
+
+    public UserDto outputAuditMapping(MyUserDetails userDetails) {
+        return UserDto.builder()
+                .uuid(userDetails.getId())
+                .mail(userDetails.getUsername())
+                .role(EUserRole.valueOf(userDetails.getAuthorities().stream().findFirst().orElseThrow().getAuthority()))
                 .build();
     }
 }
