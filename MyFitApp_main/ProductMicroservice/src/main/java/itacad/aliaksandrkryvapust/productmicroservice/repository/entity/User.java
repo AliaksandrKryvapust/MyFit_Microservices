@@ -13,7 +13,7 @@ import java.util.UUID;
 @Builder
 @Embeddable
 public class User {
-    private UUID user_id;
+    private UUID userId;
     @Column(nullable = false, unique = true)
     private String username;
     private Instant version;
