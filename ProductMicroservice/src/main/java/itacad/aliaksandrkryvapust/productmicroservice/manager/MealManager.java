@@ -8,6 +8,7 @@ import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.pages.Page
 import itacad.aliaksandrkryvapust.productmicroservice.core.mapper.MealMapper;
 import itacad.aliaksandrkryvapust.productmicroservice.core.mapper.microservices.AuditMapper;
 import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetails;
+import itacad.aliaksandrkryvapust.productmicroservice.manager.api.IAuditManager;
 import itacad.aliaksandrkryvapust.productmicroservice.manager.api.IMealManager;
 import itacad.aliaksandrkryvapust.productmicroservice.manager.audit.AuditManager;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Meal;
@@ -28,7 +29,7 @@ public class MealManager implements IMealManager {
     private final MealMapper mealMapper;
     private final IMealService mealService;
     private final AuditMapper auditMapper;
-    private final AuditManager auditManager;
+    private final IAuditManager auditManager;
 
     @Autowired
     public MealManager(MealMapper mealMapper, IMealService mealService,
