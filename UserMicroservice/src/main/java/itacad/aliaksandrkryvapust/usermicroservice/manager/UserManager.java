@@ -88,7 +88,7 @@ public class UserManager implements IUserManager {
     }
 
     @Override
-    public UserDtoOutput save(UserDtoInput userDtoInput, HttpServletRequest request) {
+    public UserDtoOutput save(UserDtoInput userDtoInput) {
         try {
             User user = this.userService.save(userMapper.inputMapping(userDtoInput));
             AuditDto auditDto = this.auditMapper.userOutputMapping(user, userPost);

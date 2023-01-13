@@ -40,8 +40,8 @@ public class UserController {
     }
 
     @PostMapping
-    protected ResponseEntity<UserDtoOutput> post(@RequestBody @Valid UserDtoInput dtoInput, HttpServletRequest request) {
-        return new ResponseEntity<>(this.userManager.save(dtoInput, request), HttpStatus.CREATED);
+    protected ResponseEntity<UserDtoOutput> post(@RequestBody @Valid UserDtoInput dtoInput) {
+        return new ResponseEntity<>(this.userManager.save(dtoInput), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}/dt_update/{version}")
