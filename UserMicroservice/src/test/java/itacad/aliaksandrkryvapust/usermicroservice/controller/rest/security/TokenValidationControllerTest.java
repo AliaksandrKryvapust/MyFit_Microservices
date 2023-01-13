@@ -47,7 +47,6 @@ class TokenValidationControllerTest {
     @WithMockUser(username = "report@email", password = "report", roles = {"APP"})
     void validateToken() throws Exception {
         // preconditions
-        final HttpServletRequest request = Mockito.mock(HttpServletRequest.class, RETURNS_DEEP_STUBS);
 
         // assert
         this.mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/validateToken"))
