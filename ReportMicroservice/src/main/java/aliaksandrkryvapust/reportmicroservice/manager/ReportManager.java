@@ -8,6 +8,7 @@ import aliaksandrkryvapust.reportmicroservice.core.dto.output.pages.PageDtoOutpu
 import aliaksandrkryvapust.reportmicroservice.core.mapper.ReportMapper;
 import aliaksandrkryvapust.reportmicroservice.core.mapper.microservices.AuditMapper;
 import aliaksandrkryvapust.reportmicroservice.core.security.MyUserDetails;
+import aliaksandrkryvapust.reportmicroservice.manager.api.IAuditManager;
 import aliaksandrkryvapust.reportmicroservice.manager.api.IReportManager;
 import aliaksandrkryvapust.reportmicroservice.manager.audit.AuditManager;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.Report;
@@ -26,7 +27,7 @@ public class ReportManager implements IReportManager {
     private final IReportService reportService;
     private final ReportMapper reportMapper;
     private final AuditMapper auditMapper;
-    private final AuditManager auditManager;
+    private final IAuditManager auditManager;
 
     public ReportManager(IReportService reportService, ReportMapper reportMapper, AuditMapper auditMapper,
                          AuditManager auditManager) {

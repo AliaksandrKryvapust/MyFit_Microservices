@@ -8,6 +8,7 @@ import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.pages.Page
 import itacad.aliaksandrkryvapust.productmicroservice.core.mapper.ProductMapper;
 import itacad.aliaksandrkryvapust.productmicroservice.core.mapper.microservices.AuditMapper;
 import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetails;
+import itacad.aliaksandrkryvapust.productmicroservice.manager.api.IAuditManager;
 import itacad.aliaksandrkryvapust.productmicroservice.manager.api.IProductManager;
 import itacad.aliaksandrkryvapust.productmicroservice.manager.audit.AuditManager;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Product;
@@ -28,7 +29,7 @@ public class ProductManager implements IProductManager {
     private final ProductMapper productMapper;
     private final IProductService productService;
     private final AuditMapper auditMapper;
-    private final AuditManager auditManager;
+    private final IAuditManager auditManager;
 
     @Autowired
     public ProductManager(ProductMapper productMapper, IProductService productService,

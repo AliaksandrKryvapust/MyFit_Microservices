@@ -8,6 +8,7 @@ import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.pages.Page
 import itacad.aliaksandrkryvapust.productmicroservice.core.mapper.ProfileMapper;
 import itacad.aliaksandrkryvapust.productmicroservice.core.mapper.microservices.AuditMapper;
 import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetails;
+import itacad.aliaksandrkryvapust.productmicroservice.manager.api.IAuditManager;
 import itacad.aliaksandrkryvapust.productmicroservice.manager.api.IProfileManager;
 import itacad.aliaksandrkryvapust.productmicroservice.manager.audit.AuditManager;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Profile;
@@ -24,7 +25,7 @@ public class ProfileManager implements IProfileManager {
     private final static String profilePost = "New profile was created";
     private final IProfileService profileService;
     private final ProfileMapper profileMapper;
-    private final AuditManager auditManager;
+    private final IAuditManager auditManager;
     private final AuditMapper auditMapper;
 
     public ProfileManager(IProfileService profileService, ProfileMapper profileMapper, AuditManager auditManager,

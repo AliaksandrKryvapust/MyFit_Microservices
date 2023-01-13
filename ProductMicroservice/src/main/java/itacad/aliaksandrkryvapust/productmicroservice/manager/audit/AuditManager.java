@@ -3,6 +3,7 @@ package itacad.aliaksandrkryvapust.productmicroservice.manager.audit;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.microservices.AuditDto;
+import itacad.aliaksandrkryvapust.productmicroservice.manager.api.IAuditManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -18,7 +19,7 @@ import static itacad.aliaksandrkryvapust.productmicroservice.core.Constants.AUDI
 import static itacad.aliaksandrkryvapust.productmicroservice.core.Constants.TOKEN_HEADER;
 
 @Component
-public class AuditManager {
+public class AuditManager implements IAuditManager {
     private static final String jwtSecret = "NDQ1ZjAzNjQtMzViZi00MDRjLTljZjQtNjNjYWIyZTU5ZDYw";
     private final ObjectMapper objectMapper;
 
@@ -27,6 +28,7 @@ public class AuditManager {
         this.objectMapper = objectMapper;
     }
 
+    @Override
     public void audit(AuditDto auditDto) throws JsonProcessingException, URISyntaxException {
         String requestBody = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(auditDto);
         HttpRequest httpRequest = prepareRequest(requestBody);

@@ -1,6 +1,7 @@
 package aliaksandrkryvapust.reportmicroservice.manager.audit;
 
 import aliaksandrkryvapust.reportmicroservice.core.dto.output.microservices.AuditDto;
+import aliaksandrkryvapust.reportmicroservice.manager.api.IAuditManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import static aliaksandrkryvapust.reportmicroservice.core.Constants.AUDIT_URI;
 import static aliaksandrkryvapust.reportmicroservice.core.Constants.TOKEN_HEADER;
 
 @Component
-public class AuditManager {
+public class AuditManager implements IAuditManager {
     private static final String jwtSecret = "NDQ1ZjAzNjQtMzViZi00MDRjLTljZjQtNjNjYWIyZTU5ZDYw";
     private final ObjectMapper objectMapper;
 
@@ -27,6 +28,7 @@ public class AuditManager {
         this.objectMapper = objectMapper;
     }
 
+    @Override
     public void audit(AuditDto auditDto) throws JsonProcessingException, URISyntaxException {
         String requestBody = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(auditDto);
         HttpRequest httpRequest = prepareRequest(requestBody);

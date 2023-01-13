@@ -12,6 +12,7 @@ import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.pages.PageDto
 import itacad.aliaksandrkryvapust.usermicroservice.core.mapper.UserMapper;
 import itacad.aliaksandrkryvapust.usermicroservice.core.mapper.microservices.AuditMapper;
 import itacad.aliaksandrkryvapust.usermicroservice.event.EmailVerificationEvent;
+import itacad.aliaksandrkryvapust.usermicroservice.manager.api.IAuditManager;
 import itacad.aliaksandrkryvapust.usermicroservice.manager.api.IUserManager;
 import itacad.aliaksandrkryvapust.usermicroservice.manager.audit.AuditManager;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.User;
@@ -37,7 +38,7 @@ public class UserManager implements IUserManager {
     private final UserMapper userMapper;
     private final JwtTokenUtil jwtTokenUtil;
     private final PasswordEncoder encoder;
-    private final AuditManager auditManager;
+    private final IAuditManager auditManager;
     private final AuditMapper auditMapper;
     private final ApplicationEventPublisher eventPublisher;
 
@@ -87,7 +88,7 @@ public class UserManager implements IUserManager {
     }
 
     @Override
-    public UserDtoOutput save(UserDtoInput userDtoInput, HttpServletRequest request) {
+    public UserDtoOutput save(UserDtoInput userDtoInput) {
         try {
             User user = this.userService.save(userMapper.inputMapping(userDtoInput));
             AuditDto auditDto = this.auditMapper.userOutputMapping(user, userPost);
@@ -112,7 +113,7 @@ public class UserManager implements IUserManager {
     }
 
     @Override
-    public UserDtoOutput update(UserDtoInput dtoInput, UUID id, Long version, HttpServletRequest request) {
+    public UserDtoOutput update(UserDtoInput dtoInput, UUID id, Long version) {
         try {
             User user = this.userService.update(userMapper.inputMapping(dtoInput), id, version);
             AuditDto auditDto = this.auditMapper.userOutputMapping(user, userPut);

@@ -10,6 +10,7 @@ import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.pages.Page
 import itacad.aliaksandrkryvapust.productmicroservice.core.mapper.RecordMapper;
 import itacad.aliaksandrkryvapust.productmicroservice.core.mapper.microservices.AuditMapper;
 import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetails;
+import itacad.aliaksandrkryvapust.productmicroservice.manager.api.IAuditManager;
 import itacad.aliaksandrkryvapust.productmicroservice.manager.api.IRecordManager;
 import itacad.aliaksandrkryvapust.productmicroservice.manager.audit.AuditManager;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Record;
@@ -31,7 +32,7 @@ public class RecordManager implements IRecordManager {
     private final IRecordService recordService;
     private final IProfileService profileService;
     private final AuditMapper auditMapper;
-    private final AuditManager auditManager;
+    private final IAuditManager auditManager;
 
     public RecordManager(RecordMapper recordMapper, IRecordService recordService, IProfileService profileService,
                          AuditMapper auditMapper, AuditManager auditManager) {

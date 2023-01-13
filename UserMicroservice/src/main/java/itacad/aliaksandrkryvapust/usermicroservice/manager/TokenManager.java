@@ -7,6 +7,7 @@ import itacad.aliaksandrkryvapust.usermicroservice.core.mapper.TokenMapper;
 import itacad.aliaksandrkryvapust.usermicroservice.core.mapper.UserMapper;
 import itacad.aliaksandrkryvapust.usermicroservice.core.mapper.microservices.AuditMapper;
 import itacad.aliaksandrkryvapust.usermicroservice.event.EmailVerificationEvent;
+import itacad.aliaksandrkryvapust.usermicroservice.manager.api.IAuditManager;
 import itacad.aliaksandrkryvapust.usermicroservice.manager.api.ITokenManager;
 import itacad.aliaksandrkryvapust.usermicroservice.manager.audit.AuditManager;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.EmailToken;
@@ -31,7 +32,7 @@ public class TokenManager implements ITokenManager {
     private final TokenMapper tokenMapper;
     private final UserMapper userMapper;
     private final AuditMapper auditMapper;
-    private final AuditManager auditManager;
+    private final IAuditManager auditManager;
     private final ApplicationEventPublisher eventPublisher;
 
     public TokenManager(ITokenService tokenService, IUserService userService, TokenMapper tokenMapper,

@@ -40,14 +40,14 @@ public class UserController {
     }
 
     @PostMapping
-    protected ResponseEntity<UserDtoOutput> post(@RequestBody @Valid UserDtoInput dtoInput, HttpServletRequest request) {
-        return new ResponseEntity<>(this.userManager.save(dtoInput, request), HttpStatus.CREATED);
+    protected ResponseEntity<UserDtoOutput> post(@RequestBody @Valid UserDtoInput dtoInput) {
+        return new ResponseEntity<>(this.userManager.save(dtoInput), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}/dt_update/{version}")
     protected ResponseEntity<UserDtoOutput> put(@PathVariable UUID id, @PathVariable(name = "version") String version,
-                                                @Valid @RequestBody UserDtoInput dtoInput, HttpServletRequest request) {
-        return ResponseEntity.ok(this.userManager.update(dtoInput, id, Long.valueOf(version), request));
+                                                @Valid @RequestBody UserDtoInput dtoInput) {
+        return ResponseEntity.ok(this.userManager.update(dtoInput, id, Long.valueOf(version) ));
     }
 
 }
