@@ -45,7 +45,8 @@ public class UserLoginController {
     @PostMapping("/registration")
     protected ResponseEntity<UserLoginDtoOutput> registration(@RequestBody @Valid UserDtoRegistration dtoInput,
                                                               HttpServletRequest request) {
-        return new ResponseEntity<>(this.userManager.saveUser(dtoInput, request), HttpStatus.CREATED);
+        UserLoginDtoOutput userLoginDtoOutput = this.userManager.saveUser(dtoInput, request);
+        return new ResponseEntity<>(userLoginDtoOutput, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/registration/confirm", params = "token")
