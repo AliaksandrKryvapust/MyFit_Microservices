@@ -12,6 +12,7 @@ import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.pages.PageDto
 import itacad.aliaksandrkryvapust.usermicroservice.core.mapper.UserMapper;
 import itacad.aliaksandrkryvapust.usermicroservice.core.mapper.microservices.AuditMapper;
 import itacad.aliaksandrkryvapust.usermicroservice.event.EmailVerificationEvent;
+import itacad.aliaksandrkryvapust.usermicroservice.manager.api.IAuditManager;
 import itacad.aliaksandrkryvapust.usermicroservice.manager.api.IUserManager;
 import itacad.aliaksandrkryvapust.usermicroservice.manager.audit.AuditManager;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.User;
@@ -37,7 +38,7 @@ public class UserManager implements IUserManager {
     private final UserMapper userMapper;
     private final JwtTokenUtil jwtTokenUtil;
     private final PasswordEncoder encoder;
-    private final AuditManager auditManager;
+    private final IAuditManager auditManager;
     private final AuditMapper auditMapper;
     private final ApplicationEventPublisher eventPublisher;
 
