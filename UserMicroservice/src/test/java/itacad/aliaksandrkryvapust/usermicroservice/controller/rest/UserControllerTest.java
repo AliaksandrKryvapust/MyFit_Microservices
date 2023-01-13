@@ -1,12 +1,9 @@
 package itacad.aliaksandrkryvapust.usermicroservice.controller.rest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoInput;
-import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoRegistration;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserDtoOutput;
-import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserLoginDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.manager.api.ITokenManager;
 import itacad.aliaksandrkryvapust.usermicroservice.manager.api.IUserManager;
@@ -30,18 +27,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.UUID;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
-
 @WebMvcTest(controllers = UserController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class})
 @AutoConfigureMockMvc
 class UserControllerTest {
-    Logger logger = LoggerFactory.getLogger(UserLoginController.class);
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private MockMvc mockMvc;
@@ -179,7 +171,14 @@ class UserControllerTest {
         // assert
         this.mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/users").contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userDtoInput)))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.dt_create").value(dtCreate.toEpochMilli()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.dt_update").value(dtUpdate.toEpochMilli()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.mail").value(email))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.nick").value(username))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.role").value(UserRole.USER.name()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(UserStatus.ACTIVATED.name()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.uuid").value(id.toString()));
 
         //test
         Mockito.verify(userManager).save(userDtoInput);
@@ -211,15 +210,22 @@ class UserControllerTest {
                 .status(UserStatus.ACTIVATED)
                 .uuid(id)
                 .build();
-        Mockito.when(userManager.save(userDtoInput)).thenReturn(userDtoOutput);
+        Mockito.when(userManager.update(userDtoInput, id, dtUpdate.toEpochMilli())).thenReturn(userDtoOutput);
 
         // assert
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/users/1d63d7df-f1b3-4e92-95a3-6c7efad96901/dt_update/1673532532870")
+        this.mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/users/1d63d7df-f1b3-4e92-95a3-6c7efad96901/dt_update/1673532532870")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userDtoInput)))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.dt_create").value(dtCreate.toEpochMilli()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.dt_update").value(dtUpdate.toEpochMilli()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.mail").value(email))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.nick").value(username))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.role").value(UserRole.USER.name()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(UserStatus.ACTIVATED.name()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.uuid").value(id.toString()));
 
         //test
-        Mockito.verify(userManager).save(userDtoInput);
+        Mockito.verify(userManager).update(userDtoInput, id, dtUpdate.toEpochMilli());
     }
 }

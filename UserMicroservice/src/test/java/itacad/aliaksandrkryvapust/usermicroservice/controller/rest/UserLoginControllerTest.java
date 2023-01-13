@@ -37,7 +37,6 @@ import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 @WebMvcTest(controllers = UserLoginController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class})
 @AutoConfigureMockMvc
 class UserLoginControllerTest {
-    Logger logger = LoggerFactory.getLogger(UserLoginController.class);
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private MockMvc mockMvc;
