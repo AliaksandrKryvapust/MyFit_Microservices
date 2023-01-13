@@ -46,7 +46,7 @@ public class UserController {
 
     @PutMapping("/{id}/dt_update/{version}")
     protected ResponseEntity<UserDtoOutput> put(@PathVariable UUID id, @PathVariable(name = "version") String version,
-                                                @Valid @RequestBody UserDtoInput dtoInput, HttpServletRequest request) {
+                                                @Valid @RequestBody UserDtoInput dtoInput) {
         return ResponseEntity.ok(this.userManager.update(dtoInput, id, Long.valueOf(version) ));
     }
 
