@@ -1,6 +1,5 @@
 package itacad.aliaksandrkryvapust.usermicroservice.controller.rest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoLogin;
@@ -22,7 +21,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -120,35 +118,55 @@ class UserLoginControllerTest {
     @Test
     void registration() throws Exception {
         // preconditions
-//        final String username = "someone";
-//        final String email = "admin@myfit.com";
-//        final String password = "kdrL556D";
-//        final String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzM1MzE5MzEsImV4cCI6MTY3MzUzNTUzMX0.ncZiUNsJK1LFh2U59moFgWhzcWZyW3p0TL9O_hWVcvw";
-//        final UserDtoRegistration userDtoRegistration = UserDtoRegistration.builder()
-//                .mail(email)
-//                .password(password)
-//                .nick(username).build();
-//        final HttpServletRequest request = Mockito.mock(HttpServletRequest.class, RETURNS_DEEP_STUBS);
-//        final UserLoginDtoOutput userLoginDtoOutput = UserLoginDtoOutput.builder()
-//                .mail(email)
-//                .build();
-//        Mockito.when(userManager.saveUser(userDtoRegistration, request)).thenReturn(userLoginDtoOutput);
-//
-//        // assert
-//        this.mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/users/registration").contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(userDtoRegistration)))
-//                .andExpect(MockMvcResultMatchers.status().isCreated())
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.mail").value(email));
-//
-//        //test
-//        Mockito.expect(userManager).saveUser(userDtoRegistration, request);
+        final String username = "someone";
+        final String email = "admin@myfit.com";
+        final String password = "kdrL556D";
+        final UserDtoRegistration userDtoRegistration = UserDtoRegistration.builder()
+                .mail(email)
+                .password(password)
+                .nick(username).build();
+        final HttpServletRequest request = Mockito.mock(HttpServletRequest.class, RETURNS_DEEP_STUBS);
+        final UserLoginDtoOutput userLoginDtoOutput = UserLoginDtoOutput.builder()
+                .mail(email)
+                .build();
+        Mockito.when(userManager.saveUser(userDtoRegistration, request)).thenReturn(userLoginDtoOutput);
+
+        // assert
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/users/registration").contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(userDtoRegistration)))
+                .andExpect(MockMvcResultMatchers.status().isCreated());
+
+        //test
+        Mockito.verify(userManager, Mockito.times(1)).saveUser(any(UserDtoRegistration.class),
+                any(HttpServletRequest.class));
     }
 
     @Test
-    void registrationConfirmation() {
+    void registrationConfirmation() throws Exception {
+        // preconditions
+        final String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzM1MzE5MzEsImV4cCI6MTY3MzUzNTUzMX0.ncZiUNsJK1LFh2U59moFgWhzcWZyW3p0TL9O_hWVcvw";
+
+        // assert
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/users/registration/confirm")
+                        .param("token", token))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        //test
+        Mockito.verify(tokenManager, Mockito.times(1)).validateToken(token);
     }
 
     @Test
-    void resendToken() {
+    void resendToken() throws Exception {
+        // preconditions
+        final String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzM1MzE5MzEsImV4cCI6MTY3MzUzNTUzMX0.ncZiUNsJK1LFh2U59moFgWhzcWZyW3p0TL9O_hWVcvw";
+
+        // assert
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/users/registration/confirm/token")
+                        .param("token", token))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        //test
+        Mockito.verify(tokenManager, Mockito.times(1)).resendToken(any(String.class),
+                any(HttpServletRequest.class));
     }
 }
