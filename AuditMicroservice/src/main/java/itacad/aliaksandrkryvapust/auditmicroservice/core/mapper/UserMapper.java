@@ -30,13 +30,18 @@ public class UserMapper {
     }
 
     public User inputMapping(UserDto userDto) {
-        return User.builder().id(userDto.getUuid())
-                .username(userDto.getNick())
+        if (userDto.getStatus() != null) {
+            return User.builder().id(userDto.getUuid())
+                    .username(userDto.getNick())
+                    .email(userDto.getMail())
+                    .role(EUserRole.valueOf(userDto.getRole()))
+                    .status(EUserStatus.valueOf(userDto.getStatus()))
+                    .dtCreate(userDto.getDtCreate())
+                    .dtUpdate(userDto.getDtUpdate())
+                    .build();
+        } else return User.builder().id(userDto.getUuid())
                 .email(userDto.getMail())
                 .role(EUserRole.valueOf(userDto.getRole()))
-                .status(EUserStatus.valueOf(userDto.getStatus()))
-                .dtCreate(userDto.getDtCreate())
-                .dtUpdate(userDto.getDtUpdate())
                 .build();
     }
 
