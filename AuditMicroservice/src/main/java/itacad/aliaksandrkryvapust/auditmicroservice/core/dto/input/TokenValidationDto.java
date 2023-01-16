@@ -16,7 +16,6 @@ import java.util.UUID;
 @Jacksonized
 public class TokenValidationDto {
     @NotNull(message = "id cannot be null")
-    @NotBlank(message = "id cannot be empty")
     private final UUID id;
     @NotNull(message = "authenticated cannot be null")
     private final Boolean authenticated;

@@ -18,7 +18,6 @@ import java.util.UUID;
 @Jacksonized
 public class UserDto {
     @NotNull(message = "id cannot be null")
-    @NotBlank(message = "id cannot be empty")
     private final UUID uuid;
     @Nullable
     private final String nick;
