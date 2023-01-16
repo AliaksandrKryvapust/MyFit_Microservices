@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS report.report
     type        character varying(100)      NOT NULL,
     description character varying(200)      NOT NULL,
     start       date                        NOT NULL,
-    "end"       date                        NOT NULL,
+    finish       date                        NOT NULL,
     user_id     uuid                        NOT NULL,
     username    character varying(200)      NOT NULL,
     role        character varying(100)      NOT NULL,

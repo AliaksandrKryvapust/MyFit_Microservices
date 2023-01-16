@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 import org.springframework.lang.Nullable;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
@@ -17,7 +18,6 @@ import java.util.UUID;
 @Jacksonized
 public class UserDto {
     @NotNull(message = "id cannot be null")
-    @Size(min = 2, max = 100, message = "id should contain from 2 to 100 letters")
     private final UUID uuid;
     @Nullable
     private final String nick;

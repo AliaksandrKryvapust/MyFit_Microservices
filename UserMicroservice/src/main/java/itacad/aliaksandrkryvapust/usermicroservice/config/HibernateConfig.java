@@ -36,7 +36,7 @@ public class HibernateConfig {
         jpaProperties.put("hibernate.format_sql", "true"); // Show SQL formatted
         jpaProperties.put("hibernate.use_sql_comments", "true");
         jpaProperties.put("hibernate.connection.pool_size", "10");
-        jpaProperties.put("hibernate.default_schema", "app");
+        jpaProperties.put("hibernate.default_schema", "users");
         factory.setJpaProperties(jpaProperties);
         return factory;
     }

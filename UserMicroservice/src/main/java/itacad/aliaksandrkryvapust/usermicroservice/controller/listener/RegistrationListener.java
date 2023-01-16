@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
-import static itacad.aliaksandrkryvapust.usermicroservice.core.Constants.MAIL_SUBJECT;
+import static itacad.aliaksandrkryvapust.usermicroservice.core.Constants.*;
 
 @Component
 public class RegistrationListener implements ApplicationListener<EmailVerificationEvent> {
@@ -40,12 +40,12 @@ public class RegistrationListener implements ApplicationListener<EmailVerificati
 
     private SimpleMailMessage createEmail(User user, String token) {
         String addressToSend = user.getEmail();
-        String url = "/api/v1/users/registration/confirm?token=" + token;
+        String url = TOKEN_URI + token;
         String message = "To continue registration use link below:";
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(addressToSend);
         email.setSubject(MAIL_SUBJECT);
-        email.setText(message + "\r\n" + "http://localhost:8080" + url);
+        email.setText(message + "\r\n" + IP_URI +PORT_URI + url);
         return email;
     }
 }
