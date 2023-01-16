@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.UUID;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @Jacksonized
 public class TokenValidationDto {
     @NotNull(message = "id cannot be null")
-    @Size(min = 2, max = 200, message = "id should contain from 2 to 200 letters")
+    @NotBlank(message = "id cannot be empty")
     private final UUID id;
     @NotNull(message = "authenticated cannot be null")
     private final Boolean authenticated;
