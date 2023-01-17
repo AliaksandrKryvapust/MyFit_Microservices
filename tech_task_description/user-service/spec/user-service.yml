@@ -270,22 +270,22 @@ components:
               message:  Сервер не смог корректно обработать запрос. Пожалуйста обратитесь к администратору
   schemas:
     UserRole:
-        type: string
-        description: |
-              Роль пользователя:
-                * `ADMIN` - Администратор
-                * `USER` - Пользователь
-        enum:
+      type: string
+      description: |
+        Роль пользователя:
+          * `ADMIN` - Администратор
+          * `USER` - Пользователь
+      enum:
         - "ADMIN"
         - "USER"
     UserStatus:
-        type: string
-        description: |
-              Статус пользователя:
-                * `WAITING_ACTIVATION` - Ожидает активации
-                * `ACTIVATED` - Активирован
-                * `DEACTIVATED` - Деактивирован
-        enum:
+      type: string
+      description: |
+        Статус пользователя:
+          * `WAITING_ACTIVATION` - Ожидает активации
+          * `ACTIVATED` - Активирован
+          * `DEACTIVATED` - Деактивирован
+      enum:
         - "WAITING_ACTIVATION"
         - "ACTIVATED"
         - "DEACTIVATED"
@@ -348,7 +348,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/User'
-        
+
     t_base_essence:
       type: object
       description: Описание базовой сущности.
