@@ -29,6 +29,8 @@ paths:
       tags:
         - "Справочники"
       summary: Добавление нового продукта
+      security:
+        - bearerAuth: [ ]
       requestBody:
         $ref: "#/components/requestBodies/CreateProduct"
       responses:
@@ -79,6 +81,8 @@ paths:
       tags:
         - "Справочники"
       summary: Редактировать информацию о продукте
+      security:
+        - bearerAuth: [ ]
       parameters:
         - in: path
           name: uuid
@@ -112,6 +116,8 @@ paths:
       tags:
         - "Справочники"
       summary: Добавление нового рецепта блюда
+      security:
+        - bearerAuth: [ ]
       requestBody:
         $ref: "#/components/requestBodies/CreateRecipe"
       responses:
@@ -129,6 +135,8 @@ paths:
       tags:
         - "Справочники"
       summary: Получить страницу рецептов блюд
+      security:
+        - bearerAuth: []
       parameters:
         - in: query
           name: page
@@ -162,6 +170,8 @@ paths:
       tags:
         - "Справочники"
       summary: Редактировать информацию о рецепте
+      security:
+        - bearerAuth: [ ]
       parameters:
         - in: path
           name: uuid
@@ -190,11 +200,71 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '500':
           $ref: '#/components/responses/Internal_Server_Error'
-  /api/v1/journal/food:
+  /api/v1/profile:
     post:
+      tags:
+        - "Профиль"
+      summary: Добавление нового профиля
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        $ref: "#/components/requestBodies/CreateProfile"
+      responses:
+        '201':
+          description: Профиль создан
+        '400':
+          $ref: '#/components/responses/Bad_Request'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/Internal_Server_Error'
+  /api/v1/profile/{uuid_profile}:
+    get:
+      tags:
+        - "Профиль"
+      summary: Получение профиля
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: path
+          name: uuid_profile
+          schema:
+            type: string
+            format: uuid
+          description: uuid профиля
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '400':
+          $ref: '#/components/responses/Bad_Request'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/Internal_Server_Error'
+  /api/v1/profile/{uuid_profile}/journal/food:
+    post:
+      parameters:
+        - in: path
+          name: uuid_profile
+          schema:
+            type: string
+            format: uuid
+          description: uuid профиля
+          required: true
       tags:
         - "Дневники"
       summary: Добавление новой записи в дневник питания
+      security:
+        - bearerAuth: [ ]
       requestBody:
         $ref: "#/components/requestBodies/CreateJournalFood"
       responses:
@@ -212,7 +282,16 @@ paths:
       tags:
         - "Дневники"
       summary: Получить страницу из дневника питания
+      security:
+        - bearerAuth: [ ]
       parameters:
+        - in: path
+          name: uuid_profile
+          schema:
+            type: string
+            format: uuid
+          description: uuid профиля
+          required: true
         - in: query
           name: page
           schema:
@@ -242,6 +321,13 @@ paths:
           $ref: '#/components/responses/Internal_Server_Error'
 
 components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   requestBodies:
     CreateProduct:
       description: Тело для продукта
@@ -257,6 +343,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/RecipeForCU'
+    CreateProfile:
+      description: Тело для создания профиля
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProfileForCU'
     CreateJournalFood:
       description: Тело для записи в журнале питания
       required: true
@@ -373,6 +466,61 @@ components:
                 format: int32
                 description: "Вес продукта добавленного в блюдо в граммах\\миллилитрах"
                 example: 100
+    User:
+      type: object
+      description: Пользователь
+      allOf:
+        - $ref: '#/components/schemas/t_base_essence'
+    ProfileSex:
+      type: string
+      description: |
+        Пол профиля:
+          * `MALE` - Мужской
+          * `FEMALE` - Женский
+      enum:
+        - "MALE"
+        - "FEMALE"
+    ActivityType:
+      type: string
+      description: |
+        Пол профиля:
+          * `ACTIVE` - Активный
+          * `NOT_ACTIVE` - Не активный
+      enum:
+        - "ACTIVE"
+        - "NOT_ACTIVE"
+    Profile:
+      description: Профиль пользователя
+      allOf:
+        - $ref: '#/components/schemas/t_base_essence'
+      properties:
+        height:
+          type: integer
+          format: int32
+          description: "Рост"
+          example: 173
+        weight:
+          type: number
+          format: double
+          description: "Вес"
+          example: 105.3
+        dt_birthday:
+          type: string
+          format: date
+          description: "Дата рождения"
+          example: "1993-07-01"
+        target:
+          type: number
+          format: double
+          description: "Целевой вес"
+          example: 85.9
+        activity_type:
+          $ref: '#/components/schemas/ActivityType'
+        sex:
+          $ref: '#/components/schemas/ProfileSex'
+        user:
+          $ref: '#/components/schemas/User'
+
     JournalFood:
       description: Запись в дневнике питания
       allOf:
@@ -413,8 +561,6 @@ components:
                 example: 100
     JournalFoodForCUWithProduct:
       description: Запись в дневнике питания
-      allOf:
-        - $ref: '#/components/schemas/t_base_essence'
       properties:
         dt_supply:
           type: integer
@@ -430,8 +576,6 @@ components:
           example: 100
     JournalFoodForCUWithRecipe:
       description: Запись в дневнике питания
-      allOf:
-        - $ref: '#/components/schemas/t_base_essence'
       properties:
         dt_supply:
           type: integer
@@ -445,6 +589,33 @@ components:
           format: int32
           description: "Вес который съел пользователь в граммах\\миллилитрах"
           example: 100
+    ProfileForCU:
+      description: Профиль пользователя
+      properties:
+        height:
+          type: integer
+          format: int32
+          description: "Рост"
+          example: 173
+        weight:
+          type: number
+          format: double
+          description: "Вес"
+          example: 105.3
+        dt_birthday:
+          type: string
+          format: date
+          description: "Дата рождения"
+          example: "1993-07-01"
+        target:
+          type: number
+          format: double
+          description: "Целевой вес"
+          example: 85.9
+        activity_type:
+          $ref: '#/components/schemas/ActivityType'
+        sex:
+          $ref: '#/components/schemas/ProfileSex'
 
     PageOfProduct:
       type: object

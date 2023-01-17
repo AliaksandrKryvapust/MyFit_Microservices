@@ -18,31 +18,51 @@ servers:
         default: "8080"
 
 tags:
-  - name: "Безопасность"
+  - name: "Отчёты"
+    description: "Построение отчётов"
 
 paths:
-  /api/v1/audit:
+  /api/v1/report/{type}:
+    post:
+      tags:
+        - "Отчёты"
+      summary: "Добавление нового отчёта"
+      parameters:
+        - in: path
+          name: type
+          description: "Тип отчёта"
+          required: true
+          schema:
+            $ref: '#/components/schemas/ReportType'
+      requestBody:
+        $ref: "#/components/requestBodies/CreateReport"
+      responses:
+        '201':
+          description: Отчёт запущен
+        '400':
+          $ref: '#/components/responses/Bad_Request'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/Internal_Server_Error'
+  /api/v1/report:
     get:
       tags:
-        - "Безопасность"
-      summary: "Получить страницу действий в системе"
-      security:
-        - bearerAuth: [ROLE_ADMIN]
+        - "Отчёты"
+      summary: "Получить страницу отчётов"
       parameters:
         - in: query
           name: page
           schema:
             type: integer
-            minimum: 0
-            default: 0
           description: Номер страницы
           required: false
         - in: query
           name: size
           schema:
             type: integer
-            minimum: 1
-            default: 20
           description: Размер страницы
           required: false
       responses:
@@ -51,7 +71,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PageOfAudit'
+                $ref: '#/components/schemas/PageOfReport'
         '400':
           $ref: '#/components/responses/Bad_Request'
         '401':
@@ -60,28 +80,66 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '500':
           $ref: '#/components/responses/Internal_Server_Error'
-  /api/v1/audit/{uuid}:
+  /api/v1/report/{uuid}/export:
     get:
       tags:
-        - "Безопасность"
-      summary: "Получить информацию о действии в системе"
-      security:
-        - bearerAuth: [ROLE_ADMIN]
+        - "Отчёты"
+      summary: Скачать сформированный отчёт
       parameters:
         - in: path
           name: uuid
-          description: "Идентификатор пользователя"
-          required: true
+          description: Идентификатор отчёта
           schema:
             type: string
             format: uuid
+          required: true
       responses:
         '200':
           description: OK
           content:
-            application/json:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
               schema:
-                $ref: '#/components/schemas/Audit'
+                type: string
+                format: binary
+                description: Файл
+          headers:
+            Content-Disposition:
+              schema:
+                type: string
+                description: Описание файла
+                example: 'attachment; filename="f43b1a97-dc00-40e2-9450-ace8d2416f3d"'
+            Content-Type:
+              schema:
+                type: string
+                description: Описание типа контента
+                example: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        '204':
+          description: Сервер, по предоставленному uuid, не смог найти информацию
+        '400':
+          $ref: '#/components/responses/Bad_Request'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/Internal_Server_Error'
+    head:
+      tags:
+        - "Отчёты"
+      summary: Проверка доступности сформированного отчёта
+      parameters:
+        - in: path
+          name: uuid
+          description: Идентификатор отчёта
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: Сервер, по предоставленному uuid, не смог найти информацию
         '400':
           $ref: '#/components/responses/Bad_Request'
         '401':
@@ -91,13 +149,17 @@ paths:
         '500':
           $ref: '#/components/responses/Internal_Server_Error'
 
-components:
 
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+components:
+  requestBodies:
+    CreateReport:
+      description: Параметры для создания отчёта
+      required: true
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: '#/components/schemas/ReportParamJournalFood'
 
   responses:
     Bad_Request:
@@ -128,7 +190,7 @@ components:
     Internal_Server_Error:
       description: Внутренняя ошибка сервера. Сервер не смог корректно обработать запрос
       content:
-        application/json:
+        applicaion/json:
           schema:
             type: array
             items:
@@ -137,84 +199,71 @@ components:
             - logref: error
               message:  Сервер не смог корректно обработать запрос. Пожалуйста обратитесь к администратору
   schemas:
-    UserRole:
-      type: string
-      description: |
-        Роль пользователя:
-          * `ADMIN` - Администратор
-          * `USER` - Пользователь
-      enum:
-        - "ADMIN"
-        - "USER"
-    UserStatus:
-      type: string
-      description: |
-        Статус пользователя:
-          * `WAITING_ACTIVATION` - Ожидает активации
-          * `ACTIVATED` - Активирован
-          * `DEACTIVATED` - Деактивирован
-      enum:
-        - "WAITING_ACTIVATION"
-        - "ACTIVATED"
-        - "DEACTIVATED"
-    User:
+    Report:
       type: object
-      description: Пользователь
+      description: Отчёт
+      required:
+        - description
       allOf:
         - $ref: '#/components/schemas/t_base_essence'
       properties:
-        mail:
-          type: string
-          description: "Электронная почта"
-        nick:
-          type: string
-          description: "Псевдоним"
-        role:
-          $ref: '#/components/schemas/UserRole'
         status:
-          $ref: '#/components/schemas/UserStatus'
-    EssenceType:
+          type: string
+          description: |
+            Статус отчёта:
+              * `LOADED` - Ожидает формирования
+              * `PROGRESS` - Формирует
+              * `ERROR` - Ошибка формирование
+              * `DONE` - Сформирован
+          enum:
+            - LOADED
+            - PROGRESS
+            - ERROR
+            - DONE
+        type:
+          $ref: '#/components/schemas/ReportType'
+        description:
+          type: string
+          description: "Описание параметров отчёта в человеческом формате"
+          readOnly: true
+          example: "Дневник питания за: 01.01.2021 - 01.01.2022"
+        params:
+          oneOf:
+            - $ref: '#/components/schemas/ReportParamJournalFood'
+
+    ReportType:
       type: string
       description: |
-        Тип сущности:
-          * `PRODUCT` - Продукт
-          * `RECIPE` - Рецепт
-          * `USER` - Пользователь
-          * `JOURNAL_FOOD` - Журнал питания
-          * `REPORT` - Отчёт
+        Тип отчёта:
+          * `JOURNAL_FOOD` - Отчёт о питании
       enum:
-        - "PRODUCT"
-        - "RECIPE"
-        - "USER"
-        - "JOURNAL_FOOD"
-        - "REPORT"
-    Audit:
-      type: object
-      description: Информация о действии в системе
-      properties:
-        user:
-          $ref: '#/components/schemas/User'
-        text:
-          type: string
-          description: "Описание действия пользователя"
-          example: "Создана запись в журнале питания"
-        type:
-          $ref: '#/components/schemas/EssenceType'
-        id:
-          type: string
-          description: "Идентификатор сущности указанного типа"
+        - JOURNAL_FOOD
 
-    PageOfAudit:
+    ReportParamJournalFood:
       type: object
-      description: Страница пользователей
+      description: Параметры запуска отчёта о питании
+      properties:
+        from:
+          description: Записи из журнала начиная с даты
+          type: string
+          format: date
+        to:
+          description: Записи из журнала заканчивая датой
+          type: string
+          format: date
+
+
+    PageOfReport:
+      type: object
+      description: Отчёты
       allOf:
         - $ref: '#/components/schemas/t_page'
       properties:
         content:
           type: array
           items:
-            $ref: '#/components/schemas/Audit'
-        
+            $ref: '#/components/schemas/Report'
+
     t_base_essence:
       type: object
       description: Описание базовой сущности.
@@ -250,7 +299,7 @@ components:
         - first
         - number_of_elements
         - last
-      description: Страница
+      description: Страница с опросами
       properties:
         number:
           type: integer
@@ -268,7 +317,7 @@ components:
           description: Признак является ли элемент первым
           type: boolean
         number_of_elements:
-          description: Номер элемента
+          description: Количество элементов на странице
           type: integer
         last:
           description: Признак является ли элемент последним
