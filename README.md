@@ -53,7 +53,7 @@ Available after authorization.
 
 # Presentation
 
-For demonstration, queries from the Postman collection from the \docs folder can be run.
+For demonstration, queries from the Postman collection from the \postman folder can be run.
 The my_fit_droplet collection is intended for droplet requests on the digitalocean server (the server is temporarily stopped, demonstration on request).
 
 
