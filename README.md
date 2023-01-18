@@ -11,44 +11,44 @@ The main functions of the application
 
 Registration
 To register, the user must enter:
-● email
-● Password
-● Name
-Height (profile)
-Weight (profile)
-Age (profile)
+* email
+* Password
+* Name
+* Height (profile)
+* Weight (profile)
+* Age (profile)
 
 Authorization
 To log in, the user must enter:
-● email
-● Password
+* email
+* Password
 
 Counting calories from food
 1. Product selection:
-1.1. Choose a product
-1.2. Specify the weight
+* Choose a product
+* Specify the weight
 2. Multiple products can be selected
 3. Information is displayed (calories, proteins, fats, carbohydrates) for each product
 
 Food Diary
 Available after authorization.
 1. Nutrition
-1.1. The user fills in the products that he ate during the day
+* The user fills in the products that he ate during the day
 2. User's weight
-2.1. The user indicates his weight (necessary for statistics)
+* The user indicates his weight (necessary for statistics)
 
 Statistics
 Available after authorization.
 1. Viewing statistics (graph X = days, Y=...) per week/month :
-1.1. calories consumed
-1.2. user's weight
+* calories consumed
+* user's weight
 
 Power menu
 Available after authorization.
 1. Choose:
-1.1. day of the week
-1.2. products/dishes
-1.3.1. specify the weight
+* day of the week
+* products/dishes
+* specify the weight
 2. All data specified by the user is saved
 
 # Presentation
