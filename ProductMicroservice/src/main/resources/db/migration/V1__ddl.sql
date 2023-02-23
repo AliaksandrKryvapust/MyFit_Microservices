@@ -1,5 +1,5 @@
 CREATE SCHEMA IF NOT EXISTS app
-    AUTHORIZATION postgres;
+    AUTHORIZATION app;
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS app.products
 );
 
 ALTER TABLE IF EXISTS app.products
-    OWNER to postgres;
+    OWNER to app;
 
 CREATE TABLE IF NOT EXISTS app.meal
 (
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS app.meal
 );
 
 ALTER TABLE IF EXISTS app.meal
-    OWNER to postgres;
+    OWNER to app;
 
 CREATE TABLE IF NOT EXISTS app.ingredients
 (
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS app.records
 );
 
 ALTER TABLE IF EXISTS app.records
-    OWNER to postgres;
+    OWNER to app;
 
 CREATE TABLE IF NOT EXISTS app.profile
 (
@@ -78,4 +78,4 @@ CREATE TABLE IF NOT EXISTS app.profile
 );
 
 ALTER TABLE IF EXISTS app.profile
-    OWNER to postgres;
+    OWNER to app;

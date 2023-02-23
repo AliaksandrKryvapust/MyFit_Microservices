@@ -1,5 +1,5 @@
 CREATE SCHEMA IF NOT EXISTS audit
-    AUTHORIZATION postgres;
+    AUTHORIZATION app;
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS audit.users
 );
 
 ALTER TABLE IF EXISTS audit.users
-    OWNER to postgres;
+    OWNER to app;
 
 ALTER TABLE IF EXISTS audit.users
     ADD CONSTRAINT "users_UK" UNIQUE (email)
@@ -34,4 +34,4 @@ CREATE TABLE audit.audit
 );
 
 ALTER TABLE IF EXISTS audit.audit
-    OWNER to postgres;
+    OWNER to app;
