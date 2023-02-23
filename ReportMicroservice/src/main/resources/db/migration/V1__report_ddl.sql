@@ -1,5 +1,5 @@
 CREATE SCHEMA IF NOT EXISTS report
-    AUTHORIZATION postgres;
+    AUTHORIZATION app;
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
@@ -21,5 +21,5 @@ CREATE TABLE IF NOT EXISTS report.report
 );
 
 ALTER TABLE IF EXISTS report.report
-    OWNER to postgres;
+    OWNER to app;
 
