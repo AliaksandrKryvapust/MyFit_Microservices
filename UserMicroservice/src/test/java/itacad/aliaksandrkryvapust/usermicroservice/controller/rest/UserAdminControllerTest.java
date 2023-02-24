@@ -29,9 +29,9 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.UUID;
 
-@WebMvcTest(controllers = UserController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class})
+@WebMvcTest(controllers = UserAdminController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class})
 @AutoConfigureMockMvc
-class UserControllerTest {
+class UserAdminControllerTest {
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private MockMvc mockMvc;
@@ -62,13 +62,13 @@ class UserControllerTest {
         final UserDtoOutput userDtoOutput = UserDtoOutput.builder()
                 .dtCreate(dtCreate)
                 .dtUpdate(dtUpdate)
-                .mail(email)
-                .nick(username)
-                .role(EUserRole.USER)
-                .status(EUserStatus.ACTIVATED)
-                .uuid(id)
+                .email(email)
+                .username(username)
+                .role(EUserRole.USER.name())
+                .status(EUserStatus.ACTIVATED.name())
+                .id(id.toString())
                 .build();
-        final PageDtoOutput pageDtoOutput = PageDtoOutput.builder()
+        final PageDtoOutput<UserDtoOutput> pageDtoOutput = PageDtoOutput.<UserDtoOutput>builder()
                 .number(1)
                 .size(10)
                 .totalPages(2)
@@ -115,11 +115,11 @@ class UserControllerTest {
         final UserDtoOutput userDtoOutput = UserDtoOutput.builder()
                 .dtCreate(dtCreate)
                 .dtUpdate(dtUpdate)
-                .mail(email)
-                .nick(username)
-                .role(EUserRole.USER)
-                .status(EUserStatus.ACTIVATED)
-                .uuid(id)
+                .email(email)
+                .username(username)
+                .role(EUserRole.USER.name())
+                .status(EUserStatus.ACTIVATED.name())
+                .id(id.toString())
                 .build();
         Mockito.when(userManager.get(id)).thenReturn(userDtoOutput);
 
@@ -158,11 +158,11 @@ class UserControllerTest {
         final UserDtoOutput userDtoOutput = UserDtoOutput.builder()
                 .dtCreate(dtCreate)
                 .dtUpdate(dtUpdate)
-                .mail(email)
-                .nick(username)
-                .role(EUserRole.USER)
-                .status(EUserStatus.ACTIVATED)
-                .uuid(id)
+                .email(email)
+                .username(username)
+                .role(EUserRole.USER.name())
+                .status(EUserStatus.ACTIVATED.name())
+                .id(id.toString())
                 .build();
         Mockito.when(userManager.save(userDtoInput)).thenReturn(userDtoOutput);
 
@@ -202,11 +202,11 @@ class UserControllerTest {
         final UserDtoOutput userDtoOutput = UserDtoOutput.builder()
                 .dtCreate(dtCreate)
                 .dtUpdate(dtUpdate)
-                .mail(email)
-                .nick(username)
-                .role(EUserRole.USER)
-                .status(EUserStatus.ACTIVATED)
-                .uuid(id)
+                .email(email)
+                .username(username)
+                .role(EUserRole.USER.name())
+                .status(EUserStatus.ACTIVATED.name())
+                .id(id.toString())
                 .build();
         Mockito.when(userManager.update(userDtoInput, id, dtUpdate.toEpochMilli())).thenReturn(userDtoOutput);
 

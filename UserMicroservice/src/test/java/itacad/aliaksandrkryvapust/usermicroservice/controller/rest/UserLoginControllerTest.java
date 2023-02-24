@@ -76,11 +76,11 @@ class UserLoginControllerTest {
         final UserDtoOutput userDtoOutput = UserDtoOutput.builder()
                 .dtCreate(dtCreate)
                 .dtUpdate(dtUpdate)
-                .mail(email)
-                .nick(username)
-                .role(EUserRole.USER)
-                .status(EUserStatus.ACTIVATED)
-                .uuid(id)
+                .email(email)
+                .username(username)
+                .role(EUserRole.USER.name())
+                .status(EUserStatus.ACTIVATED.name())
+                .id(id.toString())
                 .build();
         Mockito.when(userManager.getUserDto(email)).thenReturn(userDtoOutput);
 
@@ -131,9 +131,9 @@ class UserLoginControllerTest {
         final String email = "admin@myfit.com";
         final String password = "kdrL556D";
         final UserDtoRegistration userDtoRegistration = UserDtoRegistration.builder()
-                .mail(email)
+                .email(email)
                 .password(password)
-                .nick(username).build();
+                .username(username).build();
 //        final HttpServletRequest request = Mockito.mock(HttpServletRequest.class, RETURNS_DEEP_STUBS);
         final UserRegistrationDtoOutput userRegistration = getPreparedUserRegistration();
         Mockito.when(userManager.saveUser(userDtoRegistration)).thenReturn(userRegistration);
@@ -176,7 +176,7 @@ class UserLoginControllerTest {
 
     private UserLoginDtoOutput getPreparedUserLoginDto(){
         return UserLoginDtoOutput.builder()
-                .mail(email)
+                .email(email)
                 .token(token)
                 .build();
     }

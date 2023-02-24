@@ -1,12 +1,10 @@
 package itacad.aliaksandrkryvapust.usermicroservice.controller.rest.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import itacad.aliaksandrkryvapust.usermicroservice.controller.rest.TokenValidationController;
 import itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil;
 import itacad.aliaksandrkryvapust.usermicroservice.manager.api.ITokenManager;
-import itacad.aliaksandrkryvapust.usermicroservice.manager.api.IUserManager;
 import itacad.aliaksandrkryvapust.usermicroservice.service.JwtUserDetailsService;
 import itacad.aliaksandrkryvapust.usermicroservice.service.TokenValidationService;
-import itacad.aliaksandrkryvapust.usermicroservice.service.api.ITokenValidationService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import javax.servlet.http.HttpServletRequest;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 
 @WebMvcTest(controllers = TokenValidationController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class})
 @AutoConfigureMockMvc
