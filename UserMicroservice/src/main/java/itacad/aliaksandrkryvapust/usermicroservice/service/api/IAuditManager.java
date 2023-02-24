@@ -1,4 +1,4 @@
-package itacad.aliaksandrkryvapust.usermicroservice.manager.api;
+package itacad.aliaksandrkryvapust.usermicroservice.service.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.microservices.AuditDto;

@@ -1,10 +1,10 @@
-package itacad.aliaksandrkryvapust.usermicroservice.manager.audit;
+package itacad.aliaksandrkryvapust.usermicroservice.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.microservices.AuditDto;
-import itacad.aliaksandrkryvapust.usermicroservice.manager.api.IAuditManager;
-import org.springframework.beans.factory.annotation.Autowired;
+import itacad.aliaksandrkryvapust.usermicroservice.service.api.IAuditManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -19,14 +19,10 @@ import static itacad.aliaksandrkryvapust.usermicroservice.core.Constants.AUDIT_U
 import static itacad.aliaksandrkryvapust.usermicroservice.core.Constants.TOKEN_HEADER;
 
 @Component
-public class AuditManager implements IAuditManager {
+@RequiredArgsConstructor
+public class AuditService implements IAuditManager {
     private static final String jwtSecret = "NDQ1ZjAzNjQtMzViZi00MDRjLTljZjQtNjNjYWIyZTU5ZDYw";
     private final ObjectMapper objectMapper;
-
-    @Autowired
-    public AuditManager(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
 
     @Override
     public void audit(AuditDto auditDto) throws JsonProcessingException, URISyntaxException {
