@@ -4,10 +4,11 @@ import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoInput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoRegistration;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserLoginDtoOutput;
+import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserRegistrationDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.User;
-import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.UserRole;
-import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.UserStatus;
+import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.EUserRole;
+import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.EUserStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -33,18 +34,18 @@ public class UserMapper {
         return User.builder().username(userDtoRegistration.getNick())
                 .password(encoder.encode(userDtoRegistration.getPassword()))
                 .email(userDtoRegistration.getMail())
-                .role(UserRole.USER)
-                .status(UserStatus.WAITING_ACTIVATION)
+                .role(EUserRole.USER)
+                .status(EUserStatus.WAITING_ACTIVATION)
                 .build();
     }
 
     public User inputMapping(UserDtoInput userDtoInput) {
         return User.builder()
-                .username(userDtoInput.getNick())
+                .username(userDtoInput.getUsername())
                 .password(encoder.encode(userDtoInput.getPassword()))
-                .email(userDtoInput.getMail())
-                .role(UserRole.valueOf(userDtoInput.getRole()))
-                .status(UserStatus.valueOf(userDtoInput.getStatus()))
+                .email(userDtoInput.getEmail())
+                .role(EUserRole.valueOf(userDtoInput.getRole()))
+                .status(EUserStatus.valueOf(userDtoInput.getStatus()))
                 .build();
     }
 
@@ -58,9 +59,11 @@ public class UserMapper {
                 .build();
     }
 
-    public UserLoginDtoOutput registerOutputMapping(User user) {
-        return UserLoginDtoOutput.builder()
-                .mail(user.getEmail())
+    public UserRegistrationDtoOutput registerOutputMapping(User user) {
+        String role = user.getRole().name();
+        return UserRegistrationDtoOutput.builder()
+                .email(user.getEmail())
+                .role(role)
                 .build();
     }
 
