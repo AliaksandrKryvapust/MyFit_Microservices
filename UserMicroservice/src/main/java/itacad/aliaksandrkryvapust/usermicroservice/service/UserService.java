@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.OptimisticLockException;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -70,6 +71,6 @@ public class UserService implements IUserService {
 
     @Override
     public User getUser(String email) {
-        return this.userRepository.findByEmail(email);
+        return this.userRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
     }
 }
