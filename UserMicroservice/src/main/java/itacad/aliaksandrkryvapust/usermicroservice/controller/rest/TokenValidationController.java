@@ -14,11 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/validateToken")
 public class TokenValidationController {
-    private final ITokenManager tokenValidationService;
+    private final ITokenManager tokenManager;
 
     @GetMapping
     public ResponseEntity<TokenValidationDto> validateToken(HttpServletRequest request) {
-        TokenValidationDto validationDto = tokenValidationService.checkToken(request);
+        TokenValidationDto validationDto = tokenManager.checkToken(request);
         return ResponseEntity.ok(validationDto);
     }
 }
