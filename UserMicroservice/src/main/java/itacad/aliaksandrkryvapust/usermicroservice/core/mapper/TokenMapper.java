@@ -13,6 +13,7 @@ public class TokenMapper {
     public EmailToken inputMapping(User user, String token){
         return EmailToken.builder()
                 .token(token)
-                .user(user).build();
+                .user(user)
+                .build();
     }
 }

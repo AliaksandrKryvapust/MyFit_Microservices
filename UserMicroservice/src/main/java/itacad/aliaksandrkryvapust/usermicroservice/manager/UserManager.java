@@ -101,7 +101,7 @@ public class UserManager implements IUserManager {
     }
 
     @Override
-    public PageDtoOutput get(Pageable pageable) {
+    public PageDtoOutput<UserDtoOutput> get(Pageable pageable) {
         return userMapper.outputPageMapping(this.userService.get(pageable));
     }
 

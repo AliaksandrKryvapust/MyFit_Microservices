@@ -1,6 +1,6 @@
 package itacad.aliaksandrkryvapust.usermicroservice.core;
 
-public class Constants {
+public final class Constants {
     public static final String ENCODING = "UTF-8";
     public static final String AUDIT_URI = "http://localhost:8081/api/v1/audit";
     public static final String IP_URI = "http://165.22.64.67";

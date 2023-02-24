@@ -13,5 +13,5 @@ public class AuditDto {
     private final @NonNull String id;
     private final @NonNull UserDtoOutput user;
     private final @NonNull String text;
-    private final @NonNull Type type;
+    private final @NonNull String type;
 }

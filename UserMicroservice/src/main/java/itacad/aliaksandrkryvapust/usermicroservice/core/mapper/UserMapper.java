@@ -6,10 +6,10 @@ import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserDtoOutput
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserLoginDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserRegistrationDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.pages.PageDtoOutput;
-import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.User;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.EUserRole;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.EUserStatus;
-import org.springframework.beans.factory.annotation.Autowired;
+import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Page;
@@ -21,19 +21,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserMapper {
     private final PasswordEncoder encoder;
 
-    @Autowired
-    public UserMapper(PasswordEncoder encoder) {
-        this.encoder = encoder;
-    }
-
     public User userInputMapping(UserDtoRegistration userDtoRegistration) {
-        return User.builder().username(userDtoRegistration.getNick())
+        return User.builder()
+                .username(userDtoRegistration.getUsername())
                 .password(encoder.encode(userDtoRegistration.getPassword()))
-                .email(userDtoRegistration.getMail())
+                .email(userDtoRegistration.getEmail())
                 .role(EUserRole.USER)
                 .status(EUserStatus.WAITING_ACTIVATION)
                 .build();
@@ -60,29 +57,29 @@ public class UserMapper {
     }
 
     public UserRegistrationDtoOutput registerOutputMapping(User user) {
-        String role = user.getRole().name();
         return UserRegistrationDtoOutput.builder()
                 .email(user.getEmail())
-                .role(role)
+                .role(user.getRole().name())
                 .build();
     }
 
     public UserLoginDtoOutput loginOutputMapping(UserDetails userDetails, String token) {
         return UserLoginDtoOutput.builder()
-                .mail(userDetails.getUsername())
+                .email(userDetails.getUsername())
                 .token(token)
                 .build();
     }
 
     public UserDtoOutput outputMapping(User user) {
         return UserDtoOutput.builder()
-                .uuid(user.getId())
+                .id(user.getId().toString())
                 .dtCreate(user.getDtCreate())
                 .dtUpdate(user.getDtUpdate())
-                .mail(user.getEmail())
-                .nick(user.getUsername())
-                .role(user.getRole())
-                .status(user.getStatus())
+                .dtLogin(user.getDtLogin())
+                .email(user.getEmail())
+                .username(user.getUsername())
+                .role(user.getRole().name())
+                .status(user.getStatus().name())
                 .build();
     }
 

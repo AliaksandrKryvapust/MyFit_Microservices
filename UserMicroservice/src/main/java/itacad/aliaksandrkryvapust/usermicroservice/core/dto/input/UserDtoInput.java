@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -22,8 +21,6 @@ public class UserDtoInput {
     @NotNull(message = "password cannot be null")
     @Size(min = 2, max = 200, message = "password should contain from 2 to 200 letters")
     private final String password;
-    @NotNull(message = "email cannot be null")
-    @NotEmpty
     @IValidEmail(message = "email is not valid")
     private final String email;
     @NotNull(message = "user role cannot be null")

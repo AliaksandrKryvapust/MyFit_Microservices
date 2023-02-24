@@ -5,21 +5,16 @@ import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.microservices
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.microservices.Type;
 import itacad.aliaksandrkryvapust.usermicroservice.core.mapper.UserMapper;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AuditMapper {
     private final UserMapper userMapper;
-
-    @Autowired
-    public AuditMapper(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
-
 
     public AuditDto userOutputMapping(User user, String text) {
         UserDtoOutput userDto = userMapper.outputMapping(user);
@@ -27,7 +22,7 @@ public class AuditMapper {
                 .id(String.valueOf(user.getId()))
                 .user(userDto)
                 .text(text)
-                .type(Type.USER)
+                .type(Type.USER.name())
                 .build();
     }
 }

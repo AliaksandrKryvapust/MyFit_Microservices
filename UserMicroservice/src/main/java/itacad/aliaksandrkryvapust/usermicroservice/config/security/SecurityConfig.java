@@ -54,7 +54,7 @@ public class SecurityConfig {
                 .antMatchers("/api/v1/users/registration", "/api/v1/users/registration/**",
                         "/api/v1/users/login").permitAll()
                 .antMatchers( "/api/v1/users").authenticated()
-                .antMatchers("/api/v1/users", "/api/v1/users/**").hasAuthority(EUserRole.ADMIN.name())
+                .antMatchers("/api/v1/admin/users", "/api/v1//admin/users/**").hasAuthority(EUserRole.ADMIN.name())
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
