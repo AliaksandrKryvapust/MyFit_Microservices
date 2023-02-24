@@ -1,4 +1,4 @@
-package itacad.aliaksandrkryvapust.usermicroservice.core.mapper.microservices;
+package itacad.aliaksandrkryvapust.usermicroservice.core.mapper;
 
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.microservices.AuditDto;

@@ -96,4 +96,11 @@ public class UserMapper {
                 .content(outputs)
                 .build();
     }
+
+    public void updateEntityFields(User user, User currentEntity) {
+        currentEntity.setUsername(user.getUsername());
+        currentEntity.setPassword(user.getPassword());
+        currentEntity.setEmail(user.getEmail());
+        currentEntity.setStatus(user.getStatus());
+    }
 }
