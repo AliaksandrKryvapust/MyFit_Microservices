@@ -3,9 +3,7 @@ package itacad.aliaksandrkryvapust.usermicroservice.controller.exceptions;
 import itacad.aliaksandrkryvapust.usermicroservice.controller.exceptions.dto.ExceptionDto;
 import itacad.aliaksandrkryvapust.usermicroservice.controller.exceptions.dto.MultipleExceptionDto;
 import itacad.aliaksandrkryvapust.usermicroservice.controller.exceptions.dto.SingleExceptionDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,14 +23,8 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 @RestControllerAdvice
+@Slf4j
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
-
-    private final Logger logger;
-
-    @Autowired
-    public RestExceptionHandler() {
-        this.logger = LoggerFactory.getLogger(this.getClass());
-    }
 
     @ExceptionHandler({DataIntegrityViolationException.class, NoSuchElementException.class})
     public ResponseEntity<SingleExceptionDto> handleBadRequest(Exception ex) {
@@ -92,7 +84,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private void makeLog(Exception ex) {
-        logger.error(ex.getMessage() + "\t" + ex.getCause() + "\n" + ex);
+        log.error(ex.getMessage() + "\t" + ex.getCause() + "\n" + ex);
     }
 }
 
