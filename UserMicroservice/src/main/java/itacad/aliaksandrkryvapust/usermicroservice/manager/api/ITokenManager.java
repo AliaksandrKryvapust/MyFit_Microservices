@@ -8,5 +8,5 @@ import javax.servlet.http.HttpServletRequest;
 public interface ITokenManager {
     void saveToken(User user,String token);
     void validateToken(String token);
-    void resendToken(String token, HttpServletRequest request);
+    void resendToken(String token);
 }
