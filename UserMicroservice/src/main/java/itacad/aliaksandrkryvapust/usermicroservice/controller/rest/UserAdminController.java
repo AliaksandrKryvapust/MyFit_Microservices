@@ -4,50 +4,49 @@ import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoInput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.manager.api.IUserManager;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
 @Validated
-@RequestMapping("/api/v1/users")
-public class UserController {
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/admin/users")
+public class UserAdminController {
     private final IUserManager userManager;
 
-    @Autowired
-    public UserController(IUserManager userManager) {
-        this.userManager = userManager;
-    }
-
     @GetMapping(params = {"page", "size"})
-    protected ResponseEntity<PageDtoOutput> getPage(@RequestParam("page") int page,
-                                                    @RequestParam("size") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(userManager.get(pageable));
+    protected ResponseEntity<PageDtoOutput<UserDtoOutput>> getPage(@RequestParam("page") int page,
+                                                                   @RequestParam("size") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("dtCreate").descending());
+        PageDtoOutput<UserDtoOutput> dtoOutput = userManager.get(pageable);
+        return ResponseEntity.ok(dtoOutput);
     }
 
     @GetMapping("/{id}")
     protected ResponseEntity<UserDtoOutput> get(@PathVariable UUID id) {
-        return ResponseEntity.ok(userManager.get(id));
+        UserDtoOutput dtoOutput = userManager.get(id);
+        return ResponseEntity.ok(dtoOutput);
     }
 
     @PostMapping
     protected ResponseEntity<UserDtoOutput> post(@RequestBody @Valid UserDtoInput dtoInput) {
-        return new ResponseEntity<>(this.userManager.save(dtoInput), HttpStatus.CREATED);
+        UserDtoOutput dtoOutput = userManager.save(dtoInput);
+        return new ResponseEntity<>(dtoOutput, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}/dt_update/{version}")
+    @PutMapping("/{id}/version/{version}")
     protected ResponseEntity<UserDtoOutput> put(@PathVariable UUID id, @PathVariable(name = "version") String version,
                                                 @Valid @RequestBody UserDtoInput dtoInput) {
-        return ResponseEntity.ok(this.userManager.update(dtoInput, id, Long.valueOf(version) ));
+        UserDtoOutput dtoOutput = userManager.update(dtoInput, id, Long.valueOf(version));
+        return ResponseEntity.ok(dtoOutput);
     }
-
 }
