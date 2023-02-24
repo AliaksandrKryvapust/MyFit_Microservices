@@ -4,6 +4,6 @@ import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.TokenValidati
 
 import javax.servlet.http.HttpServletRequest;
 
-public interface ITokenValidationService {
-    TokenValidationDto validateToken(HttpServletRequest request);
+public interface ITokenManager {
+    TokenValidationDto checkToken(HttpServletRequest request);
 }
