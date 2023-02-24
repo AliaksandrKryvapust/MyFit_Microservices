@@ -10,15 +10,14 @@ import itacad.aliaksandrkryvapust.usermicroservice.event.EmailVerificationEvent;
 import itacad.aliaksandrkryvapust.usermicroservice.manager.api.IAuditManager;
 import itacad.aliaksandrkryvapust.usermicroservice.manager.api.ITokenManager;
 import itacad.aliaksandrkryvapust.usermicroservice.manager.audit.AuditManager;
+import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.EUserStatus;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.EmailToken;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.User;
-import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.UserStatus;
 import itacad.aliaksandrkryvapust.usermicroservice.service.api.ITokenService;
 import itacad.aliaksandrkryvapust.usermicroservice.service.api.IUserService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.NoSuchElementException;
@@ -61,19 +60,18 @@ public class TokenManager implements ITokenManager {
     }
 
     @Override
-    public void resendToken(String token, HttpServletRequest request) {
+    public void resendToken(String token) {
         EmailToken emailToken = this.tokenService.getToken(token);
         if (emailToken == null) {
             throw new NoSuchElementException("Token is not exist " + token);
         }
-        String appUrl = request.getContextPath();
-        this.eventPublisher.publishEvent(new EmailVerificationEvent(appUrl, request.getLocale(), emailToken.getUser()));
+        this.eventPublisher.publishEvent(new EmailVerificationEvent(emailToken.getUser()));
     }
 
     private void activateUser(EmailToken emailToken) {
         try {
             User user = emailToken.getUser();
-            user.setStatus(UserStatus.ACTIVATED);
+            user.setStatus(EUserStatus.ACTIVATED);
             User userToSave = this.userMapper.activationMapping(user);
             userService.update(userToSave, user.getId(), user.getDtUpdate().toEpochMilli());
             AuditDto auditDto = this.auditMapper.userOutputMapping(user, userPut);

@@ -7,6 +7,7 @@ import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoLogin;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoRegistration;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserLoginDtoOutput;
+import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserRegistrationDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.microservices.AuditDto;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.mapper.UserMapper;
@@ -25,7 +26,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URISyntaxException;
 import java.util.UUID;
 
@@ -57,7 +57,7 @@ public class UserManager implements IUserManager {
 
     @Override
     public UserLoginDtoOutput login(UserDtoLogin userDtoLogin) {
-        UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(userDtoLogin.getMail());
+        UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(userDtoLogin.getEmail());
         if (!encoder.matches(userDtoLogin.getPassword(), userDetails.getPassword()) || !userDetails.isEnabled()) {
             throw new BadCredentialsException("User login or password is incorrect or user is not activated");
         }
@@ -66,13 +66,12 @@ public class UserManager implements IUserManager {
     }
 
     @Override
-    public UserLoginDtoOutput saveUser(UserDtoRegistration userDtoRegistration, HttpServletRequest request) {
+    public UserRegistrationDtoOutput saveUser(UserDtoRegistration userDtoRegistration) {
         try {
             User user = this.userService.save(userMapper.userInputMapping(userDtoRegistration));
             AuditDto auditDto = this.auditMapper.userOutputMapping(user, userPost);
             this.auditManager.audit(auditDto);
-            String appUrl = request.getContextPath();
-            this.eventPublisher.publishEvent(new EmailVerificationEvent(appUrl, request.getLocale(), user));
+            this.eventPublisher.publishEvent(new EmailVerificationEvent(user));
             return userMapper.registerOutputMapping(user);
         } catch (URISyntaxException e) {
             throw new RuntimeException("URI to audit is incorrect");
@@ -82,7 +81,7 @@ public class UserManager implements IUserManager {
     }
 
     @Override
-    public UserDtoOutput getUser(String email) {
+    public UserDtoOutput getUserDto(String email) {
         User user = this.userService.getUser(email);
         return this.userMapper.outputMapping(user);
     }
