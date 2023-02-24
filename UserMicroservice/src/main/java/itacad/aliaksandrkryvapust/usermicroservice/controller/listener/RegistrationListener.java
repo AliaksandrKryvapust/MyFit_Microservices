@@ -2,9 +2,10 @@ package itacad.aliaksandrkryvapust.usermicroservice.controller.listener;
 
 import itacad.aliaksandrkryvapust.usermicroservice.controller.exceptions.EmailSendException;
 import itacad.aliaksandrkryvapust.usermicroservice.event.EmailVerificationEvent;
-import itacad.aliaksandrkryvapust.usermicroservice.manager.api.ITokenManager;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.User;
+import itacad.aliaksandrkryvapust.usermicroservice.service.api.ITokenService;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationListener;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -15,21 +16,17 @@ import java.util.UUID;
 import static itacad.aliaksandrkryvapust.usermicroservice.core.Constants.*;
 
 @Component
+@RequiredArgsConstructor
 public class RegistrationListener implements ApplicationListener<EmailVerificationEvent> {
-    private final ITokenManager tokenManager;
+    private final ITokenService tokenService;
     private final JavaMailSenderImpl javaMailSender;
-
-    public RegistrationListener(ITokenManager tokenManager, JavaMailSenderImpl javaMailSender) {
-        this.tokenManager = tokenManager;
-        this.javaMailSender = javaMailSender;
-    }
 
     @Override
     public void onApplicationEvent(@NonNull EmailVerificationEvent event) {
         try {
             User user = event.getUser();
             String token = UUID.randomUUID().toString();
-            tokenManager.saveToken(user, token);
+            tokenService.saveToken(user, token);
             SimpleMailMessage email = createEmail(user, token);
             javaMailSender.send(email);
         } catch (Exception e) {
