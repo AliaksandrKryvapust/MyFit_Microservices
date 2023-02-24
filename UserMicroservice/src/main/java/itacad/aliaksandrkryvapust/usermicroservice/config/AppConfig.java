@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -44,5 +46,10 @@ public class AppConfig implements WebMvcConfigurer {
                 .serializationInclusion(JsonInclude.Include.NON_EMPTY)
                 .serializationInclusion(JsonInclude.Include.NON_NULL)
                 .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE).build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }

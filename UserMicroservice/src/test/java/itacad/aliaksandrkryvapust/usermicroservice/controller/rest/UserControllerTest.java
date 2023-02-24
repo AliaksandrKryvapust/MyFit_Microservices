@@ -7,13 +7,11 @@ import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserDtoOutput
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.manager.api.ITokenManager;
 import itacad.aliaksandrkryvapust.usermicroservice.manager.api.IUserManager;
-import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.UserRole;
-import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.UserStatus;
+import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.EUserRole;
+import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.EUserStatus;
 import itacad.aliaksandrkryvapust.usermicroservice.service.JwtUserDetailsService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -66,8 +64,8 @@ class UserControllerTest {
                 .dtUpdate(dtUpdate)
                 .mail(email)
                 .nick(username)
-                .role(UserRole.USER)
-                .status(UserStatus.ACTIVATED)
+                .role(EUserRole.USER)
+                .status(EUserStatus.ACTIVATED)
                 .uuid(id)
                 .build();
         final PageDtoOutput pageDtoOutput = PageDtoOutput.builder()
@@ -90,8 +88,8 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].dt_update").value(dtUpdate.toEpochMilli()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].mail").value(email))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].nick").value(username))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].role").value(UserRole.USER.name()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].status").value(UserStatus.ACTIVATED.name()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].role").value(EUserRole.USER.name()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].status").value(EUserStatus.ACTIVATED.name()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].uuid").value(id.toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.number").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.size").value(10))
@@ -119,8 +117,8 @@ class UserControllerTest {
                 .dtUpdate(dtUpdate)
                 .mail(email)
                 .nick(username)
-                .role(UserRole.USER)
-                .status(UserStatus.ACTIVATED)
+                .role(EUserRole.USER)
+                .status(EUserStatus.ACTIVATED)
                 .uuid(id)
                 .build();
         Mockito.when(userManager.get(id)).thenReturn(userDtoOutput);
@@ -132,8 +130,8 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.dt_update").value(dtUpdate.toEpochMilli()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.mail").value(email))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.nick").value(username))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.role").value(UserRole.USER.name()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(UserStatus.ACTIVATED.name()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.role").value(EUserRole.USER.name()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(EUserStatus.ACTIVATED.name()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.uuid").value(id.toString()));
 
         //test
@@ -151,19 +149,19 @@ class UserControllerTest {
         final String password = "kdrL556D";
         final UUID id = UUID.fromString("1d63d7df-f1b3-4e92-95a3-6c7efad96901");
         final UserDtoInput userDtoInput = UserDtoInput.builder()
-                .nick(username)
-                .mail(email)
-                .role(UserRole.USER.name())
+                .username(username)
+                .email(email)
+                .role(EUserRole.USER.name())
                 .password(password)
-                .status(UserStatus.ACTIVATED.name())
+                .status(EUserStatus.ACTIVATED.name())
                 .build();
         final UserDtoOutput userDtoOutput = UserDtoOutput.builder()
                 .dtCreate(dtCreate)
                 .dtUpdate(dtUpdate)
                 .mail(email)
                 .nick(username)
-                .role(UserRole.USER)
-                .status(UserStatus.ACTIVATED)
+                .role(EUserRole.USER)
+                .status(EUserStatus.ACTIVATED)
                 .uuid(id)
                 .build();
         Mockito.when(userManager.save(userDtoInput)).thenReturn(userDtoOutput);
@@ -176,8 +174,8 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.dt_update").value(dtUpdate.toEpochMilli()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.mail").value(email))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.nick").value(username))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.role").value(UserRole.USER.name()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(UserStatus.ACTIVATED.name()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.role").value(EUserRole.USER.name()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(EUserStatus.ACTIVATED.name()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.uuid").value(id.toString()));
 
         //test
@@ -195,19 +193,19 @@ class UserControllerTest {
         final String password = "kdrL556D";
         final UUID id = UUID.fromString("1d63d7df-f1b3-4e92-95a3-6c7efad96901");
         final UserDtoInput userDtoInput = UserDtoInput.builder()
-                .nick(username)
-                .mail(email)
-                .role(UserRole.USER.name())
+                .username(username)
+                .email(email)
+                .role(EUserRole.USER.name())
                 .password(password)
-                .status(UserStatus.ACTIVATED.name())
+                .status(EUserStatus.ACTIVATED.name())
                 .build();
         final UserDtoOutput userDtoOutput = UserDtoOutput.builder()
                 .dtCreate(dtCreate)
                 .dtUpdate(dtUpdate)
                 .mail(email)
                 .nick(username)
-                .role(UserRole.USER)
-                .status(UserStatus.ACTIVATED)
+                .role(EUserRole.USER)
+                .status(EUserStatus.ACTIVATED)
                 .uuid(id)
                 .build();
         Mockito.when(userManager.update(userDtoInput, id, dtUpdate.toEpochMilli())).thenReturn(userDtoOutput);
@@ -221,8 +219,8 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.dt_update").value(dtUpdate.toEpochMilli()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.mail").value(email))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.nick").value(username))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.role").value(UserRole.USER.name()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(UserStatus.ACTIVATED.name()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.role").value(EUserRole.USER.name()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(EUserStatus.ACTIVATED.name()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.uuid").value(id.toString()));
 
         //test

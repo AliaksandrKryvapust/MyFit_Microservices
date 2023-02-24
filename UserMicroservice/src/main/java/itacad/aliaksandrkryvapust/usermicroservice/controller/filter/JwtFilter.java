@@ -7,7 +7,6 @@ import itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil
 import itacad.aliaksandrkryvapust.usermicroservice.service.JwtUserDetailsService;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,8 +22,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static itacad.aliaksandrkryvapust.usermicroservice.core.Constants.TOKEN_HEADER;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -36,7 +35,6 @@ public class JwtFilter extends OncePerRequestFilter {
     private final JwtUserDetailsService jwtUserDetailsService;
     private final JwtTokenUtil jwtTokenUtil;
 
-    @Autowired
     public JwtFilter(JwtUserDetailsService jwtUserDetailsService, JwtTokenUtil jwtTokenUtil) {
         this.jwtUserDetailsService = jwtUserDetailsService;
         this.jwtTokenUtil = jwtTokenUtil;
@@ -55,6 +53,9 @@ public class JwtFilter extends OncePerRequestFilter {
         if (StringUtils.startsWithIgnoreCase(requestTokenHeader, "Bearer ")) {
             String jwtToken = requestTokenHeader.substring(7);
             try {
+                if (jwtUserDetailsService.tokenIsInBlackList(jwtToken)){
+                    return;
+                }
                 String username = jwtTokenUtil.getUsername(jwtToken);
                 if (!username.isBlank() && SecurityContextHolder.getContext().getAuthentication() == null) {
                     UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
@@ -71,8 +72,6 @@ public class JwtFilter extends OncePerRequestFilter {
             } catch (IllegalArgumentException e) {
                 log.error("Unable to fetch JWT token");
             }
-        } else {
-            log.warn("JWT token does not start with Bearer string");
         }
     }
 
@@ -87,7 +86,7 @@ public class JwtFilter extends OncePerRequestFilter {
         final String requestSecretHeader = request.getHeader(TOKEN_HEADER);
         if (requestSecretHeader != null) {
             if (requestSecretHeader.equals(jwtSecret)) {
-                List<GrantedAuthority> authorityList = new ArrayList<>();
+                Set<GrantedAuthority> authorityList = new HashSet<>();
                 authorityList.add(new SimpleGrantedAuthority("APP"));
                 UserDetails userDetails = new org.springframework.security.core.userdetails
                         .User("report@email", "report", authorityList);

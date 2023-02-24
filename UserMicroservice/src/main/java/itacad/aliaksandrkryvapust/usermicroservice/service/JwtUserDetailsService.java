@@ -1,43 +1,77 @@
 package itacad.aliaksandrkryvapust.usermicroservice.service;
 
+import itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil;
+import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoLogin;
+import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserLoginDtoOutput;
+import itacad.aliaksandrkryvapust.usermicroservice.core.mapper.UserMapper;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.api.IUserRepository;
+import itacad.aliaksandrkryvapust.usermicroservice.repository.cache.CacheStorage;
+import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.EUserStatus;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.User;
-import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.UserStatus;
-import org.springframework.beans.factory.annotation.Autowired;
+import itacad.aliaksandrkryvapust.usermicroservice.service.validator.api.IUserDetailsValidator;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpCookie;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.util.HashSet;
 import java.util.NoSuchElementException;
+import java.util.Set;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Service
+@RequiredArgsConstructor
 public class JwtUserDetailsService implements UserDetailsService {
     private final IUserRepository userRepository;
-
-    @Autowired
-    public JwtUserDetailsService(IUserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final CacheStorage<Object> tokenBlackList;
+    private final IUserDetailsValidator userDetailsValidator;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final UserMapper userMapper;
 
     @Override
     public UserDetails loadUserByUsername(String email) {
-        User user = this.userRepository.findByEmail(email);
-        this.validate(email, user);
-        boolean enabled = user.getStatus().equals(UserStatus.ACTIVATED);
-        boolean nonLocked = !user.getStatus().equals(UserStatus.DEACTIVATED);
-        List<GrantedAuthority> authorityList = new ArrayList<>();
+        User user = userRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
+        boolean enabled = user.getStatus().equals(EUserStatus.ACTIVATED);
+        boolean nonLocked = !user.getStatus().equals(EUserStatus.DEACTIVATED);
+        Set<GrantedAuthority> authorityList = new HashSet<>();
         authorityList.add(new SimpleGrantedAuthority(user.getRole().name()));
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), enabled,
                 true, true, nonLocked, authorityList);
     }
 
-    private void validate(String email, User user) {
-        if (user == null) {
-            throw new NoSuchElementException("There is no such user" + email);
-        }
+    public void logout(HttpServletRequest request) {
+        String requestTokenHeader = request.getHeader(AUTHORIZATION);
+        String jwtToken = requestTokenHeader.substring(7);
+        this.tokenBlackList.add(jwtToken, new Object());
+    }
+
+    public UserLoginDtoOutput login(UserDtoLogin userDtoLogin) {
+        UserDetails userDetails = loadUserByUsername(userDtoLogin.getEmail());
+        userDetailsValidator.validateLogin(userDtoLogin, userDetails);
+        String token = jwtTokenUtil.generateToken(userDetails);
+        setLoginDate(userDetails);
+        return userMapper.loginOutputMapping(userDetails, token);
+    }
+
+    public boolean tokenIsInBlackList(String token) {
+        return tokenBlackList.get(token) != null;
+    }
+
+    public HttpCookie createJwtCookie(String token) {
+        return jwtTokenUtil.createJwtCookie(token);
+    }
+
+    private void setLoginDate(UserDetails userDetails) {
+        User currentUser = userRepository.findByEmail(userDetails.getUsername()).orElseThrow(NoSuchElementException::new);
+        LocalDate date = LocalDate.now(ZoneOffset.UTC);
+        currentUser.setDtLogin(date);
+        userRepository.save(currentUser);
     }
 }

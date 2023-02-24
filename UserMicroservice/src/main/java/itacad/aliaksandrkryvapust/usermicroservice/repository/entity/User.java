@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
@@ -29,10 +30,12 @@ public class User{
     @Column(nullable = false, unique = true)
     private String email;
     @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private EUserRole role;
     @Setter
     @Enumerated(EnumType.STRING)
-    private UserStatus status;
+    private EUserStatus status;
+    @Setter
+    private LocalDate dtLogin;
     @org.hibernate.annotations.Generated(GenerationTime.INSERT)
     private Instant dtCreate;
     @Version

@@ -4,8 +4,13 @@ import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoLogin;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoRegistration;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserLoginDtoOutput;
+import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserRegistrationDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.manager.api.ITokenManager;
 import itacad.aliaksandrkryvapust.usermicroservice.manager.api.IUserManager;
+import itacad.aliaksandrkryvapust.usermicroservice.service.JwtUserDetailsService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpCookie;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,45 +24,56 @@ import javax.validation.Valid;
 
 @RestController
 @Validated
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
 public class UserLoginController {
     private final IUserManager userManager;
     private final ITokenManager tokenManager;
+    private final JwtUserDetailsService userDetailsService;
 
-    public UserLoginController(IUserManager userManager, ITokenManager tokenManager) {
-        this.userManager = userManager;
-        this.tokenManager = tokenManager;
-    }
-
-    @GetMapping("/me")
+    @GetMapping
     protected ResponseEntity<UserDtoOutput> getCurrentUser() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = userDetails.getUsername();
-        return ResponseEntity.ok(this.userManager.getUser(username));
+        UserDtoOutput dtoOutput = userManager.getUserDto(username);
+        return ResponseEntity.ok(dtoOutput);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<Object> logout(HttpServletRequest request) {
+        userDetailsService.logout(request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/login")
     protected ResponseEntity<UserLoginDtoOutput> login(@RequestBody @Valid UserDtoLogin dtoLogin) {
-        UserLoginDtoOutput userLoginDtoOutput = userManager.login(dtoLogin);
-        return ResponseEntity.ok(userLoginDtoOutput);
+        UserLoginDtoOutput userLoginDtoOutput = userDetailsService.login(dtoLogin);
+        HttpHeaders jwtCookie = createJwtCookie(userLoginDtoOutput.getToken());
+        return ResponseEntity.ok().headers(jwtCookie).body(userLoginDtoOutput);
     }
 
     @PostMapping("/registration")
-    protected ResponseEntity<UserLoginDtoOutput> registration(@RequestBody @Valid UserDtoRegistration dtoInput,
-                                                              HttpServletRequest request) {
-        UserLoginDtoOutput userLoginDtoOutput = this.userManager.saveUser(dtoInput, request);
+    protected ResponseEntity<UserRegistrationDtoOutput> registration(@RequestBody @Valid UserDtoRegistration dtoInput) {
+        UserRegistrationDtoOutput userLoginDtoOutput = userManager.saveUser(dtoInput);
         return new ResponseEntity<>(userLoginDtoOutput, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/registration/confirm", params = "token")
-    protected ResponseEntity<UserLoginDtoOutput> registrationConfirmation(@RequestParam String token) {
-        this.tokenManager.validateToken(token);
+    protected ResponseEntity<Object> registrationConfirmation(@RequestParam String token) {
+        tokenManager.validateToken(token);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping(value = "/registration/confirm/token", params = "token")
-    protected ResponseEntity<UserLoginDtoOutput> resendToken(@RequestParam String token, HttpServletRequest request) {
-        this.tokenManager.resendToken(token, request);
+    protected ResponseEntity<Object> resendToken(@RequestParam String token) {
+        tokenManager.resendToken(token);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private HttpHeaders createJwtCookie(String token) {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        HttpCookie responseCookie = userDetailsService.createJwtCookie(token);
+        responseHeaders.add(HttpHeaders.SET_COOKIE, responseCookie.toString());
+        return responseHeaders;
     }
 }

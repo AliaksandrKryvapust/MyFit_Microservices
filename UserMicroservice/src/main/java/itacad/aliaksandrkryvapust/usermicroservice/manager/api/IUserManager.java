@@ -6,11 +6,12 @@ import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoRegistr
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoLogin;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserLoginDtoOutput;
+import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserRegistrationDtoOutput;
 
 import javax.servlet.http.HttpServletRequest;
 
 public interface IUserManager extends IManager<UserDtoOutput, UserDtoInput>, IManagerUpdate<UserDtoOutput, UserDtoInput> {
     UserLoginDtoOutput login(UserDtoLogin userDtoLogin);
-    UserLoginDtoOutput saveUser(UserDtoRegistration user, HttpServletRequest request);
-    UserDtoOutput getUser(String email);
+    UserRegistrationDtoOutput saveUser(UserDtoRegistration user);
+    UserDtoOutput getUserDto(String email);
 }

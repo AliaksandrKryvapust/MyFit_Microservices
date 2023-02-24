@@ -2,7 +2,7 @@ package itacad.aliaksandrkryvapust.usermicroservice.core.mapper;
 
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.TokenValidationDto;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.User;
-import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.UserStatus;
+import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.EUserStatus;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
@@ -12,12 +12,13 @@ import org.springframework.stereotype.Component;
 public class ValidationTokenMapper {
 
     public TokenValidationDto outputMapping(User user) {
-        boolean authenticated = user.getStatus().equals(UserStatus.ACTIVATED);
+        boolean authenticated = user.getStatus().equals(EUserStatus.ACTIVATED);
         return TokenValidationDto.builder()
                 .id(user.getId())
                 .authenticated(authenticated)
                 .username(user.getEmail())
                 .role(user.getRole())
-                .dtUpdate(user.getDtUpdate()).build();
+                .dtUpdate(user.getDtUpdate())
+                .build();
     }
 }
