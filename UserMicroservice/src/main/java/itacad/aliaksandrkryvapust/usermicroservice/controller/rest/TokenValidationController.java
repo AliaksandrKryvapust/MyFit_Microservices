@@ -1,7 +1,7 @@
 package itacad.aliaksandrkryvapust.usermicroservice.controller.rest;
 
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.TokenValidationDto;
-import itacad.aliaksandrkryvapust.usermicroservice.service.api.ITokenValidationService;
+import itacad.aliaksandrkryvapust.usermicroservice.service.api.ITokenManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/validateToken")
 public class TokenValidationController {
-    private final ITokenValidationService tokenValidationService;
+    private final ITokenManager tokenValidationService;
 
     @GetMapping
     public ResponseEntity<TokenValidationDto> validateToken(HttpServletRequest request) {
-        TokenValidationDto validationDto = tokenValidationService.validateToken(request);
+        TokenValidationDto validationDto = tokenValidationService.checkToken(request);
         return ResponseEntity.ok(validationDto);
     }
 }

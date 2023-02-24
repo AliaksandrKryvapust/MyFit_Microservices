@@ -5,8 +5,8 @@ import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoRegistr
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserLoginDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserRegistrationDtoOutput;
-import itacad.aliaksandrkryvapust.usermicroservice.manager.api.ITokenManager;
-import itacad.aliaksandrkryvapust.usermicroservice.manager.api.IUserManager;
+import itacad.aliaksandrkryvapust.usermicroservice.service.api.ITokenService;
+import itacad.aliaksandrkryvapust.usermicroservice.service.api.IUserManager;
 import itacad.aliaksandrkryvapust.usermicroservice.service.JwtUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpCookie;
@@ -28,14 +28,14 @@ import javax.validation.Valid;
 @RequestMapping("/api/v1/users")
 public class UserLoginController {
     private final IUserManager userManager;
-    private final ITokenManager tokenManager;
+    private final ITokenService tokenService;
     private final JwtUserDetailsService userDetailsService;
 
     @GetMapping
     protected ResponseEntity<UserDtoOutput> getCurrentUser() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = userDetails.getUsername();
-        UserDtoOutput dtoOutput = userManager.getUserDto(username);
+        UserDtoOutput dtoOutput = userDetailsService.getUserDto(username);
         return ResponseEntity.ok(dtoOutput);
     }
 
@@ -60,13 +60,13 @@ public class UserLoginController {
 
     @GetMapping(value = "/registration/confirm", params = "token")
     protected ResponseEntity<Object> registrationConfirmation(@RequestParam String token) {
-        tokenManager.validateToken(token);
+        tokenService.activateUser(token);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping(value = "/registration/confirm/token", params = "token")
     protected ResponseEntity<Object> resendToken(@RequestParam String token) {
-        tokenManager.resendToken(token);
+        tokenService.resendToken(token);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
