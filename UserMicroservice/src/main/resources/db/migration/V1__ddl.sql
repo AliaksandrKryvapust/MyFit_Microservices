@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS users.users
     status    character varying(50)       NOT NULL,
     dt_update timestamp without time zone NOT NULL DEFAULT now(),
     dt_create timestamp without time zone NOT NULL DEFAULT now(),
+    dt_login  date,
     PRIMARY KEY (id)
 );
 
