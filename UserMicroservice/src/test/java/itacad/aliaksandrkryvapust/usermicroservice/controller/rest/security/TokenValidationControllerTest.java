@@ -2,9 +2,9 @@ package itacad.aliaksandrkryvapust.usermicroservice.controller.rest.security;
 
 import itacad.aliaksandrkryvapust.usermicroservice.controller.rest.TokenValidationController;
 import itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil;
-import itacad.aliaksandrkryvapust.usermicroservice.manager.api.ITokenManager;
 import itacad.aliaksandrkryvapust.usermicroservice.service.JwtUserDetailsService;
-import itacad.aliaksandrkryvapust.usermicroservice.service.TokenValidationService;
+import itacad.aliaksandrkryvapust.usermicroservice.service.TokenService;
+import itacad.aliaksandrkryvapust.usermicroservice.service.api.ITokenManager;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +29,12 @@ class TokenValidationControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private TokenValidationService tokenValidationService;
+    private ITokenManager tokenManager;
     @MockBean
     SecurityContext securityContext;
     // Beans for JwtFilter
     @MockBean
     private JwtTokenUtil tokenUtil;
-    @MockBean
-    private ITokenManager tokenManager;
     @MockBean
     private JwtUserDetailsService userDetailsService;
 
@@ -50,6 +48,6 @@ class TokenValidationControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         //test
-        Mockito.verify(tokenValidationService, Mockito.times(1)).validateToken(any(HttpServletRequest.class));
+        Mockito.verify(tokenManager, Mockito.times(1)).checkToken(any(HttpServletRequest.class));
     }
 }

@@ -5,8 +5,8 @@ import itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoInput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.pages.PageDtoOutput;
-import itacad.aliaksandrkryvapust.usermicroservice.manager.api.ITokenManager;
-import itacad.aliaksandrkryvapust.usermicroservice.manager.api.IUserManager;
+import itacad.aliaksandrkryvapust.usermicroservice.service.api.ITokenManager;
+import itacad.aliaksandrkryvapust.usermicroservice.service.api.IUserManager;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.EUserRole;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.EUserStatus;
 import itacad.aliaksandrkryvapust.usermicroservice.service.JwtUserDetailsService;
@@ -78,7 +78,7 @@ class UserAdminControllerTest {
                 .numberOfElements(2)
                 .content(Collections.singletonList(userDtoOutput))
                 .build();
-        Mockito.when(userManager.get(pageable)).thenReturn(pageDtoOutput);
+        Mockito.when(userManager.getDto(pageable)).thenReturn(pageDtoOutput);
 
         // assert
         this.mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/users").param("page", "0")
@@ -100,7 +100,7 @@ class UserAdminControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.number_of_elements").value(2));
 
         //test
-        Mockito.verify(userManager).get(pageable);
+        Mockito.verify(userManager).getDto(pageable);
     }
 
     @Test
@@ -121,7 +121,7 @@ class UserAdminControllerTest {
                 .status(EUserStatus.ACTIVATED.name())
                 .id(id.toString())
                 .build();
-        Mockito.when(userManager.get(id)).thenReturn(userDtoOutput);
+        Mockito.when(userManager.getDto(id)).thenReturn(userDtoOutput);
 
         // assert
         this.mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/users/1d63d7df-f1b3-4e92-95a3-6c7efad96901"))
@@ -135,7 +135,7 @@ class UserAdminControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.uuid").value(id.toString()));
 
         //test
-        Mockito.verify(userManager).get(id);
+        Mockito.verify(userManager).getDto(id);
     }
 
     @Test
@@ -164,7 +164,7 @@ class UserAdminControllerTest {
                 .status(EUserStatus.ACTIVATED.name())
                 .id(id.toString())
                 .build();
-        Mockito.when(userManager.save(userDtoInput)).thenReturn(userDtoOutput);
+        Mockito.when(userManager.saveDto(userDtoInput)).thenReturn(userDtoOutput);
 
         // assert
         this.mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/users").contentType(MediaType.APPLICATION_JSON)
@@ -179,7 +179,7 @@ class UserAdminControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.uuid").value(id.toString()));
 
         //test
-        Mockito.verify(userManager).save(userDtoInput);
+        Mockito.verify(userManager).saveDto(userDtoInput);
     }
 
     @Test
@@ -208,7 +208,7 @@ class UserAdminControllerTest {
                 .status(EUserStatus.ACTIVATED.name())
                 .id(id.toString())
                 .build();
-        Mockito.when(userManager.update(userDtoInput, id, dtUpdate.toEpochMilli())).thenReturn(userDtoOutput);
+        Mockito.when(userManager.updateDto(userDtoInput, id, dtUpdate.toEpochMilli())).thenReturn(userDtoOutput);
 
         // assert
         this.mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/users/1d63d7df-f1b3-4e92-95a3-6c7efad96901/dt_update/1673532532870")
@@ -224,6 +224,6 @@ class UserAdminControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.uuid").value(id.toString()));
 
         //test
-        Mockito.verify(userManager).update(userDtoInput, id, dtUpdate.toEpochMilli());
+        Mockito.verify(userManager).updateDto(userDtoInput, id, dtUpdate.toEpochMilli());
     }
 }

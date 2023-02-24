@@ -7,8 +7,8 @@ import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoRegistr
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserLoginDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserRegistrationDtoOutput;
-import itacad.aliaksandrkryvapust.usermicroservice.manager.api.ITokenManager;
-import itacad.aliaksandrkryvapust.usermicroservice.manager.api.IUserManager;
+import itacad.aliaksandrkryvapust.usermicroservice.service.api.ITokenService;
+import itacad.aliaksandrkryvapust.usermicroservice.service.api.IUserManager;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.EUserRole;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.EUserStatus;
 import itacad.aliaksandrkryvapust.usermicroservice.service.JwtUserDetailsService;
@@ -53,7 +53,7 @@ class UserLoginControllerTest {
     @MockBean
     private JwtTokenUtil tokenUtil;
     @MockBean
-    private ITokenManager tokenManager;
+    private ITokenService tokenService;
     @MockBean
     private JwtUserDetailsService userDetailsService;
 
@@ -82,7 +82,7 @@ class UserLoginControllerTest {
                 .status(EUserStatus.ACTIVATED.name())
                 .id(id.toString())
                 .build();
-        Mockito.when(userManager.getUserDto(email)).thenReturn(userDtoOutput);
+        Mockito.when(userDetailsService.getUserDto(email)).thenReturn(userDtoOutput);
 
         // assert
         this.mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/users"))
@@ -96,7 +96,7 @@ class UserLoginControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.uuid").value(id.toString()));
 
         //test
-        Mockito.verify(userManager).getUserDto(email);
+        Mockito.verify(userDetailsService).getUserDto(email);
     }
 
     @Test
@@ -157,7 +157,7 @@ class UserLoginControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         //test
-        Mockito.verify(tokenManager, Mockito.times(1)).validateToken(token);
+        Mockito.verify(tokenService, Mockito.times(1)).activateUser(token);
     }
 
     @Test
@@ -171,7 +171,7 @@ class UserLoginControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         //test
-        Mockito.verify(tokenManager, Mockito.times(1)).resendToken(any(String.class));
+        Mockito.verify(tokenService, Mockito.times(1)).resendToken(any(String.class));
     }
 
     private UserLoginDtoOutput getPreparedUserLoginDto(){
