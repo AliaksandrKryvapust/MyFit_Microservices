@@ -5,6 +5,6 @@ import lombok.*;
 @Builder
 @Data
 public class UserLoginDtoOutput {
-    private final @NonNull String mail;
-    private final String token;
+    private final @NonNull String email;
+    private final @NonNull String token;
 }
