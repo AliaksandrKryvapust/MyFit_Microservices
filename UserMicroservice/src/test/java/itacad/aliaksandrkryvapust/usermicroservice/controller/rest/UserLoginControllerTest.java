@@ -6,33 +6,36 @@ import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoLogin;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoRegistration;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserLoginDtoOutput;
+import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserRegistrationDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.manager.api.ITokenManager;
 import itacad.aliaksandrkryvapust.usermicroservice.manager.api.IUserManager;
-import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.UserRole;
-import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.UserStatus;
+import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.EUserRole;
+import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.EUserStatus;
 import itacad.aliaksandrkryvapust.usermicroservice.service.JwtUserDetailsService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpCookie;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import javax.servlet.http.HttpServletRequest;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.UUID;
 
+import static itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil.JWT_TOKEN_VALID_TIME;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @WebMvcTest(controllers = UserLoginController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class})
 @AutoConfigureMockMvc
@@ -54,6 +57,13 @@ class UserLoginControllerTest {
     @MockBean
     private JwtUserDetailsService userDetailsService;
 
+    // preconditions
+    final String username = "someone";
+    final String email = "admin@myfit.com";
+    final String password = "kdrL556D";
+    final String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzM1MzE5MzEsImV4cCI6MTY3MzUzNTUzMX0.ncZiUNsJK1LFh2U59moFgWhzcWZyW3p0TL9O_hWVcvw";
+
+
     @Test
     @WithMockUser(username="admin@myfit.com", password = "kdrL556D",roles={"USER_ADMIN"})
     void getCurrentUser() throws Exception {
@@ -68,25 +78,25 @@ class UserLoginControllerTest {
                 .dtUpdate(dtUpdate)
                 .mail(email)
                 .nick(username)
-                .role(UserRole.USER)
-                .status(UserStatus.ACTIVATED)
+                .role(EUserRole.USER)
+                .status(EUserStatus.ACTIVATED)
                 .uuid(id)
                 .build();
-        Mockito.when(userManager.getUser(email)).thenReturn(userDtoOutput);
+        Mockito.when(userManager.getUserDto(email)).thenReturn(userDtoOutput);
 
         // assert
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/users/me"))
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/users"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.dt_create").value(dtCreate.toEpochMilli()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.dt_update").value(dtUpdate.toEpochMilli()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.mail").value(email))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.nick").value(username))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.role").value(UserRole.USER.name()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(UserStatus.ACTIVATED.name()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.role").value(EUserRole.USER.name()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(EUserStatus.ACTIVATED.name()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.uuid").value(id.toString()));
 
         //test
-        Mockito.verify(userManager).getUser(email);
+        Mockito.verify(userManager).getUserDto(email);
     }
 
     @Test
@@ -96,12 +106,12 @@ class UserLoginControllerTest {
         final String password = "kdrL556D";
         final String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzM1MzE5MzEsImV4cCI6MTY3MzUzNTUzMX0.ncZiUNsJK1LFh2U59moFgWhzcWZyW3p0TL9O_hWVcvw";
         final UserDtoLogin userDtoLogin = UserDtoLogin.builder()
-                .mail(email)
+                .email(email)
                 .password(password).build();
-        final UserLoginDtoOutput userLoginDtoOutput = UserLoginDtoOutput.builder()
-                .mail(email)
-                .token(token).build();
-        Mockito.when(userManager.login(userDtoLogin)).thenReturn(userLoginDtoOutput);
+        final UserLoginDtoOutput userLoginDtoOutput = getPreparedUserLoginDto();
+        final HttpCookie httpCookie = getPreparedCookie();
+        Mockito.when(userDetailsService.login(userDtoLogin)).thenReturn(userLoginDtoOutput);
+        Mockito.when(userDetailsService.createJwtCookie(token)).thenReturn(httpCookie);
 
         // assert
         this.mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/users/login").contentType(MediaType.APPLICATION_JSON)
@@ -111,7 +121,7 @@ class UserLoginControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.token").value(token));
 
         //test
-        Mockito.verify(userManager).login(userDtoLogin);
+        Mockito.verify(userDetailsService).login(userDtoLogin);
     }
 
     @Test
@@ -124,11 +134,9 @@ class UserLoginControllerTest {
                 .mail(email)
                 .password(password)
                 .nick(username).build();
-        final HttpServletRequest request = Mockito.mock(HttpServletRequest.class, RETURNS_DEEP_STUBS);
-        final UserLoginDtoOutput userLoginDtoOutput = UserLoginDtoOutput.builder()
-                .mail(email)
-                .build();
-        Mockito.when(userManager.saveUser(userDtoRegistration, request)).thenReturn(userLoginDtoOutput);
+//        final HttpServletRequest request = Mockito.mock(HttpServletRequest.class, RETURNS_DEEP_STUBS);
+        final UserRegistrationDtoOutput userRegistration = getPreparedUserRegistration();
+        Mockito.when(userManager.saveUser(userDtoRegistration)).thenReturn(userRegistration);
 
         // assert
         this.mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/users/registration").contentType(MediaType.APPLICATION_JSON)
@@ -136,14 +144,12 @@ class UserLoginControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isCreated());
 
         //test
-        Mockito.verify(userManager, Mockito.times(1)).saveUser(any(UserDtoRegistration.class),
-                any(HttpServletRequest.class));
+        Mockito.verify(userManager, Mockito.times(1)).saveUser(any(UserDtoRegistration.class));
     }
 
     @Test
     void registrationConfirmation() throws Exception {
         // preconditions
-        final String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzM1MzE5MzEsImV4cCI6MTY3MzUzNTUzMX0.ncZiUNsJK1LFh2U59moFgWhzcWZyW3p0TL9O_hWVcvw";
 
         // assert
         this.mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/users/registration/confirm")
@@ -165,7 +171,27 @@ class UserLoginControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         //test
-        Mockito.verify(tokenManager, Mockito.times(1)).resendToken(any(String.class),
-                any(HttpServletRequest.class));
+        Mockito.verify(tokenManager, Mockito.times(1)).resendToken(any(String.class));
+    }
+
+    private UserLoginDtoOutput getPreparedUserLoginDto(){
+        return UserLoginDtoOutput.builder()
+                .mail(email)
+                .token(token)
+                .build();
+    }
+
+    private UserRegistrationDtoOutput getPreparedUserRegistration(){
+        return UserRegistrationDtoOutput.builder()
+                .email(email)
+                .role(EUserRole.USER.name())
+                .build();
+    }
+
+    private HttpCookie getPreparedCookie(){
+        return ResponseCookie.from(AUTHORIZATION, URLEncoder.encode("Bearer " + token, StandardCharsets.UTF_8))
+                .maxAge(JWT_TOKEN_VALID_TIME)
+                .httpOnly(true)
+                .build();
     }
 }
