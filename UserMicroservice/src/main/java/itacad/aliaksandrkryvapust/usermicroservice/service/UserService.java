@@ -1,76 +1,124 @@
 package itacad.aliaksandrkryvapust.usermicroservice.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoInput;
+import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoRegistration;
+import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserDtoOutput;
+import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserRegistrationDtoOutput;
+import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.microservices.AuditDto;
+import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.pages.PageDtoOutput;
+import itacad.aliaksandrkryvapust.usermicroservice.core.mapper.AuditMapper;
+import itacad.aliaksandrkryvapust.usermicroservice.core.mapper.UserMapper;
+import itacad.aliaksandrkryvapust.usermicroservice.event.EmailVerificationEvent;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.api.IUserRepository;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.User;
+import itacad.aliaksandrkryvapust.usermicroservice.service.api.IAuditManager;
+import itacad.aliaksandrkryvapust.usermicroservice.service.api.IUserManager;
 import itacad.aliaksandrkryvapust.usermicroservice.service.api.IUserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import itacad.aliaksandrkryvapust.usermicroservice.service.validator.api.IUserValidator;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.OptimisticLockException;
+import java.net.URISyntaxException;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
-public class UserService implements IUserService {
+@RequiredArgsConstructor
+public class UserService implements IUserService, IUserManager {
+    private final static String userPost = "New user was created";
+    private final static String userPut = "User was updated";
     private final IUserRepository userRepository;
-
-    @Autowired
-    public UserService(IUserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final IUserValidator userValidator;
+    private final IAuditManager auditManager;
+    private final UserMapper userMapper;
+    private final AuditMapper auditMapper;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
-    @Transactional
     public User save(User user) {
-        validate(user);
-        return this.userRepository.save(user);
-    }
-
-    private void validate(User user) {
-        if (user.getId() != null || user.getDtUpdate() != null) {
-            throw new IllegalStateException("User id should be empty");
-        }
+        return userRepository.save(user);
     }
 
     @Override
     public Page<User> get(Pageable pageable) {
-        return this.userRepository.findAll(pageable);
+        return userRepository.findAll(pageable);
     }
 
     @Override
     public User get(UUID id) {
-        return this.userRepository.findById(id).orElseThrow();
+        return userRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
-    @Transactional
     public User update(User user, UUID id, Long version) {
-        validate(user);
-        User currentEntity = this.userRepository.findById(id).orElseThrow();
-        this.optimisticLockCheck(version, currentEntity);
-        updateEntityFields(user, currentEntity);
-        return this.userRepository.save(currentEntity);
+        User currentEntity = get(id);
+        userValidator.optimisticLockCheck(version, currentEntity);
+        userMapper.updateEntityFields(user, currentEntity);
+        return save(currentEntity);
     }
 
-    private void optimisticLockCheck(Long version, User currentEntity) {
-        Long currentVersion = currentEntity.getDtUpdate().toEpochMilli();
-        if (!currentVersion.equals(version)) {
-            throw new OptimisticLockException("user table update failed, version does not match update denied");
+    @Override
+    public UserRegistrationDtoOutput saveUser(UserDtoRegistration userDtoRegistration) {
+        try {
+            User entityToSave = userMapper.userInputMapping(userDtoRegistration);
+            userValidator.validateEntity(entityToSave);
+            User user = save(entityToSave);
+            AuditDto auditDto = auditMapper.userOutputMapping(user, userPost);
+            auditManager.audit(auditDto);
+            eventPublisher.publishEvent(new EmailVerificationEvent(user));
+            return userMapper.registerOutputMapping(user);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("URI to audit is incorrect");
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to convert to JSON");
         }
     }
 
-    private void updateEntityFields(User user, User currentEntity) {
-        currentEntity.setUsername(user.getUsername());
-        currentEntity.setPassword(user.getPassword());
-        currentEntity.setEmail(user.getEmail());
-        currentEntity.setStatus(user.getStatus());
+    @Override
+    public UserDtoOutput saveDto(UserDtoInput userDtoInput) {
+        try {
+            User entityToSave = userMapper.inputMapping(userDtoInput);
+            userValidator.validateEntity(entityToSave);
+            User user = save(entityToSave);
+            AuditDto auditDto = auditMapper.userOutputMapping(user, userPost);
+            auditManager.audit(auditDto);
+            return userMapper.outputMapping(user);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("URI to audit is incorrect");
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to convert to JSON");
+        }
     }
 
     @Override
-    public User getUser(String email) {
-        return this.userRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
+    public PageDtoOutput<UserDtoOutput> getDto(Pageable pageable) {
+        Page<User> page = get(pageable);
+        return userMapper.outputPageMapping(page);
+    }
+
+    @Override
+    public UserDtoOutput getDto(UUID id) {
+        User user = get(id);
+        return userMapper.outputMapping(user);
+    }
+
+    @Override
+    public UserDtoOutput updateDto(UserDtoInput dtoInput, UUID id, Long version) {
+        try {
+            User entityToSave = userMapper.inputMapping(dtoInput);
+            userValidator.validateEntity(entityToSave);
+            User user = update(entityToSave, id, version);
+            AuditDto auditDto = auditMapper.userOutputMapping(user, userPut);
+            auditManager.audit(auditDto);
+            return userMapper.outputMapping(user);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("URI to audit is incorrect");
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to convert to JSON");
+        }
     }
 }
