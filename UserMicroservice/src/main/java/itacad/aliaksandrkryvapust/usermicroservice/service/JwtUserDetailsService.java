@@ -2,15 +2,20 @@ package itacad.aliaksandrkryvapust.usermicroservice.service;
 
 import itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoLogin;
+import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.TokenValidationDto;
+import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserLoginDtoOutput;
+import itacad.aliaksandrkryvapust.usermicroservice.core.mapper.TokenMapper;
 import itacad.aliaksandrkryvapust.usermicroservice.core.mapper.UserMapper;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.api.IUserRepository;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.cache.CacheStorage;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.EUserStatus;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.User;
+import itacad.aliaksandrkryvapust.usermicroservice.service.api.ITokenManager;
 import itacad.aliaksandrkryvapust.usermicroservice.service.validator.api.IUserDetailsValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpCookie;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,12 +33,13 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Service
 @RequiredArgsConstructor
-public class JwtUserDetailsService implements UserDetailsService {
+public class JwtUserDetailsService implements UserDetailsService, ITokenManager {
     private final IUserRepository userRepository;
     private final CacheStorage<Object> tokenBlackList;
     private final IUserDetailsValidator userDetailsValidator;
     private final JwtTokenUtil jwtTokenUtil;
     private final UserMapper userMapper;
+    private final TokenMapper tokenMapper;
 
     @Override
     public UserDetails loadUserByUsername(String email) {
@@ -49,7 +55,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     public void logout(HttpServletRequest request) {
         String requestTokenHeader = request.getHeader(AUTHORIZATION);
         String jwtToken = requestTokenHeader.substring(7);
-        this.tokenBlackList.add(jwtToken, new Object());
+        tokenBlackList.add(jwtToken, new Object());
     }
 
     public UserLoginDtoOutput login(UserDtoLogin userDtoLogin) {
@@ -66,6 +72,19 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     public HttpCookie createJwtCookie(String token) {
         return jwtTokenUtil.createJwtCookie(token);
+    }
+
+    public UserDtoOutput getUserDto(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
+        return userMapper.outputMapping(user);
+    }
+
+    @Override
+    public TokenValidationDto checkToken(HttpServletRequest request) {
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION).substring("Bearer ".length());
+        String username = jwtTokenUtil.getUsername(token);
+        User user = userRepository.findByEmail(username).orElseThrow(NoSuchElementException::new);
+        return tokenMapper.outputMapping(user);
     }
 
     private void setLoginDate(UserDetails userDetails) {
