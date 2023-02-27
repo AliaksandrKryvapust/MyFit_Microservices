@@ -1,6 +1,5 @@
 package itacad.aliaksandrkryvapust.usermicroservice.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoInput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoRegistration;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserDtoOutput;
@@ -22,7 +21,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.net.URISyntaxException;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
@@ -63,35 +61,23 @@ public class UserService implements IUserService, IUserManager {
 
     @Override
     public UserRegistrationDtoOutput saveUser(UserDtoRegistration userDtoRegistration) {
-        try {
-            User entityToSave = userMapper.userInputMapping(userDtoRegistration);
-            userValidator.validateEntity(entityToSave);
-            User user = save(entityToSave);
-            AuditDto auditDto = auditMapper.userOutputMapping(user, userPost);
-            auditManager.audit(auditDto);
-            eventPublisher.publishEvent(new EmailVerificationEvent(user));
-            return userMapper.registerOutputMapping(user);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException("URI to audit is incorrect");
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to convert to JSON");
-        }
+        User entityToSave = userMapper.userInputMapping(userDtoRegistration);
+        userValidator.validateEntity(entityToSave);
+        User user = save(entityToSave);
+        AuditDto auditDto = auditMapper.userOutputMapping(user, userPost);
+        auditManager.audit(auditDto);
+        eventPublisher.publishEvent(new EmailVerificationEvent(user));
+        return userMapper.registerOutputMapping(user);
     }
 
     @Override
     public UserDtoOutput saveDto(UserDtoInput userDtoInput) {
-        try {
-            User entityToSave = userMapper.inputMapping(userDtoInput);
-            userValidator.validateEntity(entityToSave);
-            User user = save(entityToSave);
-            AuditDto auditDto = auditMapper.userOutputMapping(user, userPost);
-            auditManager.audit(auditDto);
-            return userMapper.outputMapping(user);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException("URI to audit is incorrect");
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to convert to JSON");
-        }
+        User entityToSave = userMapper.inputMapping(userDtoInput);
+        userValidator.validateEntity(entityToSave);
+        User user = save(entityToSave);
+        AuditDto auditDto = auditMapper.userOutputMapping(user, userPost);
+        auditManager.audit(auditDto);
+        return userMapper.outputMapping(user);
     }
 
     @Override
@@ -108,17 +94,11 @@ public class UserService implements IUserService, IUserManager {
 
     @Override
     public UserDtoOutput updateDto(UserDtoInput dtoInput, UUID id, Long version) {
-        try {
-            User entityToSave = userMapper.inputMapping(dtoInput);
-            userValidator.validateEntity(entityToSave);
-            User user = update(entityToSave, id, version);
-            AuditDto auditDto = auditMapper.userOutputMapping(user, userPut);
-            auditManager.audit(auditDto);
-            return userMapper.outputMapping(user);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException("URI to audit is incorrect");
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to convert to JSON");
-        }
+        User entityToSave = userMapper.inputMapping(dtoInput);
+        userValidator.validateEntity(entityToSave);
+        User user = update(entityToSave, id, version);
+        AuditDto auditDto = auditMapper.userOutputMapping(user, userPut);
+        auditManager.audit(auditDto);
+        return userMapper.outputMapping(user);
     }
 }

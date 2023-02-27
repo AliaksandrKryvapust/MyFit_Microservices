@@ -6,5 +6,5 @@ import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.microservices
 import java.net.URISyntaxException;
 
 public interface IAuditManager {
-    void audit(AuditDto auditDto) throws JsonProcessingException, URISyntaxException;
+    void audit(AuditDto auditDto);
 }

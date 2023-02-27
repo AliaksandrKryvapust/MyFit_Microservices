@@ -1,6 +1,5 @@
 package itacad.aliaksandrkryvapust.usermicroservice.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.microservices.AuditDto;
 import itacad.aliaksandrkryvapust.usermicroservice.core.mapper.AuditMapper;
 import itacad.aliaksandrkryvapust.usermicroservice.core.mapper.TokenMapper;
@@ -10,13 +9,13 @@ import itacad.aliaksandrkryvapust.usermicroservice.repository.api.IEmailTokenRep
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.EUserStatus;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.EmailToken;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.User;
+import itacad.aliaksandrkryvapust.usermicroservice.service.api.IAuditManager;
 import itacad.aliaksandrkryvapust.usermicroservice.service.api.ITokenService;
 import itacad.aliaksandrkryvapust.usermicroservice.service.validator.api.ITokenValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import java.net.URISyntaxException;
 import java.util.NoSuchElementException;
 
 @Service
@@ -29,7 +28,7 @@ public class TokenService implements ITokenService {
     private final ITokenValidator tokenValidator;
     private final UserMapper userMapper;
     private final AuditMapper auditMapper;
-    private final AuditService auditService;
+    private final IAuditManager auditManager;
     private final UserService userService;
     private final ApplicationEventPublisher eventPublisher;
 
@@ -59,17 +58,11 @@ public class TokenService implements ITokenService {
     }
 
     private void activate(EmailToken emailToken) {
-        try {
-            User user = emailToken.getUser();
-            user.setStatus(EUserStatus.ACTIVATED);
-            User userToSave = userMapper.activationMapping(user);
-            userService.update(userToSave, user.getId(), user.getDtUpdate().toEpochMilli());
-            AuditDto auditDto = auditMapper.userOutputMapping(user, userPut);
-            auditService.audit(auditDto);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException("URI to audit is incorrect");
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to convert to JSON");
-        }
+        User user = emailToken.getUser();
+        user.setStatus(EUserStatus.ACTIVATED);
+        User userToSave = userMapper.activationMapping(user);
+        userService.update(userToSave, user.getId(), user.getDtUpdate().toEpochMilli());
+        AuditDto auditDto = auditMapper.userOutputMapping(user, userPut);
+        auditManager.audit(auditDto);
     }
 }

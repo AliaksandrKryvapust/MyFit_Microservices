@@ -26,7 +26,7 @@ public class UserDtoInput {
     @NotNull(message = "user role cannot be null")
     @IValidEnum(enumClass = EUserRole.class, message = "user role does not match")
     private final String role;
-    @NotNull(message = "user role cannot be null")
+    @NotNull(message = "user status cannot be null")
     @IValidEnum(enumClass = EUserStatus.class, message = "user status does not match")
     private final String status;
 }

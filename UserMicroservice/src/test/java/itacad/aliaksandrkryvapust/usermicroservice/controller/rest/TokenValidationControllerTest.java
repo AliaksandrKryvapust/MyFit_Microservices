@@ -1,9 +1,7 @@
-package itacad.aliaksandrkryvapust.usermicroservice.controller.rest.security;
+package itacad.aliaksandrkryvapust.usermicroservice.controller.rest;
 
-import itacad.aliaksandrkryvapust.usermicroservice.controller.rest.TokenValidationController;
 import itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil;
 import itacad.aliaksandrkryvapust.usermicroservice.service.JwtUserDetailsService;
-import itacad.aliaksandrkryvapust.usermicroservice.service.TokenService;
 import itacad.aliaksandrkryvapust.usermicroservice.service.api.ITokenManager;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -12,7 +10,6 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -29,14 +26,11 @@ class TokenValidationControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private ITokenManager tokenManager;
-    @MockBean
-    SecurityContext securityContext;
+    private JwtUserDetailsService userDetailsService;
     // Beans for JwtFilter
     @MockBean
     private JwtTokenUtil tokenUtil;
-    @MockBean
-    private JwtUserDetailsService userDetailsService;
+
 
     @Test
     @WithMockUser(username = "report@email", password = "report", roles = {"APP"})
@@ -48,6 +42,6 @@ class TokenValidationControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         //test
-        Mockito.verify(tokenManager, Mockito.times(1)).checkToken(any(HttpServletRequest.class));
+        Mockito.verify(userDetailsService, Mockito.times(1)).checkToken(any(HttpServletRequest.class));
     }
 }
