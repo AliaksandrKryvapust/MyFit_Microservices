@@ -1,6 +1,5 @@
 package itacad.aliaksandrkryvapust.usermicroservice.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.microservices.AuditDto;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.microservices.Type;
@@ -23,7 +22,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
 
-import java.net.URISyntaxException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -99,7 +97,7 @@ class TokenServiceTest {
     }
 
     @Test
-    void activateUser() throws URISyntaxException, JsonProcessingException {
+    void activateUser() {
         // preconditions
         final User userOutput = getPreparedUserOutput();
         final EmailToken emailToken = getPreparedEmailToken();

@@ -1,6 +1,5 @@
 package itacad.aliaksandrkryvapust.usermicroservice.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoInput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoRegistration;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserDtoOutput;
@@ -29,7 +28,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import java.net.URISyntaxException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -142,7 +140,7 @@ class UserServiceTest {
     }
 
     @Test
-    void saveUser() throws URISyntaxException, JsonProcessingException {
+    void saveUser() {
         // preconditions
         final UserDtoRegistration dtoInput = getPreparedUserDtoRegistration();
         final UserRegistrationDtoOutput dtoOutput = getPreparedUserRegistrationDtoOutput();
@@ -170,7 +168,7 @@ class UserServiceTest {
     }
 
     @Test
-    void saveDto() throws URISyntaxException, JsonProcessingException {
+    void saveDto() {
         // preconditions
         final UserDtoInput dtoInput = getPreparedUserDtoInput();
         final UserDtoOutput dtoOutput = getPreparedUserDtoOutput();
@@ -234,7 +232,7 @@ class UserServiceTest {
     }
 
     @Test
-    void updateDto() throws URISyntaxException, JsonProcessingException {
+    void updateDto() {
         // preconditions
         final User userInput = getPreparedUserOutput();
         final User userOutput = getPreparedUserOutput();
