@@ -8,11 +8,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.time.Instant;
-import java.util.UUID;
 
 @Builder
 @Data
@@ -20,8 +20,8 @@ import java.util.UUID;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TokenValidationDto {
     @NotNull(message = "id cannot be null")
-    @Size(min = 2, max = 200, message = "id should contain from 2 to 200 letters")
-    private final UUID id;
+    @NotBlank(message = "id cannot be blank")
+    private final String id;
     @NotNull(message = "authenticated cannot be null")
     private final Boolean authenticated;
     @NotNull(message = "username cannot be null")

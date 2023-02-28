@@ -10,7 +10,7 @@ import java.util.UUID;
 @Builder
 @Data
 public class ProductDtoOutput {
-    private final @NonNull UUID uuid;
+    private final @NonNull String id;
     private final @NonNull String title;
     private final @NonNull Integer calories;
     private final @NonNull Double proteins;

@@ -11,7 +11,7 @@ import java.util.UUID;
 @Builder
 @Data
 public class RecordDtoOutput {
-    private final @NonNull UUID uuid;
+    private final @NonNull String id;
     private final @NonNull Integer weight;
     private final @NonNull Instant dtCreate;
     private final @NonNull Instant dtSupply;
