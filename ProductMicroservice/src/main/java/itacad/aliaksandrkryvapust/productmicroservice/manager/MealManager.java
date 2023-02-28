@@ -55,7 +55,7 @@ public class MealManager implements IMealManager {
     }
 
     @Override
-    public PageDtoOutput get(Pageable pageable) {
+    public PageDtoOutput<MealDtoOutput> get(Pageable pageable) {
         MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return mealMapper.outputPageMapping(this.mealService.get(pageable, userDetails.getId()));
     }

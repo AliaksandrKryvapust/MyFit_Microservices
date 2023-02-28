@@ -12,6 +12,6 @@ import java.util.UUID;
 
 public interface IRecordManager {
     RecordDtoOutput save(RecordDtoInput type, UUID uuid_profile);
-    PageDtoOutput get(Pageable pageable, UUID uuid_profile);
+    PageDtoOutput<RecordDtoOutput> get(Pageable pageable, UUID uuid_profile);
     List<RecordDto> getRecordByTimeGap(ParamsDto paramsDto);
 }
