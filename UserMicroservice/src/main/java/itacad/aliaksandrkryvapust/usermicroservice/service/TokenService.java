@@ -62,6 +62,10 @@ public class TokenService implements ITokenService {
         user.setStatus(EUserStatus.ACTIVATED);
         User userToSave = userMapper.activationMapping(user);
         userService.update(userToSave, user.getId(), user.getDtUpdate().toEpochMilli());
+        prepareAudit(user);
+    }
+
+    private void prepareAudit(User user) {
         AuditDto auditDto = auditMapper.userOutputMapping(user, userPut);
         auditManager.audit(auditDto);
     }
