@@ -23,12 +23,13 @@ public class ProductMapper {
                 .fats(productDtoInput.getFats())
                 .carbohydrates(productDtoInput.getCarbohydrates())
                 .weight(productDtoInput.getWeight())
-                .userId(userDetails.getId()).build();
+                .userId(userDetails.getId())
+                .build();
     }
 
     public ProductDtoOutput outputMapping(Product product) {
         return ProductDtoOutput.builder()
-                .uuid(product.getId())
+                .id(product.getId().toString())
                 .title(product.getTitle())
                 .calories(product.getCalories())
                 .proteins(product.getProteins())
@@ -41,7 +42,9 @@ public class ProductMapper {
     }
 
     public PageDtoOutput<ProductDtoOutput> outputPageMapping(Page<Product> products) {
-        List<ProductDtoOutput> outputs = products.getContent().stream().map(this::outputMapping).collect(Collectors.toList());
+        List<ProductDtoOutput> outputs = products.getContent().stream()
+                .map(this::outputMapping)
+                .collect(Collectors.toList());
         return PageDtoOutput.<ProductDtoOutput>builder()
                 .number(products.getNumber()+1)
                 .size(products.getSize())

@@ -4,30 +4,28 @@ import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.IngredientD
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.IngredientDtoOutput;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.ProductDtoOutput;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Ingredient;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
+@RequiredArgsConstructor
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class IngredientMapper {
     private final ProductMapper productMapper;
 
-    @Autowired
-    public IngredientMapper(ProductMapper productMapper) {
-        this.productMapper = productMapper;
-    }
-
     public Ingredient inputMapping(IngredientDtoInput ingredientDtoInput) {
         return Ingredient.builder()
-                .productId(ingredientDtoInput.getProduct().getUuid())
+                .productId(UUID.fromString(ingredientDtoInput.getProduct().getId()))
                 .weight(ingredientDtoInput.getWeight())
                 .build();
     }
 
     public IngredientDtoOutput outputMapping(Ingredient ingredient) {
-        ProductDtoOutput dtoOutput = this.productMapper.outputMapping(ingredient.getProduct());
+        ProductDtoOutput dtoOutput = productMapper.outputMapping(ingredient.getProduct());
         return IngredientDtoOutput.builder()
                 .product(dtoOutput)
                 .weight(ingredient.getWeight())

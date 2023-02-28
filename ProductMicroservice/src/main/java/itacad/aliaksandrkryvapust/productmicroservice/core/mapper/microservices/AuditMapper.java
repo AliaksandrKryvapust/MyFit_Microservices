@@ -8,20 +8,16 @@ import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Meal;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Product;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Profile;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Record;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AuditMapper {
     private final UserMapper userMapper;
-
-    @Autowired
-    public AuditMapper(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
 
     public AuditDto recordOutputMapping(Record record, MyUserDetails userDetails, String text) {
         UserDto userDto = userMapper.outputAuditMapping(userDetails);
@@ -29,7 +25,7 @@ public class AuditMapper {
                 .id(String.valueOf(record.getId()))
                 .user(userDto)
                 .text(text)
-                .type(EType.JOURNAL_FOOD)
+                .type(EType.JOURNAL_FOOD.name())
                 .build();
     }
 
@@ -39,7 +35,7 @@ public class AuditMapper {
                 .id(String.valueOf(product.getId()))
                 .user(userDto)
                 .text(text)
-                .type(EType.PRODUCT)
+                .type(EType.PRODUCT.name())
                 .build();
     }
 
@@ -49,7 +45,7 @@ public class AuditMapper {
                 .id(String.valueOf(meal.getId()))
                 .user(userDto)
                 .text(text)
-                .type(EType.RECIPE)
+                .type(EType.RECIPE.name())
                 .build();
     }
 
@@ -59,7 +55,7 @@ public class AuditMapper {
                 .id(String.valueOf(profile.getId()))
                 .user(userDto)
                 .text(text)
-                .type(EType.PROFILE)
+                .type(EType.PROFILE.name())
                 .build();
     }
 }
