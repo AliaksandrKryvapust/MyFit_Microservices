@@ -53,7 +53,7 @@ public class ProfileManager implements IProfileManager {
     }
 
     @Override
-    public PageDtoOutput get(Pageable pageable) {
+    public PageDtoOutput<ProfileDtoOutput> get(Pageable pageable) {
         MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return this.profileMapper.outputPageMapping(profileService.get(pageable, userDetails.getId()));
     }

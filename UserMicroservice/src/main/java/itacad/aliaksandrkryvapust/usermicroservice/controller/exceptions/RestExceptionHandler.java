@@ -28,7 +28,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({DataIntegrityViolationException.class, NoSuchElementException.class})
     public ResponseEntity<SingleExceptionDto> handleBadRequest(Exception ex) {
-        this.makeLog(ex);
+        makeLog(ex);
         SingleExceptionDto message = SingleExceptionDto.builder().logref("error")
                 .message("The request contains incorrect data. Change the request and send it again").build();
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
@@ -36,7 +36,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({EmailSendException.class})
     public ResponseEntity<SingleExceptionDto> handleSendException(Exception ex) {
-        this.makeLog(ex);
+        makeLog(ex);
         SingleExceptionDto message = SingleExceptionDto.builder().logref("error")
                 .message("Failed to send token. Email service is temporary unavailable").build();
         return new ResponseEntity<>(message, HttpStatus.SERVICE_UNAVAILABLE);
@@ -44,7 +44,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({OptimisticLockException.class})
     protected ResponseEntity<SingleExceptionDto> handleOptimisticLock(Exception ex) {
-        this.makeLog(ex);
+        makeLog(ex);
         SingleExceptionDto message = SingleExceptionDto.builder().logref("optimistic_lock")
                 .message("Version does not match. Get new data and retry").build();
         return new ResponseEntity<>(message, HttpStatus.LOCKED);
@@ -52,7 +52,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({ExpiredEmailTokenException.class})
     protected ResponseEntity<SingleExceptionDto> handleExpiredToken(Exception ex) {
-        this.makeLog(ex);
+        makeLog(ex);
         SingleExceptionDto message = SingleExceptionDto.builder().logref("token_has_expired")
                 .message("Token has been expired. Get new token and retry").build();
         return new ResponseEntity<>(message, HttpStatus.CONFLICT);
@@ -60,7 +60,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({Exception.class})
     public ResponseEntity<SingleExceptionDto> handleInternalServerError(Exception ex) {
-        this.makeLog(ex);
+        makeLog(ex);
         SingleExceptionDto message = SingleExceptionDto.builder().logref("error")
                 .message("The server could not process the request correctly. Please contact the administrator").build();
         return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -71,7 +71,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                                                                            @NonNull HttpHeaders headers,
                                                                            @NonNull HttpStatus status,
                                                                            @NonNull WebRequest request) {
-        this.makeLog(ex);
+        makeLog(ex);
         List<FieldError> allErrors = ex.getBindingResult().getFieldErrors();
         List<ExceptionDto> errors = new ArrayList<>();
         for (FieldError error : allErrors) {

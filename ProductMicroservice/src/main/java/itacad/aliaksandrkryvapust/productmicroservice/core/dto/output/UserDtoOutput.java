@@ -10,7 +10,7 @@ import java.util.UUID;
 @Builder
 @Data
 public class UserDtoOutput {
-    private final @NonNull UUID user_id;
+    private final @NonNull String user_id;
     private final @NonNull String username;
     private final @NonNull Instant version;
 }

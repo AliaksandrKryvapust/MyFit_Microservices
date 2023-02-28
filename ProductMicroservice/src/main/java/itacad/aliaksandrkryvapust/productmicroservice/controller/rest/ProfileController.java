@@ -3,6 +3,7 @@ package itacad.aliaksandrkryvapust.productmicroservice.controller.rest;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.ProfileDtoInput;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.ProfileDtoOutput;
 import itacad.aliaksandrkryvapust.productmicroservice.manager.api.IProfileManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -13,21 +14,20 @@ import java.util.UUID;
 
 @RestController
 @Validated
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/profile")
 public class ProfileController {
     private final IProfileManager profileManager;
 
-    public ProfileController(IProfileManager profileManager) {
-        this.profileManager = profileManager;
-    }
-
     @GetMapping("/{id}")
     protected ResponseEntity<ProfileDtoOutput> get(@PathVariable UUID id) {
-        return ResponseEntity.ok(profileManager.get(id));
+        ProfileDtoOutput dtoOutput = profileManager.get(id);
+        return ResponseEntity.ok(dtoOutput);
     }
 
     @PostMapping
     protected ResponseEntity<ProfileDtoOutput> post(@RequestBody @Valid ProfileDtoInput dtoInput) {
-        return new ResponseEntity<>(this.profileManager.save(dtoInput), HttpStatus.CREATED);
+        ProfileDtoOutput dtoOutput = profileManager.save(dtoInput);
+        return new ResponseEntity<>(dtoOutput, HttpStatus.CREATED);
     }
 }

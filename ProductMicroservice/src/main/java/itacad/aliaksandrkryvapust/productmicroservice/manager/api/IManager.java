@@ -8,6 +8,6 @@ import java.util.UUID;
 public interface IManager<TYPE, TYPE2> {
     TYPE save(TYPE2 type);
 
-    PageDtoOutput get(Pageable pageable);
+    PageDtoOutput<TYPE> get(Pageable pageable);
     TYPE get(UUID id);
 }

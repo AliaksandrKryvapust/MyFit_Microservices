@@ -4,9 +4,10 @@ import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.ProductDtoI
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.ProductDtoOutput;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.productmicroservice.manager.api.IProductManager;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,36 +18,36 @@ import java.util.UUID;
 
 @RestController
 @Validated
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/product")
 public class ProductController {
     private final IProductManager productManager;
 
-    @Autowired
-    public ProductController(IProductManager productManager) {
-        this.productManager = productManager;
-    }
-
     @GetMapping(params = {"page", "size"})
-    protected ResponseEntity<PageDtoOutput> getPage(@RequestParam("page") int page,
-                                                    @RequestParam("size") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(this.productManager.get(pageable));
+    protected ResponseEntity<PageDtoOutput<ProductDtoOutput>> getPage(@RequestParam("page") int page,
+                                                                      @RequestParam("size") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("dtCreate").descending());
+        PageDtoOutput<ProductDtoOutput> dtoOutput = productManager.get(pageable);
+        return ResponseEntity.ok(dtoOutput);
     }
 
     @GetMapping("/{id}")
     protected ResponseEntity<ProductDtoOutput> get(@PathVariable UUID id) {
-        return ResponseEntity.ok(productManager.get(id));
+        ProductDtoOutput dtoOutput = productManager.get(id);
+        return ResponseEntity.ok(dtoOutput);
     }
 
     @PostMapping
     protected ResponseEntity<ProductDtoOutput> post(@RequestBody @Valid ProductDtoInput dtoInput) {
-        return new ResponseEntity<>(this.productManager.save(dtoInput), HttpStatus.CREATED);
+        ProductDtoOutput dtoOutput = productManager.save(dtoInput);
+        return new ResponseEntity<>(dtoOutput, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}/dt_update/{version}")
+    @PutMapping("/{id}/version/{version}")
     protected ResponseEntity<ProductDtoOutput> put(@PathVariable UUID id, @PathVariable(name = "version")
     String version, @Valid @RequestBody ProductDtoInput dtoInput) {
-        return ResponseEntity.ok(this.productManager.update(dtoInput, id, Long.parseLong(version)));
+        ProductDtoOutput dtoOutput = productManager.update(dtoInput, id, Long.parseLong(version));
+        return ResponseEntity.ok(dtoOutput);
     }
 
     @DeleteMapping("/{id}")

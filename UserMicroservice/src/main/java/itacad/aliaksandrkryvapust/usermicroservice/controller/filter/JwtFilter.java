@@ -6,6 +6,7 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import itacad.aliaksandrkryvapust.usermicroservice.controller.utils.JwtTokenUtil;
 import itacad.aliaksandrkryvapust.usermicroservice.service.JwtUserDetailsService;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,21 +31,17 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
     private static final String jwtSecret = "NDQ1ZjAzNjQtMzViZi00MDRjLTljZjQtNjNjYWIyZTU5ZDYw";
     private final JwtUserDetailsService jwtUserDetailsService;
     private final JwtTokenUtil jwtTokenUtil;
 
-    public JwtFilter(JwtUserDetailsService jwtUserDetailsService, JwtTokenUtil jwtTokenUtil) {
-        this.jwtUserDetailsService = jwtUserDetailsService;
-        this.jwtTokenUtil = jwtTokenUtil;
-    }
-
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
-        if (this.validateSecret(request, response, filterChain)) return;
-        this.validateJwtToken(request);
+        if (validateSecret(request, response, filterChain)) return;
+        validateJwtToken(request);
         filterChain.doFilter(request, response);
     }
 

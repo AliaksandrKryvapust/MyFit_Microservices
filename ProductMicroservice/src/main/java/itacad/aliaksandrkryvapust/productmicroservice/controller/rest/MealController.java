@@ -4,9 +4,10 @@ import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.MealDtoInpu
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.MealDtoOutput;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.productmicroservice.manager.api.IMealManager;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,36 +18,36 @@ import java.util.UUID;
 
 @RestController
 @Validated
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/recipe")
 public class MealController {
     private final IMealManager mealManager;
 
-    @Autowired
-    public MealController(IMealManager mealManager) {
-        this.mealManager = mealManager;
-    }
-
     @GetMapping(params = {"page", "size"})
-    protected ResponseEntity<PageDtoOutput> getPage(@RequestParam("page") int page,
-                                                    @RequestParam("size") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(mealManager.get(pageable));
+    protected ResponseEntity<PageDtoOutput<MealDtoOutput>> getPage(@RequestParam("page") int page,
+                                                                   @RequestParam("size") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("dtCreate").descending());
+        PageDtoOutput<MealDtoOutput> dtoOutput = mealManager.get(pageable);
+        return ResponseEntity.ok(dtoOutput);
     }
 
     @GetMapping("/{id}")
     protected ResponseEntity<MealDtoOutput> get(@PathVariable UUID id) {
-        return ResponseEntity.ok(mealManager.get(id));
+        MealDtoOutput dtoOutput = mealManager.get(id);
+        return ResponseEntity.ok(dtoOutput);
     }
 
     @PostMapping
     protected ResponseEntity<MealDtoOutput> post(@RequestBody @Valid MealDtoInput dtoInput) {
-        return new ResponseEntity<>(this.mealManager.save(dtoInput), HttpStatus.CREATED);
+        MealDtoOutput dtoOutput = mealManager.save(dtoInput);
+        return new ResponseEntity<>(dtoOutput, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}/dt_update/{version}")
+    @PutMapping("/{id}/version/{version}")
     protected ResponseEntity<MealDtoOutput> put(@PathVariable UUID id, @PathVariable(name = "version") String version,
                                                 @Valid @RequestBody MealDtoInput dtoInput) {
-        return ResponseEntity.ok(this.mealManager.update(dtoInput, id, Long.valueOf(version)));
+        MealDtoOutput dtoOutput = mealManager.update(dtoInput, id, Long.valueOf(version));
+        return ResponseEntity.ok(dtoOutput);
     }
 
     @DeleteMapping("/{id}")

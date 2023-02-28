@@ -60,7 +60,7 @@ public class RecordManager implements IRecordManager {
     }
 
     @Override
-    public PageDtoOutput get(Pageable pageable, UUID uuidProfile) {
+    public PageDtoOutput<RecordDtoOutput> get(Pageable pageable, UUID uuidProfile) {
         MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         this.checkCredentials(uuidProfile, userDetails);
         return recordMapper.outputPageMapping(this.recordService.get(pageable, userDetails.getId()));

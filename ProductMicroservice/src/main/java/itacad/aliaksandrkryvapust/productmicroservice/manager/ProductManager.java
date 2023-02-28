@@ -55,7 +55,7 @@ public class ProductManager implements IProductManager {
     }
 
     @Override
-    public PageDtoOutput get(Pageable pageable) {
+    public PageDtoOutput<ProductDtoOutput> get(Pageable pageable) {
         MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return productMapper.outputPageMapping(this.productService.get(pageable, userDetails.getId()));
     }
