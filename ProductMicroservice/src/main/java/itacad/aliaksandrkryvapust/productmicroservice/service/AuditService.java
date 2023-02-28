@@ -1,10 +1,10 @@
-package itacad.aliaksandrkryvapust.productmicroservice.manager.audit;
+package itacad.aliaksandrkryvapust.productmicroservice.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.microservices.AuditDto;
-import itacad.aliaksandrkryvapust.productmicroservice.manager.api.IAuditManager;
-import org.springframework.beans.factory.annotation.Autowired;
+import itacad.aliaksandrkryvapust.productmicroservice.service.api.IAuditManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -19,20 +19,22 @@ import static itacad.aliaksandrkryvapust.productmicroservice.core.Constants.AUDI
 import static itacad.aliaksandrkryvapust.productmicroservice.core.Constants.TOKEN_HEADER;
 
 @Component
-public class AuditManager implements IAuditManager {
+@RequiredArgsConstructor
+public class AuditService implements IAuditManager {
     private static final String jwtSecret = "NDQ1ZjAzNjQtMzViZi00MDRjLTljZjQtNjNjYWIyZTU5ZDYw";
     private final ObjectMapper objectMapper;
 
-    @Autowired
-    public AuditManager(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
-
     @Override
-    public void audit(AuditDto auditDto) throws JsonProcessingException, URISyntaxException {
-        String requestBody = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(auditDto);
-        HttpRequest httpRequest = prepareRequest(requestBody);
-        HttpClient.newHttpClient().sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString());
+    public void audit(AuditDto auditDto) {
+        try {
+            String requestBody = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(auditDto);
+            HttpRequest httpRequest = prepareRequest(requestBody);
+            HttpClient.newHttpClient().sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString());
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to convert to JSON" + auditDto.toString());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("URI to audit is incorrect" + AUDIT_URI);
+        }
     }
 
     private HttpRequest prepareRequest(String requestBody) throws URISyntaxException {
