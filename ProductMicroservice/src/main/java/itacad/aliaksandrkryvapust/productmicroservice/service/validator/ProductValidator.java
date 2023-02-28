@@ -41,13 +41,13 @@ public class ProductValidator implements IProductValidator {
 
     private void checkAuxiliaryFields(Product product) {
         if (product.getId() != null) {
-            throw new IllegalStateException("User id should be empty for product: " + product);
+            throw new IllegalStateException("Product id should be empty for product: " + product);
         }
         if (product.getDtUpdate() != null) {
-            throw new IllegalStateException("User version should be empty for product: " + product);
+            throw new IllegalStateException("Product version should be empty for product: " + product);
         }
         if (product.getDtCreate() != null) {
-            throw new IllegalStateException("User creation date should be empty for product: " + product);
+            throw new IllegalStateException("Product creation date should be empty for product: " + product);
         }
     }
 
