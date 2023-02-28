@@ -3,9 +3,7 @@ package itacad.aliaksandrkryvapust.productmicroservice.controller.exceptions;
 import itacad.aliaksandrkryvapust.productmicroservice.controller.exceptions.dto.ExceptionDto;
 import itacad.aliaksandrkryvapust.productmicroservice.controller.exceptions.dto.MultipleExceptionDto;
 import itacad.aliaksandrkryvapust.productmicroservice.controller.exceptions.dto.SingleExceptionDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,19 +23,13 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
+@Slf4j
 @RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private final Logger logger;
-
-    @Autowired
-    public RestExceptionHandler() {
-        this.logger = LoggerFactory.getLogger(this.getClass());
-    }
-
     @ExceptionHandler({DataIntegrityViolationException.class, NoSuchElementException.class})
     public ResponseEntity<SingleExceptionDto> handleBadRequest(Exception ex) {
-        this.makeLog(ex);
+        makeLog(ex);
         SingleExceptionDto message = SingleExceptionDto.builder().logref("error")
                 .message("The request contains incorrect data. Change the request and send it again").build();
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
@@ -45,7 +37,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({BadCredentialsException.class})
     public ResponseEntity<SingleExceptionDto> handleBadCredentials(Exception ex) {
-        this.makeLog(ex);
+        makeLog(ex);
         SingleExceptionDto message = SingleExceptionDto.builder().logref("error")
                 .message("This authorization token is prohibited from making requests to this address").build();
         return new ResponseEntity<>(message, HttpStatus.FORBIDDEN);
@@ -53,7 +45,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({OptimisticLockException.class})
     protected ResponseEntity<SingleExceptionDto> handleOptimisticLock(Exception ex) {
-        this.makeLog(ex);
+        makeLog(ex);
         SingleExceptionDto message = SingleExceptionDto.builder().logref("optimistic_lock")
                 .message("Version does not match. Get new data and retry").build();
         return new ResponseEntity<>(message, HttpStatus.LOCKED);
@@ -61,7 +53,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({Exception.class})
     public ResponseEntity<SingleExceptionDto> handleInternalServerError(Exception ex) {
-        this.makeLog(ex);
+        makeLog(ex);
         SingleExceptionDto message = SingleExceptionDto.builder().logref("error")
                 .message("The server could not process the request correctly. Please contact the administrator").build();
         return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -72,7 +64,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                                                                            @NonNull HttpHeaders headers,
                                                                            @NonNull HttpStatus status,
                                                                            @NonNull WebRequest request) {
-        this.makeLog(ex);
+        makeLog(ex);
         List<FieldError> allErrors = ex.getBindingResult().getFieldErrors();
         List<ExceptionDto> errors = new ArrayList<>();
         for (FieldError error : allErrors) {
@@ -85,6 +77,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private void makeLog(Exception ex) {
-        logger.error(ex.getMessage() + "\t" + ex.getCause() + "\n" + ex);
+        log.error(ex.getMessage() + "\t" + ex.getCause() + "\n" + ex);
     }
 }
