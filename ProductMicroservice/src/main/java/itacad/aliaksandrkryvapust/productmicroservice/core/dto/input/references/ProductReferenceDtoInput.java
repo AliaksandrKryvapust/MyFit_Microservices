@@ -11,7 +11,6 @@ import javax.validation.constraints.NotNull;
 @Data
 @Jacksonized
 public class ProductReferenceDtoInput {
-    @NotNull(message = "product cannot be empty")
-    @NotBlank(message = "product cannot be blank")
+    @NotBlank(message = "product reference cannot be blank")
     private final String id;
 }
