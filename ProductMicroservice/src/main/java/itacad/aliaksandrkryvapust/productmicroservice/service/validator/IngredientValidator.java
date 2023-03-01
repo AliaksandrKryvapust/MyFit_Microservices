@@ -2,21 +2,17 @@ package itacad.aliaksandrkryvapust.productmicroservice.service.validator;
 
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Ingredient;
 import itacad.aliaksandrkryvapust.productmicroservice.service.validator.api.IIngredientValidator;
-import itacad.aliaksandrkryvapust.productmicroservice.service.validator.api.IProductValidator;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.OptimisticLockException;
 
 @Component
-@RequiredArgsConstructor
 public class IngredientValidator implements IIngredientValidator {
-    private final IProductValidator productValidator;
 
     @Override
     public void validateEntity(Ingredient ingredient) {
         checkAuxiliaryFields(ingredient);
-        checkProduct(ingredient);
+        checkProductId(ingredient);
         checkWeight(ingredient);
     }
 
@@ -46,10 +42,9 @@ public class IngredientValidator implements IIngredientValidator {
         }
     }
 
-    private void checkProduct(Ingredient ingredient) {
-        if (ingredient.getProduct() == null) {
-            throw new IllegalArgumentException("product is not valid for ingredient:" + ingredient);
+    private void checkProductId(Ingredient ingredient) {
+        if (ingredient.getProductId() == null) {
+            throw new IllegalArgumentException("product id is not valid for ingredient:" + ingredient);
         }
-        productValidator.validateEntity(ingredient.getProduct());
     }
 }

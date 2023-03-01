@@ -47,19 +47,19 @@ public class ProductValidator implements IProductValidator {
     }
 
     private void checkCarbohydrates(Product product) {
-        if (product.getCarbohydrates() == null || product.getCarbohydrates() <= 0) {
+        if (product.getCarbohydrates() == null || product.getCarbohydrates() < 0) {
             throw new IllegalArgumentException("carbohydrates is not valid for product:" + product);
         }
     }
 
     private void checkFats(Product product) {
-        if (product.getFats() == null || product.getFats() <= 0) {
+        if (product.getFats() == null || product.getFats() < 0) {
             throw new IllegalArgumentException("fats is not valid for product:" + product);
         }
     }
 
     private void checkProteins(Product product) {
-        if (product.getProteins() == null || product.getProteins() <= 0) {
+        if (product.getProteins() == null || product.getProteins() < 0) {
             throw new IllegalArgumentException("proteins is not valid for product:" + product);
         }
     }
