@@ -1,10 +1,7 @@
 package itacad.aliaksandrkryvapust.productmicroservice.service.validator;
 
-import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetails;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Profile;
 import itacad.aliaksandrkryvapust.productmicroservice.service.validator.api.IProfileValidator;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.OptimisticLockException;
@@ -12,14 +9,6 @@ import java.time.LocalDate;
 
 @Component
 public class ProfileValidator implements IProfileValidator {
-
-    @Override
-    public void checkCredentials(Profile currentEntity) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!currentEntity.getUser().getUserId().equals(userDetails.getId())) {
-            throw new BadCredentialsException("It`s forbidden to modify not private data");
-        }
-    }
 
     @Override
     public void validateEntity(Profile profile) {

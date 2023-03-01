@@ -1,12 +1,9 @@
 package itacad.aliaksandrkryvapust.productmicroservice.service.validator;
 
-import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetails;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Meal;
 import itacad.aliaksandrkryvapust.productmicroservice.service.validator.api.IIngredientValidator;
 import itacad.aliaksandrkryvapust.productmicroservice.service.validator.api.IMealValidator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.OptimisticLockException;
@@ -30,15 +27,6 @@ public class MealValidator implements IMealValidator {
             throw new OptimisticLockException("meal table update failed, version does not match update denied");
         }
     }
-
-    @Override
-    public void checkCredentials(Meal currentEntity) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!currentEntity.getUserId().equals(userDetails.getId())) {
-            throw new BadCredentialsException("It`s forbidden to modify not private data");
-        }
-    }
-
 
     private void checkAuxiliaryFields(Meal meal) {
         if (meal.getId() != null) {

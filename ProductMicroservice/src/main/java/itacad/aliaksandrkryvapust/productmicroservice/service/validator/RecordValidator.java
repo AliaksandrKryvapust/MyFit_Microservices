@@ -1,13 +1,10 @@
 package itacad.aliaksandrkryvapust.productmicroservice.service.validator;
 
-import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetails;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Record;
 import itacad.aliaksandrkryvapust.productmicroservice.service.validator.api.IMealValidator;
 import itacad.aliaksandrkryvapust.productmicroservice.service.validator.api.IProductValidator;
 import itacad.aliaksandrkryvapust.productmicroservice.service.validator.api.IRecordValidator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -17,14 +14,6 @@ import java.time.Instant;
 public class RecordValidator implements IRecordValidator {
     private final IProductValidator productValidator;
     private final IMealValidator mealValidator;
-
-    @Override
-    public void checkCredentials(Record currentEntity) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!currentEntity.getUserId().equals(userDetails.getId())) {
-            throw new BadCredentialsException("It`s forbidden to modify not private data");
-        }
-    }
 
     @Override
     public void validateEntity(Record record) {
