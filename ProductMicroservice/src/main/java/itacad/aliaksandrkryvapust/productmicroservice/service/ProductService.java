@@ -16,7 +16,6 @@ import itacad.aliaksandrkryvapust.productmicroservice.service.validator.api.IPro
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -42,9 +41,8 @@ public class ProductService implements IProductService, IProductManager {
     }
 
     @Override
-    public Product update(Product product, UUID id, Long version) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Product currentEntity = get(id, userDetails.getId());
+    public Product update(Product product, UUID id, Long version, UUID userId) {
+        Product currentEntity = get(id, userId);
         productValidator.optimisticLockCheck(version, currentEntity);
         productMapper.updateEntityFields(product, currentEntity);
         return save(currentEntity);
@@ -61,12 +59,8 @@ public class ProductService implements IProductService, IProductManager {
     }
 
     @Override
-    public void delete(UUID id) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Product currentEntity = get(id, userDetails.getId());
-        if (currentEntity!=null){
-            productRepository.deleteById(id);
-        }
+    public void delete(UUID id, UUID userId) {
+        productRepository.deleteByIdAndUserId(id, userId);
     }
 
     @Override
@@ -103,17 +97,16 @@ public class ProductService implements IProductService, IProductManager {
         MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Product entityToSave = productMapper.inputMapping(productDtoInput, userDetails);
         productValidator.validateEntity(entityToSave);
-        Product product = update(entityToSave, id, version);
+        Product product = update(entityToSave, id, version, userDetails.getId());
         prepareAudit(product, userDetails, PRODUCT_PUT);
         return productMapper.outputMapping(product);
     }
 
     @Override
     public void deleteDto(UUID id) {
-        delete(id);
         MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Product product = Product.builder().id(id).build();
-        prepareAudit(product, userDetails, PRODUCT_DELETE);
+        delete(id, userDetails.getId());
+        prepareAudit(Product.builder().id(id).build(), userDetails, PRODUCT_DELETE);
     }
 
 
