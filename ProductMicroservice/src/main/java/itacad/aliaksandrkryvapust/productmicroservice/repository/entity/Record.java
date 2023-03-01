@@ -41,4 +41,17 @@ public class Record {
     @Column(updatable = false)
     @org.hibernate.annotations.Generated(GenerationTime.INSERT)
     private Instant dtCreate;
+
+    @Override
+    public String toString() {
+        return "Record{" +
+                "id=" + id +
+                ", productId=" + productId +
+                ", mealId=" + mealId +
+                ", dtSupply=" + dtSupply +
+                ", userId=" + userId +
+                ", weight=" + weight +
+                ", dtCreate=" + dtCreate +
+                '}';
+    }
 }

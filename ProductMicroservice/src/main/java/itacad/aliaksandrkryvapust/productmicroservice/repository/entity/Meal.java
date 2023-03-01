@@ -33,4 +33,15 @@ public class Meal {
     private Instant dtCreate;
     @Version
     private Instant dtUpdate;
+
+    @Override
+    public String toString() {
+        return "Meal{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", userId=" + userId +
+                ", dtCreate=" + dtCreate +
+                ", dtUpdate=" + dtUpdate +
+                '}';
+    }
 }
