@@ -16,6 +16,7 @@ import itacad.aliaksandrkryvapust.productmicroservice.service.validator.api.IPro
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -42,9 +43,9 @@ public class ProductService implements IProductService, IProductManager {
 
     @Override
     public Product update(Product product, UUID id, Long version) {
-        Product currentEntity = getEntity(id);
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Product currentEntity = get(id, userDetails.getId());
         productValidator.optimisticLockCheck(version, currentEntity);
-        productValidator.checkCredentials(currentEntity);
         productMapper.updateEntityFields(product, currentEntity);
         return save(currentEntity);
     }
@@ -61,18 +62,16 @@ public class ProductService implements IProductService, IProductManager {
 
     @Override
     public void delete(UUID id) {
-        Product currentEntity = getEntity(id);
-        productValidator.checkCredentials(currentEntity);
-        productRepository.deleteById(id);
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Product currentEntity = get(id, userDetails.getId());
+        if (currentEntity!=null){
+            productRepository.deleteById(id);
+        }
     }
 
     @Override
     public List<Product> getByIds(List<UUID> uuids) {
         return productRepository.findAllById(uuids);
-    }
-
-    private Product getEntity(UUID id) {
-        return productRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
     @Override

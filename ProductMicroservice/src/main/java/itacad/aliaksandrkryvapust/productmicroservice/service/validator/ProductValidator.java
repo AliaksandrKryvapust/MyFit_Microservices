@@ -1,10 +1,7 @@
 package itacad.aliaksandrkryvapust.productmicroservice.service.validator;
 
-import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetails;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Product;
 import itacad.aliaksandrkryvapust.productmicroservice.service.validator.api.IProductValidator;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.OptimisticLockException;
@@ -28,14 +25,6 @@ public class ProductValidator implements IProductValidator {
         Long currentVersion = currentEntity.getDtUpdate().toEpochMilli();
         if (!currentVersion.equals(version)) {
             throw new OptimisticLockException("product table update failed, version does not match update denied");
-        }
-    }
-
-    @Override
-    public void checkCredentials(Product currentEntity) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!currentEntity.getUserId().equals(userDetails.getId())) {
-            throw new BadCredentialsException("It`s forbidden to modify not private data");
         }
     }
 
