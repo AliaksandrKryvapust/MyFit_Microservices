@@ -56,4 +56,13 @@ public class ProductMapper {
                 .content(outputs)
                 .build();
     }
+
+    public void updateEntityFields(Product product, Product currentEntity) {
+        currentEntity.setTitle(product.getTitle());
+        currentEntity.setCalories(product.getCalories());
+        currentEntity.setProteins(product.getProteins());
+        currentEntity.setFats(product.getFats());
+        currentEntity.setCarbohydrates(product.getCarbohydrates());
+        currentEntity.setWeight(product.getWeight());
+    }
 }

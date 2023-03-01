@@ -34,4 +34,16 @@ public class Ingredient {
     private Instant dtCreate;
     @Version
     private Instant dtUpdate;
+
+    @Override
+    public String toString() {
+        return "Ingredient{" +
+                "id=" + id +
+                ", productId=" + productId +
+                ", mealId=" + mealId +
+                ", weight=" + weight +
+                ", dtCreate=" + dtCreate +
+                ", dtUpdate=" + dtUpdate +
+                '}';
+    }
 }

@@ -17,4 +17,13 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
     private Instant version;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", version=" + version +
+                '}';
+    }
 }

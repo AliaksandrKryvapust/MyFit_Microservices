@@ -38,4 +38,20 @@ public class Product {
     private Instant dtCreate;
     @Version
     private Instant dtUpdate;
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", calories=" + calories +
+                ", proteins=" + proteins +
+                ", fats=" + fats +
+                ", carbohydrates=" + carbohydrates +
+                ", weight=" + weight +
+                ", userId=" + userId +
+                ", dtCreate=" + dtCreate +
+                ", dtUpdate=" + dtUpdate +
+                '}';
+    }
 }

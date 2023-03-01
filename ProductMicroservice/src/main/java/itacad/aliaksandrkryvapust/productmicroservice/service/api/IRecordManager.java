@@ -1,4 +1,4 @@
-package itacad.aliaksandrkryvapust.productmicroservice.manager.api;
+package itacad.aliaksandrkryvapust.productmicroservice.service.api;
 
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.export.ParamsDto;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.RecordDtoInput;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface IRecordManager {
-    RecordDtoOutput save(RecordDtoInput type, UUID uuid_profile);
-    PageDtoOutput<RecordDtoOutput> get(Pageable pageable, UUID uuid_profile);
-    List<RecordDto> getRecordByTimeGap(ParamsDto paramsDto);
+    RecordDtoOutput saveDto(RecordDtoInput type, UUID uuid_profile);
+    PageDtoOutput<RecordDtoOutput> getDto(Pageable pageable, UUID uuid_profile);
+    List<RecordDto> getRecord(ParamsDto paramsDto);
 }

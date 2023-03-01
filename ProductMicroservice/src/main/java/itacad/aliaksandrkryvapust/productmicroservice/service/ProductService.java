@@ -1,97 +1,117 @@
 package itacad.aliaksandrkryvapust.productmicroservice.service;
 
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.ProductDtoInput;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.ProductDtoOutput;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.microservices.AuditDto;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.pages.PageDtoOutput;
+import itacad.aliaksandrkryvapust.productmicroservice.core.mapper.ProductMapper;
+import itacad.aliaksandrkryvapust.productmicroservice.core.mapper.microservices.AuditMapper;
 import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetails;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.api.IProductRepository;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Product;
+import itacad.aliaksandrkryvapust.productmicroservice.service.api.IAuditManager;
+import itacad.aliaksandrkryvapust.productmicroservice.service.api.IProductManager;
 import itacad.aliaksandrkryvapust.productmicroservice.service.api.IProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import itacad.aliaksandrkryvapust.productmicroservice.service.validator.api.IProductValidator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.OptimisticLockException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
-public class ProductService implements IProductService {
+@RequiredArgsConstructor
+public class ProductService implements IProductService, IProductManager {
+    private final static String PRODUCT_POST = "New product was created";
+    private final static String PRODUCT_PUT = "Product was updated";
+    private final static String PRODUCT_DELETE = "Product was deleted";
     private final IProductRepository productRepository;
-
-    @Autowired
-    public ProductService(IProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+    private final IProductValidator productValidator;
+    private final ProductMapper productMapper;
+    private final AuditMapper auditMapper;
+    private final IAuditManager auditManager;
 
     @Override
-    @Transactional
     public Product save(Product product) {
-        validate(product);
-        return this.productRepository.save(product);
+        return productRepository.save(product);
     }
 
     @Override
-    @Transactional
-    public Product update(Product product, UUID id, Long version) {
-        this.validate(product);
-        Product currentEntity = this.productRepository.findById(id).orElseThrow();
-        this.optimisticLockCheck(version, currentEntity);
-        this.checkCredentials(currentEntity);
-        this.updateEntityFields(product, currentEntity);
-        return this.productRepository.save(currentEntity);
+    public Product update(Product product, UUID id, Long version, UUID userId) {
+        Product currentEntity = get(id, userId);
+        productValidator.optimisticLockCheck(version, currentEntity);
+        productMapper.updateEntityFields(product, currentEntity);
+        return save(currentEntity);
     }
 
     @Override
     public Page<Product> get(Pageable pageable, UUID userId) {
-        return this.productRepository.findAllByUserId(pageable, userId);
+        return productRepository.findAllByUserId(pageable, userId);
     }
 
     @Override
     public Product get(UUID id, UUID userId) {
-        return this.productRepository.findByIdAndUserId(id, userId).orElseThrow();
+        return productRepository.findByIdAndUserId(id, userId).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
-    @Transactional
-    public void delete(UUID id) {
-        Product currentEntity = this.productRepository.findById(id).orElseThrow();
-        this.checkCredentials(currentEntity);
-        this.productRepository.deleteById(id);
+    public void delete(UUID id, UUID userId) {
+        productRepository.deleteByIdAndUserId(id, userId);
     }
 
     @Override
     public List<Product> getByIds(List<UUID> uuids) {
-        return this.productRepository.findAllById(uuids);
+        return productRepository.findAllById(uuids);
     }
 
-    private void checkCredentials(Product currentEntity) {
+    @Override
+    public ProductDtoOutput saveDto(ProductDtoInput menuItemDtoInput) {
         MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!currentEntity.getUserId().equals(userDetails.getId())){
-            throw new BadCredentialsException("It`s forbidden to modify not private data");
-        }
+        Product entityToSave = productMapper.inputMapping(menuItemDtoInput, userDetails);
+        productValidator.validateEntity(entityToSave);
+        Product product = save(entityToSave);
+        prepareAudit(product, userDetails, PRODUCT_POST);
+        return productMapper.outputMapping(product);
     }
 
-    private void optimisticLockCheck(Long version, Product currentEntity) {
-        Long currentVersion = currentEntity.getDtUpdate().toEpochMilli();
-        if (!currentVersion.equals(version)) {
-            throw new OptimisticLockException("product table update failed, version does not match update denied");
-        }
+    @Override
+    public PageDtoOutput<ProductDtoOutput> getDto(Pageable pageable) {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Page<Product> page = get(pageable, userDetails.getId());
+        return productMapper.outputPageMapping(page);
     }
 
-    private void validate(Product product) {
-        if (product.getId() != null || product.getDtUpdate() != null) {
-            throw new IllegalStateException("Product id & version should be empty");
-        }
+    @Override
+    public ProductDtoOutput getDto(UUID id) {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Product product = get(id, userDetails.getId());
+        return productMapper.outputMapping(product);
     }
 
-    private void updateEntityFields(Product product, Product currentEntity) {
-        currentEntity.setTitle(product.getTitle());
-        currentEntity.setCalories(product.getCalories());
-        currentEntity.setProteins(product.getProteins());
-        currentEntity.setFats(product.getFats());
-        currentEntity.setCarbohydrates(product.getCarbohydrates());
-        currentEntity.setWeight(product.getWeight());
+    @Override
+    public ProductDtoOutput updateDto(ProductDtoInput productDtoInput, UUID id, Long version) {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Product entityToSave = productMapper.inputMapping(productDtoInput, userDetails);
+        productValidator.validateEntity(entityToSave);
+        Product product = update(entityToSave, id, version, userDetails.getId());
+        prepareAudit(product, userDetails, PRODUCT_PUT);
+        return productMapper.outputMapping(product);
+    }
+
+    @Override
+    public void deleteDto(UUID id) {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        delete(id, userDetails.getId());
+        prepareAudit(Product.builder().id(id).build(), userDetails, PRODUCT_DELETE);
+    }
+
+
+    private void prepareAudit(Product product, MyUserDetails userDetails, String method) {
+        AuditDto auditDto = auditMapper.productOutputMapping(product, userDetails, method);
+        auditManager.audit(auditDto);
     }
 }

@@ -1,62 +1,78 @@
 package itacad.aliaksandrkryvapust.productmicroservice.service;
 
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.ProfileDtoInput;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.ProfileDtoOutput;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.microservices.AuditDto;
+import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.pages.PageDtoOutput;
+import itacad.aliaksandrkryvapust.productmicroservice.core.mapper.ProfileMapper;
+import itacad.aliaksandrkryvapust.productmicroservice.core.mapper.microservices.AuditMapper;
+import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetails;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.api.IProfileRepository;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Profile;
+import itacad.aliaksandrkryvapust.productmicroservice.service.api.IAuditManager;
+import itacad.aliaksandrkryvapust.productmicroservice.service.api.IProfileManager;
 import itacad.aliaksandrkryvapust.productmicroservice.service.api.IProfileService;
+import itacad.aliaksandrkryvapust.productmicroservice.service.validator.api.IProfileValidator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
-public class ProfileService implements IProfileService {
+@RequiredArgsConstructor
+public class ProfileService implements IProfileService, IProfileManager {
+    private final static String PROFILE_POST = "New profile was created";
     private final IProfileRepository profileRepository;
-
-    public ProfileService(IProfileRepository profileRepository) {
-        this.profileRepository = profileRepository;
-    }
+    private final ProfileMapper profileMapper;
+    private final IProfileValidator profileValidator;
+    private final AuditMapper auditMapper;
+    private final IAuditManager auditManager;
 
     @Override
-    @Transactional
     public Profile save(Profile profile) {
-        this.validate(profile);
-        return this.profileRepository.save(profile);
+        return profileRepository.save(profile);
     }
 
     @Override
     public Page<Profile> get(Pageable pageable, UUID userId) {
-        Page<Profile> profiles = this.profileRepository.findAll(pageable);
-        this.checkCredentials(userId, profiles);
-        return profiles;
+        return profileRepository.findAllByUser_UserId(pageable, userId);
     }
 
     @Override
     public Profile get(UUID id, UUID userId) {
-        Profile profile = this.profileRepository.findById(id).orElseThrow();
-        this.checkCredentials(userId, profile);
-        return profile;
+        return profileRepository.findByIdAndUser_UserId(id, userId).orElseThrow(NoSuchElementException::new);
     }
 
-    private void validate(Profile profile) {
-        if (profile.getId()!=null && profile.getDtUpdate()!=null){
-            throw new IllegalStateException("Profile id & version should be empty");
-        }
+    @Override
+    public ProfileDtoOutput saveDto(ProfileDtoInput dtoInput) {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Profile entityToSave = profileMapper.inputMapping(dtoInput, userDetails);
+        profileValidator.validateEntity(entityToSave);
+        Profile profile = save(entityToSave);
+        prepareAudit(profile, userDetails, PROFILE_POST);
+        return profileMapper.outputMapping(profile);
     }
 
-    private void checkCredentials(UUID userId, Profile profile) {
-        if (!profile.getUser().getUserId().equals(userId)){
-            throw new BadCredentialsException("It`s forbidden to modify not private data");
-        }
+    @Override
+    public PageDtoOutput<ProfileDtoOutput> getDto(Pageable pageable) {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Page<Profile> page = get(pageable, userDetails.getId());
+        return profileMapper.outputPageMapping(page);
     }
 
-    private void checkCredentials(UUID userId, Page<Profile> profiles) {
-        profiles.getContent().forEach((i)-> {
-            if (!i.getUser().getUserId().equals(userId)){
-                throw new BadCredentialsException("It`s forbidden to modify not private data");
-            }
-        });
+    @Override
+    public ProfileDtoOutput getDto(UUID id) {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Profile profile = get(id, userDetails.getId());
+        return this.profileMapper.outputMapping(profile);
+    }
+
+    private void prepareAudit(Profile profile, MyUserDetails userDetails, String method) {
+        AuditDto auditDto = auditMapper.profileOutputMapping(profile, userDetails, method);
+        auditManager.audit(auditDto);
     }
 }

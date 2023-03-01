@@ -64,8 +64,7 @@ public class UserService implements IUserService, IUserManager {
         User entityToSave = userMapper.userInputMapping(userDtoRegistration);
         userValidator.validateEntity(entityToSave);
         User user = save(entityToSave);
-        AuditDto auditDto = auditMapper.userOutputMapping(user, userPost);
-        auditManager.audit(auditDto);
+        prepareAudit(user, userPost);
         eventPublisher.publishEvent(new EmailVerificationEvent(user));
         return userMapper.registerOutputMapping(user);
     }
@@ -75,8 +74,7 @@ public class UserService implements IUserService, IUserManager {
         User entityToSave = userMapper.inputMapping(userDtoInput);
         userValidator.validateEntity(entityToSave);
         User user = save(entityToSave);
-        AuditDto auditDto = auditMapper.userOutputMapping(user, userPost);
-        auditManager.audit(auditDto);
+        prepareAudit(user, userPost);
         return userMapper.outputMapping(user);
     }
 
@@ -97,8 +95,12 @@ public class UserService implements IUserService, IUserManager {
         User entityToSave = userMapper.inputMapping(dtoInput);
         userValidator.validateEntity(entityToSave);
         User user = update(entityToSave, id, version);
-        AuditDto auditDto = auditMapper.userOutputMapping(user, userPut);
-        auditManager.audit(auditDto);
+        prepareAudit(user, userPut);
         return userMapper.outputMapping(user);
+    }
+
+    private void prepareAudit(User user, String method) {
+        AuditDto auditDto = auditMapper.userOutputMapping(user, method);
+        auditManager.audit(auditDto);
     }
 }

@@ -41,4 +41,19 @@ public class Profile {
     private Instant dtCreate;
     @Version
     private Instant dtUpdate;
+
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "id=" + id +
+                ", height=" + height +
+                ", weight=" + weight +
+                ", dtBirthday=" + dtBirthday +
+                ", target=" + target +
+                ", activityType=" + activityType +
+                ", sex=" + sex +
+                ", dtCreate=" + dtCreate +
+                ", dtUpdate=" + dtUpdate +
+                '}';
+    }
 }

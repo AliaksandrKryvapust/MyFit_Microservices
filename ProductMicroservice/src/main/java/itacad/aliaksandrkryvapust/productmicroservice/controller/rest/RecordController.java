@@ -6,7 +6,7 @@ import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.RecordDtoO
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.microservices.RecordDto;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.productmicroservice.core.mapper.ParamsMapper;
-import itacad.aliaksandrkryvapust.productmicroservice.manager.api.IRecordManager;
+import itacad.aliaksandrkryvapust.productmicroservice.service.api.IRecordManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,21 +34,21 @@ public class RecordController {
                                                                      @RequestParam("size") int size,
                                                                      @PathVariable(name = "uuid_profile") UUID uuidProfile) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("dtCreate").descending());
-        PageDtoOutput<RecordDtoOutput> dtoOutput = recordManager.get(pageable, uuidProfile);
+        PageDtoOutput<RecordDtoOutput> dtoOutput = recordManager.getDto(pageable, uuidProfile);
         return ResponseEntity.ok(dtoOutput);
     }
 
     @PostMapping("profile/{uuid_profile}/journal/food")
     protected ResponseEntity<RecordDtoOutput> post(@RequestBody @Valid RecordDtoInput dtoInput,
                                                    @PathVariable (name = "uuid_profile") UUID uuidProfile) {
-        RecordDtoOutput dtoOutput = recordManager.save(dtoInput, uuidProfile);
+        RecordDtoOutput dtoOutput = recordManager.saveDto(dtoInput, uuidProfile);
         return new ResponseEntity<>(dtoOutput, HttpStatus.CREATED);
     }
 
     @GetMapping("/journal/food/export")
     protected ResponseEntity<List<RecordDto>> export(HttpServletRequest request) {
         ParamsDto paramsDto = paramsMapper.getParamsDto(request);
-        List<RecordDto> dtoList = recordManager.getRecordByTimeGap(paramsDto);
+        List<RecordDto> dtoList = recordManager.getRecord(paramsDto);
         return ResponseEntity.ok(dtoList);
     }
 }
