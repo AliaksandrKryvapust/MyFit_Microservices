@@ -6,6 +6,7 @@ import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.ProductDto
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.RecordDtoOutput;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.microservices.RecordDto;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.pages.PageDtoOutput;
+import itacad.aliaksandrkryvapust.productmicroservice.core.security.MyUserDetails;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Record;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Scope;
@@ -27,19 +28,19 @@ public class RecordMapper {
     private final ProductMapper productMapper;
     private final MealMapper mealMapper;
 
-    public Record inputMapping(RecordDtoInput recordDtoInput, UUID userId) {
+    public Record inputMapping(RecordDtoInput recordDtoInput, MyUserDetails userDetails) {
         if (recordDtoInput.getRecipe() == null && recordDtoInput.getProduct() != null) {
             return Record.builder().productId(UUID.fromString(recordDtoInput.getProduct().getId()))
                     .weight(recordDtoInput.getWeight())
                     .dtSupply(recordDtoInput.getDtSupply())
-                    .userId(userId)
+                    .userId(userDetails.getId())
                     .build();
         } else {
             return Record.builder()
                     .mealId(UUID.fromString(recordDtoInput.getRecipe().getId()))
                     .weight(recordDtoInput.getWeight())
                     .dtSupply(recordDtoInput.getDtSupply())
-                    .userId(userId)
+                    .userId(userDetails.getId())
                     .build();
         }
     }
