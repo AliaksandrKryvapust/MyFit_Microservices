@@ -123,7 +123,6 @@ class UserLoginControllerTest {
     void registration() throws Exception {
         // preconditions
         final UserDtoRegistration userDtoRegistration = getPreparedUserDtoRegistration();
-//        final HttpServletRequest request = Mockito.mock(HttpServletRequest.class, RETURNS_DEEP_STUBS);
         final UserRegistrationDtoOutput userRegistration = getPreparedUserRegistration();
         Mockito.when(userManager.saveUser(userDtoRegistration)).thenReturn(userRegistration);
 
