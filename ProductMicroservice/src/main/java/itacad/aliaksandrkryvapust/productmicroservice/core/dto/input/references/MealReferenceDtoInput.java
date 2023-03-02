@@ -11,7 +11,6 @@ import javax.validation.constraints.NotNull;
 @Data
 @Jacksonized
 public class MealReferenceDtoInput {
-    @NotNull(message = "recipe cannot be empty")
     @NotBlank(message = "recipe cannot be blank")
     private final String id;
 }
