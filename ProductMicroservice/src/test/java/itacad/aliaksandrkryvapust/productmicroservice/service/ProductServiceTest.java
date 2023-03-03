@@ -91,14 +91,15 @@ class ProductServiceTest {
     @Test
     void update() {
         // preconditions
-        final Product userInput = getPreparedProductInput();
-        Mockito.when(productRepository.findById(id)).thenReturn(Optional.of(userInput));
-        Mockito.when(productRepository.save(userInput)).thenReturn(userInput);
+        final Product productInput = getPreparedProductInput();
+        final Product productOutput = getPreparedProductOutput();
+        Mockito.when(productRepository.findByIdAndUserId(id, id)).thenReturn(Optional.of(productInput));
+        Mockito.when(productRepository.save(productInput)).thenReturn(productOutput);
         ArgumentCaptor<Long> actualVersion = ArgumentCaptor.forClass(Long.class);
         ArgumentCaptor<Product> actualProduct = ArgumentCaptor.forClass(Product.class);
 
         //test
-        Product actual = productService.update(userInput, id, dtUpdate.toEpochMilli(), id);
+        Product actual = productService.update(productInput, id, dtUpdate.toEpochMilli(), id);
         Mockito.verify(productValidator, Mockito.times(1)).optimisticLockCheck(actualVersion.capture(),
                 actualProduct.capture());
         Mockito.verify(productMapper, Mockito.times(1)).updateEntityFields(actualProduct.capture(),
@@ -106,7 +107,7 @@ class ProductServiceTest {
 
         // assert
         assertEquals(dtUpdate.toEpochMilli(), actualVersion.getValue());
-        assertEquals(userInput, actualProduct.getValue());
+        assertEquals(productInput, actualProduct.getValue());
         assertNotNull(actual);
         checkProductOutputFields(actual);
     }
