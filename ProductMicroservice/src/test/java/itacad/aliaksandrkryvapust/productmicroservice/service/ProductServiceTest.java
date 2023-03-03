@@ -183,16 +183,16 @@ class ProductServiceTest {
         Mockito.when(productRepository.save(productInput)).thenReturn(productOutput);
         Mockito.when(auditMapper.productOutputMapping(productOutput, userDetails, text)).thenReturn(auditDto);
         Mockito.when(productMapper.outputMapping(productOutput)).thenReturn(dtoOutput);
-        ArgumentCaptor<Product> actualUser = ArgumentCaptor.forClass(Product.class);
+        ArgumentCaptor<Product> actualProduct = ArgumentCaptor.forClass(Product.class);
         ArgumentCaptor<AuditDto> actualAudit = ArgumentCaptor.forClass(AuditDto.class);
 
         //test
         ProductDtoOutput actual = productService.saveDto(dtoInput);
-        Mockito.verify(productValidator, Mockito.times(1)).validateEntity(actualUser.capture());
+        Mockito.verify(productValidator, Mockito.times(1)).validateEntity(actualProduct.capture());
         Mockito.verify(auditManager, Mockito.times(1)).audit(actualAudit.capture());
 
         // assert
-        assertEquals(productInput, actualUser.getValue());
+        assertEquals(productInput, actualProduct.getValue());
         assertEquals(auditDto, actualAudit.getValue());
         assertNotNull(actual);
         checkProductDtoOutputFields(actual);
@@ -251,21 +251,21 @@ class ProductServiceTest {
         Mockito.when(auditMapper.productOutputMapping(productOutput, userDetails, textUpdate)).thenReturn(auditDto);
         Mockito.when(productMapper.outputMapping(productOutput)).thenReturn(dtoOutput);
         ArgumentCaptor<Long> actualVersion = ArgumentCaptor.forClass(Long.class);
-        ArgumentCaptor<Product> actualUser = ArgumentCaptor.forClass(Product.class);
+        ArgumentCaptor<Product> actualProduct = ArgumentCaptor.forClass(Product.class);
         ArgumentCaptor<AuditDto> actualAudit = ArgumentCaptor.forClass(AuditDto.class);
 
         //test
         ProductDtoOutput actual = productService.updateDto(dtoInput, id, dtUpdate.toEpochMilli());
-        Mockito.verify(productValidator, Mockito.times(1)).validateEntity(actualUser.capture());
+        Mockito.verify(productValidator, Mockito.times(1)).validateEntity(actualProduct.capture());
         Mockito.verify(productValidator, Mockito.times(1)).optimisticLockCheck(actualVersion.capture(),
-                actualUser.capture());
-        Mockito.verify(productMapper, Mockito.times(1)).updateEntityFields(actualUser.capture(),
-                actualUser.capture());
+                actualProduct.capture());
+        Mockito.verify(productMapper, Mockito.times(1)).updateEntityFields(actualProduct.capture(),
+                actualProduct.capture());
         Mockito.verify(auditManager, Mockito.times(1)).audit(actualAudit.capture());
 
         // assert
         assertEquals(dtUpdate.toEpochMilli(), actualVersion.getValue());
-        assertEquals(productInput, actualUser.getValue());
+        assertEquals(productInput, actualProduct.getValue());
         assertEquals(auditDto, actualAudit.getValue());
         assertNotNull(actual);
         checkProductDtoOutputFields(actual);
