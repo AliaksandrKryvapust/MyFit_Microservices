@@ -285,13 +285,13 @@ class ProductValidatorTest {
     @Test
     void optimisticLockCheck() {
         // preconditions
-        final Product user = getPreparedProductOutput();
+        final Product product = getPreparedProductOutput();
         final Long version = dtUpdate.toEpochMilli() - 1000;
         final String messageExpected = "product table update failed, version does not match update denied";
 
         //test
         Exception actualException = assertThrows(OptimisticLockException.class, () ->
-                productValidator.optimisticLockCheck(version, user));
+                productValidator.optimisticLockCheck(version, product));
 
         // assert
         Assertions.assertEquals(messageExpected, actualException.getMessage());
