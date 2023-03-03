@@ -1,8 +1,6 @@
 package itacad.aliaksandrkryvapust.productmicroservice.service;
 
-import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.ProductDtoInput;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.ProfileDtoInput;
-import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.ProductDtoOutput;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.ProfileDtoOutput;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.UserDtoOutput;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.microservices.AuditDto;
@@ -67,21 +65,13 @@ class ProfileServiceTest {
     final String email = "admin@myfit.com";
     final UUID id = UUID.fromString("1d63d7df-f1b3-4e92-95a3-6c7efad96901");
     final String text = "New profile was created";
-    final String title = "cheese";
-    final Integer calories = 300;
-    final Double proteins = 33.0;
-    final Double fats = 28.0;
-    final Double carbohydrates = 0.0;
     final Double weight = 100d;
-    final String dt_Supply = "1993-07-01";
     final Integer height = 173;
     final DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     final LocalDate dtBirthday = LocalDate.parse("1993-07-01", df);
-    final String dt_Birthday = "1993-07-01";
     final Double target = 85.9;
     final EActivityType activity_type = EActivityType.ACTIVE;
     final EProfileSex sex = EProfileSex.MALE;
-    final String username = "someone";
 
     @Test
     void save() {
