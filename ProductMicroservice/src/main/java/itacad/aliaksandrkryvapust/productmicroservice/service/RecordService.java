@@ -15,6 +15,7 @@ import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Product;
 import itacad.aliaksandrkryvapust.productmicroservice.repository.entity.Record;
 import itacad.aliaksandrkryvapust.productmicroservice.service.api.*;
 import itacad.aliaksandrkryvapust.productmicroservice.service.validator.RecordValidator;
+import itacad.aliaksandrkryvapust.productmicroservice.service.validator.api.IRecordValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +34,7 @@ public class RecordService implements IRecordService, IRecordManager {
     private final IProductService productService;
     private final IMealService mealService;
     private final RecordMapper recordMapper;
-    private final RecordValidator recordValidator;
+    private final IRecordValidator recordValidator;
     private final IProfileService profileService;
     private final AuditMapper auditMapper;
     private final IAuditManager auditManager;

@@ -14,6 +14,7 @@ import javax.validation.constraints.Positive;
 @Jacksonized
 public class IngredientDtoInput {
     @Valid
+    @NotNull(message = "product reference cannot be null")
     private final ProductReferenceDtoInput product;
     @NotNull(message = "weight cannot be null")
     @Positive(message = "weight should be positive")

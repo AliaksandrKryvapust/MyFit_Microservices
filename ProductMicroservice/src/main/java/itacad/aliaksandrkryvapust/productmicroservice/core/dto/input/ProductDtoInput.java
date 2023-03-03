@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @Jacksonized
 public class ProductDtoInput {
     @NotNull(message = "title cannot be null")
-    @Size(min = 2, max = 100, message = "title should contain from 4 to 100 letters")
+    @Size(min = 2, max = 100, message = "title should contain from 2 to 100 letters")
     private final String title;
     @NotNull(message = "calories cannot be null")
     @Positive(message = "calories should be positive")

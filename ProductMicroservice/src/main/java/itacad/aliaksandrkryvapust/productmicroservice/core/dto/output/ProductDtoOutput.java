@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NonNull;
 
 import java.time.Instant;
-import java.util.UUID;
 
 @Builder
 @Data

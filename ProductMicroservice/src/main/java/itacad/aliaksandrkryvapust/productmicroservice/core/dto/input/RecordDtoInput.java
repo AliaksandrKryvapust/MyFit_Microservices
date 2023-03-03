@@ -24,7 +24,7 @@ public class RecordDtoInput {
     private final @Nullable ProductReferenceDtoInput product;
     @Valid
     private final @Nullable MealReferenceDtoInput recipe;
-    @NotNull(message = "proteins cannot be null")
-    @Positive(message = "proteins should be positive")
+    @NotNull(message = "weight cannot be null")
+    @Positive(message = "weight should be positive")
     private final Integer weight;
 }
