@@ -48,20 +48,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
 class RecordServiceTest {
-
-    // preconditions
-    final Instant dtCreate = Instant.ofEpochMilli(1673532204657L);
-    final Instant dtUpdate = Instant.ofEpochMilli(1673532532870L);
-    final String email = "admin@myfit.com";
-    final UUID id = UUID.fromString("1d63d7df-f1b3-4e92-95a3-6c7efad96901");
-    final String text = "New record was created";
-    final String title = "cheese";
-    final Integer calories = 300;
-    final Double proteins = 33.0;
-    final Double fats = 28.0;
-    final Double carbohydrates = 0.0;
-    final Integer weight = 100;
-    final String dt_Supply = "1993-07-01";
     @InjectMocks
     private RecordService recordService;
     @Mock
@@ -82,6 +68,19 @@ class RecordServiceTest {
     private Authentication authentication;
     @Mock
     private IProfileService profileService;
+    // preconditions
+    final Instant dtCreate = Instant.ofEpochMilli(1673532204657L);
+    final Instant dtUpdate = Instant.ofEpochMilli(1673532532870L);
+    final String email = "admin@myfit.com";
+    final UUID id = UUID.fromString("1d63d7df-f1b3-4e92-95a3-6c7efad96901");
+    final String text = "New record was created";
+    final String title = "cheese";
+    final Integer calories = 300;
+    final Double proteins = 33.0;
+    final Double fats = 28.0;
+    final Double carbohydrates = 0.0;
+    final Integer weight = 100;
+    final String dt_Supply = "1993-07-01";
 
     @Test
     void save() {
