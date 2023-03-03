@@ -2,7 +2,6 @@ package itacad.aliaksandrkryvapust.productmicroservice.service;
 
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.IngredientDtoInput;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.MealDtoInput;
-import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.ProductDtoInput;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.input.references.ProductReferenceDtoInput;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.IngredientDtoOutput;
 import itacad.aliaksandrkryvapust.productmicroservice.core.dto.output.MealDtoOutput;
