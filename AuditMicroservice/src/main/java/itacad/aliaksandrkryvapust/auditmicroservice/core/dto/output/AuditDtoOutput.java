@@ -8,6 +8,7 @@ import lombok.NonNull;
 @Builder
 public class AuditDtoOutput {
     private final @NonNull String id;
+    private final @NonNull String actionId;
     private final @NonNull UserDtoOutput user;
     private final @NonNull String text;
     private final @NonNull String type;

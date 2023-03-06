@@ -37,6 +37,7 @@ public class AuditMapper {
         UserDtoOutput userDto = userMapper.outputMapping(audit.getUser());
         return AuditDtoOutput.builder()
                 .id(String.valueOf(audit.getActionId()))
+                .actionId(audit.getActionId().toString())
                 .user(userDto)
                 .text(audit.getText())
                 .type(audit.getType().name())
