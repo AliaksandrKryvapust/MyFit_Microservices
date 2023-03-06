@@ -11,19 +11,18 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
-import java.util.UUID;
 
 @Builder
 @Data
 @Jacksonized
 public class UserDto {
-    @NotNull(message = "id cannot be null")
-    private final UUID uuid;
+    @NotBlank(message = "id cannot be blank")
+    private final String id;
     @Nullable
-    private final String nick;
-    @NotNull(message = "mail cannot be null")
-    @Size(min = 2, max = 100, message = "mail should contain from 2 to 100 letters")
-    private final String mail;
+    private final String username;
+    @NotNull(message = "email cannot be null")
+    @Size(min = 2, max = 100, message = "email should contain from 2 to 100 letters")
+    private final String email;
     @NotNull(message = "user role cannot be null")
     @IValidEnum(enumClass = EUserRole.class, message = "user role does not match")
     private final String role;

@@ -32,7 +32,7 @@ public class AuditManager implements IAuditManager {
     }
 
     @Override
-    public PageDtoOutput get(Pageable pageable) {
+    public PageDtoOutput<AuditDtoOutput> get(Pageable pageable) {
         return this.auditMapper.outputPageMapping(auditService.get(pageable));
     }
 
