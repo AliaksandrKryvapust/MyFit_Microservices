@@ -25,7 +25,8 @@ public class AuditMapper {
 
     public Audit inputMapping(AuditDto auditDto) {
         User user = userMapper.inputMapping(auditDto.getUser());
-        return Audit.builder().uuid(UUID.fromString(auditDto.getId()))
+        return Audit.builder()
+                .actionId(UUID.fromString(auditDto.getId()))
                 .user(user)
                 .text(auditDto.getText())
                 .type(EType.valueOf(auditDto.getType()))
@@ -35,7 +36,8 @@ public class AuditMapper {
     public AuditDtoOutput outputMapping(Audit audit) {
         UserDtoOutput userDto = userMapper.outputMapping(audit.getUser());
         return AuditDtoOutput.builder()
-                .id(String.valueOf(audit.getUuid()))
+                .id(String.valueOf(audit.getActionId()))
+                .actionId(audit.getActionId().toString())
                 .user(userDto)
                 .text(audit.getText())
                 .type(audit.getType().name())
