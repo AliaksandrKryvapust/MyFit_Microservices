@@ -9,14 +9,13 @@ import lombok.extern.jackson.Jacksonized;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.UUID;
 
 @Builder
 @Data
 @Jacksonized
 public class TokenValidationDto {
-    @NotNull(message = "id cannot be null")
-    private final UUID id;
+    @NotBlank(message = "id cannot be blank")
+    private final String id;
     @NotNull(message = "authenticated cannot be null")
     private final Boolean authenticated;
     @NotNull(message = "username cannot be null")
