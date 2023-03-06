@@ -7,7 +7,7 @@ import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.pages.PageDtoOutput
 import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.Audit;
 import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.EType;
 import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Page;
@@ -18,14 +18,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AuditMapper {
     private final UserMapper userMapper;
-
-    @Autowired
-    public AuditMapper(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
 
     public Audit inputMapping(AuditDto auditDto) {
         User user = userMapper.inputMapping(auditDto.getUser());
@@ -42,16 +38,20 @@ public class AuditMapper {
                 .id(String.valueOf(audit.getUuid()))
                 .user(userDto)
                 .text(audit.getText())
-                .type(audit.getType())
+                .type(audit.getType().name())
                 .build();
     }
 
     public List<AuditDtoOutput> outputListMapping(List<Audit> audit) {
-        return audit.stream().map(this::outputMapping).collect(Collectors.toList());
+        return audit.stream()
+                .map(this::outputMapping)
+                .collect(Collectors.toList());
     }
 
     public PageDtoOutput<AuditDtoOutput> outputPageMapping(Page<Audit> audits) {
-        List<AuditDtoOutput> outputs = audits.getContent().stream().map(this::outputMapping).collect(Collectors.toList());
+        List<AuditDtoOutput> outputs = audits.getContent().stream()
+                .map(this::outputMapping)
+                .collect(Collectors.toList());
         return PageDtoOutput.<AuditDtoOutput>builder()
                 .number(audits.getNumber() + 1)
                 .size(audits.getSize())

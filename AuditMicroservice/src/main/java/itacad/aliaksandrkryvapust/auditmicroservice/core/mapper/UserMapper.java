@@ -3,18 +3,15 @@ package itacad.aliaksandrkryvapust.auditmicroservice.core.mapper;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.input.TokenValidationDto;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.input.UserDto;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.output.UserDtoOutput;
-import itacad.aliaksandrkryvapust.auditmicroservice.core.dto.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.auditmicroservice.core.security.UserPrincipal;
 import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.EUserRole;
 import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.EUserStatus;
 import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.User;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 @Component
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
@@ -22,7 +19,7 @@ public class UserMapper {
 
     public UserPrincipal inputValidationMapping(TokenValidationDto dto) {
         return UserPrincipal.builder()
-                .id(dto.getId())
+                .id(UUID.fromString(dto.getId()))
                 .username(dto.getUsername())
                 .authenticated(dto.getAuthenticated())
                 .role(EUserRole.valueOf(dto.getRole()))
@@ -31,43 +28,33 @@ public class UserMapper {
 
     public User inputMapping(UserDto userDto) {
         if (userDto.getStatus() != null) {
-            return User.builder().id(userDto.getUuid())
-                    .username(userDto.getNick())
-                    .email(userDto.getMail())
+            return User.builder()
+                    .id(UUID.fromString(userDto.getId()))
+                    .username(userDto.getUsername())
+                    .email(userDto.getEmail())
                     .role(EUserRole.valueOf(userDto.getRole()))
                     .status(EUserStatus.valueOf(userDto.getStatus()))
                     .dtCreate(userDto.getDtCreate())
                     .dtUpdate(userDto.getDtUpdate())
                     .build();
-        } else return User.builder().id(userDto.getUuid())
-                .email(userDto.getMail())
-                .role(EUserRole.valueOf(userDto.getRole()))
-                .build();
+        } else {
+            return User.builder()
+                    .id(UUID.fromString(userDto.getId()))
+                    .email(userDto.getEmail())
+                    .role(EUserRole.valueOf(userDto.getRole()))
+                    .build();
+        }
     }
 
     public UserDtoOutput outputMapping(User user) {
         return UserDtoOutput.builder()
-                .uuid(user.getId())
+                .id(user.getId().toString())
                 .dtCreate(user.getDtCreate())
                 .dtUpdate(user.getDtUpdate())
-                .mail(user.getEmail())
-                .nick(user.getUsername())
-                .role(user.getRole())
-                .status(user.getStatus())
-                .build();
-    }
-
-    public PageDtoOutput<UserDtoOutput> outputPageMapping(Page<User> record) {
-        List<UserDtoOutput> outputs = record.getContent().stream().map(this::outputMapping).collect(Collectors.toList());
-        return PageDtoOutput.<UserDtoOutput>builder()
-                .number(record.getNumber() + 1)
-                .size(record.getSize())
-                .totalPages(record.getTotalPages())
-                .totalElements(record.getTotalElements())
-                .first(record.isFirst())
-                .numberOfElements(record.getNumberOfElements())
-                .last(record.isLast())
-                .content(outputs)
+                .email(user.getEmail())
+                .username(user.getUsername())
+                .role(user.getRole().name())
+                .status(user.getStatus().name())
                 .build();
     }
 }
