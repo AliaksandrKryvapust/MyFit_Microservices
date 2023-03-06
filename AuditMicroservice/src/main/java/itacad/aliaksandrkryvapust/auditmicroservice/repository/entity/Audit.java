@@ -20,7 +20,7 @@ public class Audit {
     @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
     @Setter
-    private UUID uuid;
+    private UUID actionId;
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @Setter
@@ -33,4 +33,15 @@ public class Audit {
     @org.hibernate.annotations.Generated(GenerationTime.INSERT)
     @Setter
     private Instant dtCreate;
+
+    @Override
+    public String toString() {
+        return "Audit{" +
+                "id=" + id +
+                ", actionId=" + actionId +
+                ", text='" + text + '\'' +
+                ", type=" + type +
+                ", dtCreate=" + dtCreate +
+                '}';
+    }
 }

@@ -25,7 +25,7 @@ ALTER TABLE IF EXISTS audit.users
 CREATE TABLE audit.audit
 (
     id        uuid,
-    uuid      uuid                        NOT NULL,
+    action_id uuid                        NOT NULL,
     user_id   uuid                        NOT NULL REFERENCES audit.users (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
     text      character varying(200)      NOT NULL,
     type      character varying(100)      NOT NULL,
