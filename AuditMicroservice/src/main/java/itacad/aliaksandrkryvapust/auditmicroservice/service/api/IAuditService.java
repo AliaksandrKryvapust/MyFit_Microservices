@@ -6,5 +6,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface IAuditService extends IService<Audit>{
-    List<Audit> getByRecord(UUID id);
+    List<Audit> getAction(UUID id);
 }
