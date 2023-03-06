@@ -76,8 +76,8 @@ public class JwtFilter extends OncePerRequestFilter {
     private boolean checkMicroserviceToken(HttpServletRequest request, HttpServletResponse response,
                                            FilterChain filterChain) throws IOException, ServletException {
         final String requestSecretHeader = request.getHeader(TOKEN_HEADER);
-        TokenValidationDto validationDto = tokenMapper.createTokenValidationDto();
         if (requestSecretHeader != null) {
+            TokenValidationDto validationDto = tokenMapper.createTokenValidationDto();
             if (requestSecretHeader.equals(jwtSecret)) {
                 setAuthentication(validationDto, request, filterChain, response);
                 return true;
