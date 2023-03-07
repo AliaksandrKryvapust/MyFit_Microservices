@@ -5,6 +5,7 @@ import itacad.aliaksandrkryvapust.usermicroservice.core.dto.input.UserDtoRegistr
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserLoginDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.UserRegistrationDtoOutput;
+import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.microservices.UserDto;
 import itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.pages.PageDtoOutput;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.EUserRole;
 import itacad.aliaksandrkryvapust.usermicroservice.repository.entity.EUserStatus;
@@ -67,6 +68,14 @@ public class UserMapper {
         return UserLoginDtoOutput.builder()
                 .email(userDetails.getUsername())
                 .token(token)
+                .build();
+    }
+
+    public UserDto auditMapping(User user) {
+        return UserDto.builder()
+                .id(user.getId().toString())
+                .email(user.getEmail())
+                .role(user.getRole().name())
                 .build();
     }
 

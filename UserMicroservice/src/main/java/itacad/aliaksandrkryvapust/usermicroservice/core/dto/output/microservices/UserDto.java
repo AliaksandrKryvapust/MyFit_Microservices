@@ -3,14 +3,11 @@ package itacad.aliaksandrkryvapust.usermicroservice.core.dto.output.microservice
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
-import lombok.extern.jackson.Jacksonized;
 
 @Builder
 @Data
-@Jacksonized
-public class AuditDto {
+public class UserDto {
     private final @NonNull String id;
-    private final @NonNull UserDto user;
-    private final @NonNull String text;
-    private final @NonNull String type;
+    private final @NonNull String email;
+    private final @NonNull String role;
 }
