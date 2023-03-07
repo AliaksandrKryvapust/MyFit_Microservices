@@ -8,7 +8,6 @@ import itacad.aliaksandrkryvapust.auditmicroservice.repository.api.IAuditReposit
 import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.Audit;
 import itacad.aliaksandrkryvapust.auditmicroservice.service.api.IAuditManager;
 import itacad.aliaksandrkryvapust.auditmicroservice.service.api.IAuditService;
-import itacad.aliaksandrkryvapust.auditmicroservice.service.transactional.api.IAuditTransactionalService;
 import itacad.aliaksandrkryvapust.auditmicroservice.service.validator.api.IAuditValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,30 +15,23 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class AuditService implements IAuditService, IAuditManager {
     private final IAuditRepository auditRepository;
-    private final IAuditTransactionalService transactionalService;
     private final AuditMapper auditMapper;
     private final IAuditValidator auditValidator;
 
     @Override
-    public Audit save(Audit audit) {
-        return transactionalService.saveTransactional(audit);
+    public void save(Audit audit) {
+        auditRepository.insert(audit);
     }
 
     @Override
     public Page<Audit> get(Pageable pageable) {
         return auditRepository.findAll(pageable);
-    }
-
-    @Override
-    public Audit get(UUID id) {
-        return auditRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
     @Override

@@ -10,10 +10,6 @@ import java.time.Instant;
 @Builder
 public class UserDtoOutput {
     private final @NonNull String id;
-    private final @NonNull String username;
     private final @NonNull String email;
     private final @NonNull String role;
-    private final @NonNull String status;
-    private final @NonNull Instant dtCreate;
-    private final @NonNull Instant dtUpdate;
 }

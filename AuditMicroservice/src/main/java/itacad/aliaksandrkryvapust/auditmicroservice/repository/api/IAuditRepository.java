@@ -1,13 +1,11 @@
 package itacad.aliaksandrkryvapust.auditmicroservice.repository.api;
 
 import itacad.aliaksandrkryvapust.auditmicroservice.repository.entity.Audit;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
 import java.util.UUID;
 
-public interface IAuditRepository extends JpaRepository<Audit, UUID> {
-    @Transactional(readOnly = true)
+public interface IAuditRepository extends MongoRepository<Audit, UUID> {
     List<Audit> findByActionId(UUID id);
 }

@@ -41,6 +41,7 @@ public class AuditMapper {
                 .user(userDto)
                 .text(audit.getText())
                 .type(audit.getType().name())
+                .dtCreate(audit.getDtCreate())
                 .build();
     }
 
