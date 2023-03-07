@@ -4,9 +4,6 @@ import itacad.aliaksandrkryvapust.auditmicroservice.controller.exceptions.dto.Ex
 import itacad.aliaksandrkryvapust.auditmicroservice.controller.exceptions.dto.MultipleExceptionDto;
 import itacad.aliaksandrkryvapust.auditmicroservice.controller.exceptions.dto.SingleExceptionDto;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import javax.persistence.OptimisticLockException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -44,14 +40,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         SingleExceptionDto message = SingleExceptionDto.builder().logref("error")
                 .message("To make a request to this address, you need to transfer an authorization token").build();
         return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
-    }
-
-    @ExceptionHandler({OptimisticLockException.class})
-    protected ResponseEntity<SingleExceptionDto> handleOptimisticLock(Exception ex) {
-        this.makeLog(ex);
-        SingleExceptionDto message = SingleExceptionDto.builder().logref("optimistic_lock")
-                .message("Version does not match. Get new data and retry").build();
-        return new ResponseEntity<>(message, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler({Exception.class})
