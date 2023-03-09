@@ -14,10 +14,11 @@ import javax.validation.constraints.Size;
 @Data
 @Jacksonized
 public class AuditDto {
-    @NotNull(message = "id cannot be null")
-    @Size(min = 2, max = 100, message = "id should contain from 2 to 100 letters")
+    @NotNull(message = "action id cannot be null")
+    @Size(min = 2, max = 100, message = "action id should contain from 2 to 100 letters")
     private final String id;
     @Valid
+    @NotNull(message = "user cannot be null")
     private final UserDto user;
     @NotNull(message = "text cannot be null")
     @Size(min = 2, max = 100, message = "text should contain from 2 to 100 letters")
