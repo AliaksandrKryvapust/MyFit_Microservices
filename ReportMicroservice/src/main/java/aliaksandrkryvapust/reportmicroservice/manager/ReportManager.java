@@ -52,7 +52,7 @@ public class ReportManager implements IReportManager {
     }
 
     @Override
-    public PageDtoOutput get(Pageable pageable) {
+    public PageDtoOutput<ReportDtoOutput> get(Pageable pageable) {
         MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return this.reportMapper.outputPageMapping(reportService.get(pageable, userDetails));
     }
