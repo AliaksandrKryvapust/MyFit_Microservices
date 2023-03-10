@@ -42,15 +42,20 @@ public class ReportLoadJob implements Job {
         try {
             log.info("Report Job started");
             UUID id;
+            String username;
             report = reportService.getReport(EStatus.LOADED, EType.JOURNAL_FOOD)
                     .orElseThrow(NoSuchElementException::new);
             id = report.getId();
+            username = report.getUser().getUsername();
             log.info("New task was added");
             setProgressStatus(report, EStatus.PROGRESS, "Request was prepared");
             Mono<List<RecordDto>> resp = prepareRequest(report);
-            report = reportService.getWithoutCredentialsCheck(id);
+            report = reportService.get(id, username);
             List<RecordDto> records = resp.blockOptional().orElseThrow(IllegalStateException::new);
             log.info("Data from response was extracted");
+            if (records.size()==0){
+                setProgressStatus(report, EStatus.EMPTY, "Response was empty");
+            }
             saveRecordAsFile(report, records);
         } catch (NoSuchElementException e) {
             log.info("Report job, there is no data to work with");

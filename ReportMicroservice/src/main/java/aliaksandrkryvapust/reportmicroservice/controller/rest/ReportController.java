@@ -4,7 +4,7 @@ import aliaksandrkryvapust.reportmicroservice.core.dto.input.ParamsDto;
 import aliaksandrkryvapust.reportmicroservice.core.dto.output.ReportDtoOutput;
 import aliaksandrkryvapust.reportmicroservice.core.dto.output.microservices.EType;
 import aliaksandrkryvapust.reportmicroservice.core.dto.output.pages.PageDtoOutput;
-import aliaksandrkryvapust.reportmicroservice.manager.api.IReportManager;
+import aliaksandrkryvapust.reportmicroservice.service.api.IReportManager;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.util.IOUtils;
 import org.springframework.data.domain.PageRequest;
@@ -34,7 +34,7 @@ public class ReportController {
     protected ResponseEntity<PageDtoOutput<ReportDtoOutput>> getPage(@RequestParam("page") int page,
                                                                      @RequestParam("size") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("dtCreate").descending());
-        PageDtoOutput<ReportDtoOutput> dtoOutput = reportManager.get(pageable);
+        PageDtoOutput<ReportDtoOutput> dtoOutput = reportManager.getDto(pageable);
         return ResponseEntity.ok(dtoOutput);
     }
 
@@ -51,7 +51,7 @@ public class ReportController {
 
     @PostMapping("/{type}")
     protected ResponseEntity<Object> post(@PathVariable("type") EType type, @RequestBody @Valid ParamsDto paramsDto) {
-        reportManager.save(paramsDto, type);
+        reportManager.saveDto(paramsDto, type);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

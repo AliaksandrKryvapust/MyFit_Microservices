@@ -9,7 +9,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -27,20 +26,13 @@ import java.util.Objects;
 @RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({DataIntegrityViolationException.class, NoSuchElementException.class})
+    @ExceptionHandler({DataIntegrityViolationException.class, NoSuchElementException.class,
+            IllegalArgumentException.class})
     public ResponseEntity<SingleExceptionDto> handleBadRequest(Exception ex) {
         makeLog(ex);
         SingleExceptionDto message = SingleExceptionDto.builder().logref("error")
                 .message("The request contains incorrect data. Change the request and send it again").build();
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler({BadCredentialsException.class})
-    public ResponseEntity<SingleExceptionDto> handleBadCredentials(Exception ex) {
-        makeLog(ex);
-        SingleExceptionDto message = SingleExceptionDto.builder().logref("error")
-                .message("This authorization token is prohibited from making requests to this address").build();
-        return new ResponseEntity<>(message, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler({OptimisticLockException.class})
