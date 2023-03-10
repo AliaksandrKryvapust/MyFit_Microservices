@@ -21,4 +21,13 @@ public class User {
     private String username;
     @Enumerated(EnumType.STRING)
     private EUserRole role;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }

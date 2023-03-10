@@ -49,4 +49,18 @@ public class Report {
     public Report(byte[] fileValue) {
         this.fileValue = fileValue;
     }
+
+    @Override
+    public String toString() {
+        return "Report{" +
+                "id=" + id +
+                ", status=" + status +
+                ", type=" + type +
+                ", description='" + description + '\'' +
+                ", params=" + params +
+                ", user=" + user +
+                ", dtCreate=" + dtCreate +
+                ", dtUpdate=" + dtUpdate +
+                '}';
+    }
 }

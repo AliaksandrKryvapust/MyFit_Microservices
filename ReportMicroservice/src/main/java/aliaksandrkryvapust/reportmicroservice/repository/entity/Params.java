@@ -14,4 +14,12 @@ import java.time.LocalDate;
 public class Params {
     private LocalDate start;
     private LocalDate finish;
+
+    @Override
+    public String toString() {
+        return "Params{" +
+                "start=" + start +
+                ", finish=" + finish +
+                '}';
+    }
 }
