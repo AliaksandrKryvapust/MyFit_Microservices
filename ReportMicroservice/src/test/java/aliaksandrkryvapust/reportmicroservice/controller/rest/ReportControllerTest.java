@@ -5,7 +5,7 @@ import aliaksandrkryvapust.reportmicroservice.core.dto.output.ReportDtoOutput;
 import aliaksandrkryvapust.reportmicroservice.core.dto.output.microservices.EType;
 import aliaksandrkryvapust.reportmicroservice.core.dto.output.pages.PageDtoOutput;
 import aliaksandrkryvapust.reportmicroservice.core.mapper.microservices.UserMapper;
-import aliaksandrkryvapust.reportmicroservice.manager.api.IReportManager;
+import aliaksandrkryvapust.reportmicroservice.service.api.IReportManager;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.EStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -76,7 +76,7 @@ class ReportControllerTest {
                 .numberOfElements(2)
                 .content(Collections.singletonList(reportDtoOutput))
                 .build();
-        Mockito.when(reportManager.get(pageable)).thenReturn(pageDtoOutput);
+        Mockito.when(reportManager.getDto(pageable)).thenReturn(pageDtoOutput);
 
         // assert
         this.mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/report").param("page", "0")
@@ -99,7 +99,7 @@ class ReportControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.number_of_elements").value(2));
 
         //test
-        Mockito.verify(reportManager).get(pageable);
+        Mockito.verify(reportManager).getDto(pageable);
     }
 
     @Test
