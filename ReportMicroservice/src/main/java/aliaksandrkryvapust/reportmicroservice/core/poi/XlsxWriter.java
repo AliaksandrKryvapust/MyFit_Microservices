@@ -2,6 +2,7 @@ package aliaksandrkryvapust.reportmicroservice.core.poi;
 
 import aliaksandrkryvapust.reportmicroservice.core.poi.api.IXlsxWriter;
 import aliaksandrkryvapust.reportmicroservice.core.poi.api.XlsxSheet;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Component;
@@ -15,21 +16,14 @@ import java.util.List;
 import static aliaksandrkryvapust.reportmicroservice.core.poi.XlsxWriterHelper.getFieldNamesForClass;
 
 @Slf4j
+@RequiredArgsConstructor
 @Component
 public class XlsxWriter implements IXlsxWriter {
-
     private final XlsxWriterHelper fileWriterService;
 
-    public XlsxWriter(XlsxWriterHelper fileWriterService) {
-        this.fileWriterService = fileWriterService;
-    }
-
     @Override
-    public <T> void write(List<T> data, ByteArrayOutputStream outputStream, String[] columnTitles, Workbook workbook) {
-        if (data.isEmpty()) {
-            log.error("No data received to write Xls file..");
-            return;
-        }
+    public <TYPE> void write(List<TYPE> data, ByteArrayOutputStream outputStream, String[] columnTitles, Workbook workbook) {
+        if (emptyDataCheck(data)) return;
         long start = System.currentTimeMillis();
 //        setting up the basic styles for the workbook
         Font boldFont = fileWriterService.getBoldFont(workbook);
@@ -43,7 +37,7 @@ public class XlsxWriter implements IXlsxWriter {
 //            get the metadata for each field of the POJO class into a list
             List<XlsxField> xlsColumnFields = getFieldNamesForClass(data.get(0).getClass());
             int tempRowNo = 0;
-            int recordBeginRowNo = 0;
+            int recordBeginRowNo;
             int recordEndRowNo = 0;
 //            set spreadsheet titles
             Row mainRow = sheet.createRow(tempRowNo);
@@ -57,7 +51,7 @@ public class XlsxWriter implements IXlsxWriter {
 //            get class of the passed dataset
             Class<?> clazz = data.get(0).getClass();
 //            looping the past dataset
-            for (T record : data) {
+            for (TYPE record : data) {
                 tempRowNo = recordEndRowNo;
                 recordBeginRowNo = tempRowNo;
                 mainRow = sheet.createRow(tempRowNo++);
@@ -161,7 +155,15 @@ public class XlsxWriter implements IXlsxWriter {
         }
     }
 
-    private <T> Sheet setSheetName(List<T> data, Workbook workbook) {
+    private <TYPE> boolean emptyDataCheck(List<TYPE> data) {
+        if (data.isEmpty()) {
+            log.error("No data received to write Xls file..");
+            return true;
+        }
+        return false;
+    }
+
+    private <TYPE> Sheet setSheetName(List<TYPE> data, Workbook workbook) {
         XlsxSheet xlsxSheet = data.get(0).getClass().getAnnotation(XlsxSheet.class);
         String sheetName = xlsxSheet.value();
         String dateTime = LocalDateTime.now().toString().replaceAll(":", "_");
