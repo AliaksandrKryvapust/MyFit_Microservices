@@ -11,6 +11,7 @@ import aliaksandrkryvapust.reportmicroservice.repository.entity.Params;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.Report;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.EStatus;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Page;
@@ -20,21 +21,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class ReportMapper {
     private final UserMapper userMapper;
-
-    public ReportMapper(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
 
     public Report inputMapping(ParamsDto paramsDto, EType type, MyUserDetails userDetails) {
         String from = paramsDto.getFrom().toString();
         String to = paramsDto.getTo().toString();
         Params params = Params.builder()
                 .start((paramsDto.getFrom()))
-                .finish(paramsDto.getTo()).build();
-        User user = this.userMapper.inputMapping(userDetails);
+                .finish(paramsDto.getTo())
+                .build();
+        User user = userMapper.inputMapping(userDetails);
         if (type.name().equals("JOURNAL_FOOD")) {
             String description = String.format("Meal records of user %s from %s to %s.", userDetails.getUsername(), from, to);
             return Report.builder()
@@ -42,7 +41,8 @@ public class ReportMapper {
                     .type(type)
                     .user(user)
                     .status(EStatus.LOADED)
-                    .description(description).build();
+                    .description(description)
+                    .build();
         } else {
             throw new IllegalStateException("EType field is not enum value");
         }
@@ -52,20 +52,23 @@ public class ReportMapper {
     public ReportDtoOutput outputMapping(Report report) {
         ParamsDtoOutput paramsDto = ParamsDtoOutput.builder()
                 .from(report.getParams().getStart())
-                .to(report.getParams().getFinish()).build();
+                .to(report.getParams().getFinish())
+                .build();
         return ReportDtoOutput.builder()
-                .uuid(report.getId())
+                .id(report.getId().toString())
                 .params(paramsDto)
                 .description(report.getDescription())
-                .type(report.getType())
-                .status(report.getStatus())
+                .type(report.getType().name())
+                .status(report.getStatus().name())
                 .dtCreate(report.getDtCreate().toEpochMilli())
                 .dtUpdate(report.getDtUpdate().toEpochMilli())
                 .build();
     }
 
     public PageDtoOutput<ReportDtoOutput> outputPageMapping(Page<Report> reports) {
-        List<ReportDtoOutput> outputs = reports.getContent().stream().map(this::outputMapping).collect(Collectors.toList());
+        List<ReportDtoOutput> outputs = reports.getContent().stream()
+                .map(this::outputMapping)
+                .collect(Collectors.toList());
         return PageDtoOutput.<ReportDtoOutput>builder()
                 .number(reports.getNumber() + 1)
                 .size(reports.getSize())
