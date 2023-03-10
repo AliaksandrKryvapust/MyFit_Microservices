@@ -10,12 +10,15 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
+import java.util.NoSuchElementException;
+import java.util.UUID;
+
 @Component
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserMapper {
     public UserPrincipal inputValidationMapping(TokenValidationDto dto) {
         return UserPrincipal.builder()
-                .id(dto.getId())
+                .id(UUID.fromString(dto.getId()))
                 .username(dto.getUsername())
                 .authenticated(dto.getAuthenticated())
                 .role(EUserRole.valueOf(dto.getRole()))
@@ -25,15 +28,21 @@ public class UserMapper {
         return User.builder()
                 .userId(userDetails.getId())
                 .username(userDetails.getUsername())
-                .role(EUserRole.valueOf(userDetails.getAuthorities().stream().findFirst().orElseThrow().getAuthority()))
+                .role(EUserRole.valueOf(userDetails.getAuthorities().stream()
+                        .findFirst()
+                        .orElseThrow(NoSuchElementException::new)
+                        .getAuthority()))
                 .build();
     }
 
     public UserDto outputAuditMapping(MyUserDetails userDetails) {
         return UserDto.builder()
-                .uuid(userDetails.getId())
-                .mail(userDetails.getUsername())
-                .role(EUserRole.valueOf(userDetails.getAuthorities().stream().findFirst().orElseThrow().getAuthority()))
+                .id(userDetails.getId().toString())
+                .email(userDetails.getUsername())
+                .role(userDetails.getAuthorities().stream()
+                        .findFirst()
+                        .orElseThrow(NoSuchElementException::new)
+                        .getAuthority())
                 .build();
     }
 }

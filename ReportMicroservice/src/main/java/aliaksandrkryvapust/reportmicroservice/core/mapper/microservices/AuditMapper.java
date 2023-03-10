@@ -5,20 +5,16 @@ import aliaksandrkryvapust.reportmicroservice.core.dto.output.microservices.ETyp
 import aliaksandrkryvapust.reportmicroservice.core.dto.output.microservices.UserDto;
 import aliaksandrkryvapust.reportmicroservice.core.security.MyUserDetails;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.Report;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AuditMapper {
     private final UserMapper userMapper;
-
-    @Autowired
-    public AuditMapper(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
 
     public AuditDto reportOutputMapping(Report report, MyUserDetails userDetails, String text) {
         UserDto userDto = userMapper.outputAuditMapping(userDetails);
@@ -26,7 +22,7 @@ public class AuditMapper {
                 .id(String.valueOf(report.getId()))
                 .user(userDto)
                 .text(text)
-                .type(EType.REPORT)
+                .type(EType.REPORT.name())
                 .build();
     }
 }

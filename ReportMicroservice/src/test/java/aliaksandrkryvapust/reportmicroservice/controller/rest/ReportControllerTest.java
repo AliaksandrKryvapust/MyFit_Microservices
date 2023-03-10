@@ -16,20 +16,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 
 
 @WebMvcTest(controllers = ReportController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class})
@@ -64,9 +60,9 @@ class ReportControllerTest {
         final ReportDtoOutput reportDtoOutput = ReportDtoOutput.builder()
                 .dtCreate(dtCreate)
                 .dtUpdate(dtUpdate)
-                .uuid(id)
-                .status(EStatus.LOADED)
-                .type(EType.JOURNAL_FOOD)
+                .id(id.toString())
+                .status(EStatus.LOADED.name())
+                .type(EType.JOURNAL_FOOD.name())
                 .description(description)
                 .params(paramsDtoOutput)
                 .build();
