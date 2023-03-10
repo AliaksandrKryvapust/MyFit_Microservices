@@ -10,7 +10,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import javax.persistence.OptimisticLockException;
-import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -30,36 +27,12 @@ import java.util.Objects;
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({DataIntegrityViolationException.class, NoSuchElementException.class,
-            ConversionFailedException.class})
+            ConversionFailedException.class, IllegalArgumentException.class})
     public ResponseEntity<SingleExceptionDto> handleBadRequest(Exception ex) {
         makeLog(ex);
         SingleExceptionDto message = SingleExceptionDto.builder().logref("error")
                 .message("The request contains incorrect data. Change the request and send it again").build();
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler({BadCredentialsException.class})
-    public ResponseEntity<SingleExceptionDto> handleBadCredentials(Exception ex) {
-        makeLog(ex);
-        SingleExceptionDto message = SingleExceptionDto.builder().logref("error")
-                .message("This authorization token is prohibited from making requests to this address").build();
-        return new ResponseEntity<>(message, HttpStatus.FORBIDDEN);
-    }
-
-    @ExceptionHandler({AccessControlException.class})
-    public ResponseEntity<SingleExceptionDto> handleAccessDenied(Exception ex) {
-        makeLog(ex);
-        SingleExceptionDto message = SingleExceptionDto.builder().logref("error")
-                .message("This authorization token is prohibited from making requests to this address").build();
-        return new ResponseEntity<>(message, HttpStatus.FORBIDDEN);
-    }
-
-    @ExceptionHandler({OptimisticLockException.class})
-    protected ResponseEntity<SingleExceptionDto> handleOptimisticLock(Exception ex) {
-        makeLog(ex);
-        SingleExceptionDto message = SingleExceptionDto.builder().logref("optimistic_lock")
-                .message("Version does not match. Get new data and retry").build();
-        return new ResponseEntity<>(message, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler({IllegalStateException.class, Exception.class})
