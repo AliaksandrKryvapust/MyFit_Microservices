@@ -53,6 +53,9 @@ public class ReportLoadJob implements Job {
             report = reportService.get(id, username);
             List<RecordDto> records = resp.blockOptional().orElseThrow(IllegalStateException::new);
             log.info("Data from response was extracted");
+            if (records.size()==0){
+                setProgressStatus(report, EStatus.EMPTY, "Response was empty");
+            }
             saveRecordAsFile(report, records);
         } catch (NoSuchElementException e) {
             log.info("Report job, there is no data to work with");

@@ -52,8 +52,8 @@ public class ReportValidator implements IReportValidator {
             throw new IllegalArgumentException("description is not valid for report:" + report);
         }
         char[] chars = report.getDescription().toCharArray();
-        if (chars.length < 2 || chars.length > 50) {
-            throw new IllegalArgumentException("description should contain from 2 to 50 letters for report:" + report);
+        if (chars.length < 2 || chars.length > 200) {
+            throw new IllegalArgumentException("description should contain from 2 to 200 letters for report:" + report);
         }
     }
 
