@@ -2,8 +2,6 @@ package aliaksandrkryvapust.reportmicroservice.repository.entity;
 
 import aliaksandrkryvapust.reportmicroservice.core.dto.output.microservices.EType;
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -36,19 +34,13 @@ public class Report {
     @Setter
     @Embedded
     private User user;
-    @Basic(fetch = FetchType.LAZY)
-    @Fetch(FetchMode.SELECT)
-    @org.hibernate.annotations.Type(type="org.hibernate.type.BinaryType")
     @Setter
-    private byte[] fileValue;
+    @Embedded
+    private File file;
     @org.hibernate.annotations.Generated(GenerationTime.INSERT)
     private Instant dtCreate;
     @Version
     private Instant dtUpdate;
-
-    public Report(byte[] fileValue) {
-        this.fileValue = fileValue;
-    }
 
     @Override
     public String toString() {
