@@ -16,11 +16,11 @@ CREATE TABLE IF NOT EXISTS report.report
     user_id      uuid                        NOT NULL,
     username     character varying(200)      NOT NULL,
     role         character varying(100)      NOT NULL,
-    file_type    character varying           NOT NULL,
-    content_type character varying           NOT NULL,
-    file_name    character varying           NOT NULL,
-    url          character varying           NOT NULL,
-    file_key     character varying           NOT NULL,
+    file_type    character varying,
+    content_type character varying,
+    file_name    character varying,
+    url          character varying,
+    file_key     character varying,
     PRIMARY KEY (id)
 );
 
