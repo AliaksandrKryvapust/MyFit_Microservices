@@ -1,11 +1,15 @@
 package aliaksandrkryvapust.reportmicroservice.job;
 
+import aliaksandrkryvapust.reportmicroservice.core.aws.AwsS3FileDto;
 import aliaksandrkryvapust.reportmicroservice.core.dto.job.RecordDto;
 import aliaksandrkryvapust.reportmicroservice.core.dto.output.microservices.EType;
 import aliaksandrkryvapust.reportmicroservice.core.dto.poi.XlsxRecord;
+import aliaksandrkryvapust.reportmicroservice.core.mapper.ReportMapper;
 import aliaksandrkryvapust.reportmicroservice.core.mapper.poi.XlsxRecordMapper;
+import aliaksandrkryvapust.reportmicroservice.repository.entity.EFileType;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.EStatus;
 import aliaksandrkryvapust.reportmicroservice.repository.entity.Report;
+import aliaksandrkryvapust.reportmicroservice.service.api.IAwsS3Service;
 import aliaksandrkryvapust.reportmicroservice.service.api.IReportService;
 import aliaksandrkryvapust.reportmicroservice.service.api.IXlsxRecordService;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +39,8 @@ public class ReportLoadJob implements Job {
     private final IReportService reportService;
     private final IXlsxRecordService xlsxRecordService;
     private final XlsxRecordMapper recordMapper;
+    private final IAwsS3Service awsS3Service;
+    private final ReportMapper reportMapper;
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
@@ -56,7 +62,7 @@ public class ReportLoadJob implements Job {
             if (records.size()==0){
                 setProgressStatus(report, EStatus.EMPTY, "Response was empty");
             }
-            saveRecordAsFile(report, records);
+            saveFile(report, records);
         } catch (NoSuchElementException e) {
             log.info("Report job, there is no data to work with");
         } catch (IllegalStateException e) {
@@ -68,11 +74,12 @@ public class ReportLoadJob implements Job {
         }
     }
 
-    private void saveRecordAsFile(Report report, List<RecordDto> records) throws IOException {
+    private void saveFile(Report report, List<RecordDto> records) throws IOException {
         List<XlsxRecord> recordList = recordMapper.listInputMapping(records);
         byte[] convertedFile = xlsxRecordService.getRecordXlsData(recordList);
-        report.setFileValue(convertedFile);
-        setProgressStatus(report, EStatus.DONE, "Report Job finished");
+        AwsS3FileDto fileDto = awsS3Service.sendFileFromReport(convertedFile, report, EFileType.JOURNAL_REPORT);
+        Report entityWithFile = reportMapper.setJournalReport(report, fileDto);
+        setProgressStatus(entityWithFile, EStatus.DONE, "Report Job finished");
     }
 
     private Mono<List<RecordDto>> prepareRequest(Report report) {
