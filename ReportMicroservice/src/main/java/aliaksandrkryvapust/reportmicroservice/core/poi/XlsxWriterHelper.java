@@ -30,24 +30,22 @@ public class XlsxWriterHelper {
     }
 
     public void writeArrayFieldRow(Row childRow, XlsxField xlsColumnField, Object objectValue,
-                                    CellStyle currencyStyle, CellStyle centerAlignedStyle, CellStyle genericStyle, Workbook workbook) {
+                                   CellStyle currencyStyle, CellStyle centerAlignedStyle, CellStyle genericStyle, Workbook workbook) {
         Cell newCell = childRow.createCell(xlsColumnField.getCellIndex());
         setCellValue(newCell, objectValue, currencyStyle, centerAlignedStyle, genericStyle, workbook);
     }
 
-    public <T> void writeSingleFieldRow(Row mainRow, XlsxField xlsColumnField, Class<?> clazz, CellStyle currencyStyle,
-                                         CellStyle centerAlignedStyle, CellStyle genericStyle, T record, Workbook workbook)
+    public <TYPE> void writeSingleFieldRow(Row mainRow, XlsxField xlsColumnField, Class<?> clazz, CellStyle currencyStyle,
+                                           CellStyle centerAlignedStyle, CellStyle genericStyle, TYPE record, Workbook workbook)
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-
         Cell newCell = mainRow.createCell(xlsColumnField.getCellIndex());
         Method xlsMethod = getMethod(clazz, xlsColumnField);
         Object xlsObjValue = xlsMethod.invoke(record, (Object[]) null);
         setCellValue(newCell, xlsObjValue, currencyStyle, centerAlignedStyle, genericStyle, workbook);
-
     }
 
-    public <T> boolean isNextColumnAnArray(List<XlsxField> xlsColumnFields, XlsxField xlsColumnField,
-                                            Class<?> clazz, T record)
+    public <TYPE> boolean isNextColumnAnArray(List<XlsxField> xlsColumnFields, XlsxField xlsColumnField,
+                                              Class<?> clazz, TYPE record)
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         XlsxField nextXlsColumnField;
         int fieldsSize = xlsColumnFields.size();
@@ -101,7 +99,7 @@ public class XlsxWriterHelper {
     }
 
     public static List<XlsxField> getFieldNamesForClass(Class<?> clazz) {
-        List<XlsxField> xlsColumnFields = new ArrayList();
+        List<XlsxField> xlsColumnFields = new ArrayList<>();
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             XlsxField xlsColumnField = new XlsxField();
