@@ -19,18 +19,18 @@ public class ParamsValidator implements IParamsValidator {
         if (params.getStart() == null) {
             throw new IllegalArgumentException("start date can not be null for params:" + params);
         }
-        if (params.getStart().isAfter(params.getFinish())) {
-            throw new IllegalArgumentException("start date must refer to moment in the past or present for params:" + params);
+        if (params.getFinish()!= null && params.getStart().isAfter(params.getFinish())) {
+            throw new IllegalArgumentException("start date must refer to moment before end date for params:" + params);
         }
     }
 
     private void checkFinish(Params params) {
         if (params.getFinish() == null) {
-            throw new IllegalArgumentException("start date can not be null for params:" + params);
+            throw new IllegalArgumentException("end date can not be null for params:" + params);
         }
         if (params.getFinish().isAfter(LocalDate.now(ZoneOffset.UTC).plusDays(1)) ||
                 params.getFinish().isBefore(params.getStart())) {
-            throw new IllegalArgumentException("start date must refer to moment in the past or present for params:" + params);
+            throw new IllegalArgumentException("end date must refer to moment in the past or present for params:" + params);
         }
     }
 }
