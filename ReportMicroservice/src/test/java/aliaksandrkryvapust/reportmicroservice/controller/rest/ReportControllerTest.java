@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 import static aliaksandrkryvapust.reportmicroservice.core.Constants.XLSX_CONTENT_TYPE;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
 @WebMvcTest(controllers = ReportController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class})
@@ -57,6 +58,7 @@ class ReportControllerTest {
     final UUID id = UUID.fromString("1d63d7df-f1b3-4e92-95a3-6c7efad96901");
     final EFileType fileType = EFileType.JOURNAL_REPORT;
     final String url = "https://www.example.com";
+    final String multipleError = "structured_error";
 
     @Test
     @WithMockUser(username = "admin@myfit.com", password = "kdrL556D", roles = {"ADMIN"})
@@ -120,6 +122,98 @@ class ReportControllerTest {
 
         //test
         Mockito.verify(reportManager, Mockito.times(1)).saveDto(paramsDto, EType.JOURNAL_FOOD);
+    }
+
+    @Test
+    void validateParamsDtoInputEmptyStartDate() throws Exception {
+        // preconditions
+        final ParamsDto paramsDto = ParamsDto.builder()
+                .from(null)
+                .to(to)
+                .build();
+        final String errorMessage = "start date cannot be null";
+        final String field = "from";
+
+        // assert
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/report/" + EType.JOURNAL_FOOD.name())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(paramsDto)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(jsonPath("$.logref").value(multipleError))
+                .andExpect(jsonPath("$.errors[*].field").value(field))
+                .andExpect(jsonPath("$.errors[*].message").value(errorMessage));
+
+        //test
+        Mockito.verify(reportManager, Mockito.times(0)).saveDto(paramsDto, EType.JOURNAL_FOOD);
+    }
+
+    @Test
+    void validateParamsDtoInputFutureStartDate() throws Exception {
+        // preconditions
+        final ParamsDto paramsDto = ParamsDto.builder()
+                .from(LocalDate.parse("2023-12-21"))
+                .to(to)
+                .build();
+        final String errorMessage = "start date should refer to moment in past";
+        final String field = "from";
+
+        // assert
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/report/" + EType.JOURNAL_FOOD.name())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(paramsDto)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(jsonPath("$.logref").value(multipleError))
+                .andExpect(jsonPath("$.errors[*].field").value(field))
+                .andExpect(jsonPath("$.errors[*].message").value(errorMessage));
+
+        //test
+        Mockito.verify(reportManager, Mockito.times(0)).saveDto(paramsDto, EType.JOURNAL_FOOD);
+    }
+
+    @Test
+    void validateParamsDtoInputEmptyEndDate() throws Exception {
+        // preconditions
+        final ParamsDto paramsDto = ParamsDto.builder()
+                .from(from)
+                .to(null)
+                .build();
+        final String errorMessage = "end date cannot be null";
+        final String field = "to";
+
+        // assert
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/report/" + EType.JOURNAL_FOOD.name())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(paramsDto)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(jsonPath("$.logref").value(multipleError))
+                .andExpect(jsonPath("$.errors[*].field").value(field))
+                .andExpect(jsonPath("$.errors[*].message").value(errorMessage));
+
+        //test
+        Mockito.verify(reportManager, Mockito.times(0)).saveDto(paramsDto, EType.JOURNAL_FOOD);
+    }
+
+    @Test
+    void validateParamsDtoInputFutureEndDate() throws Exception {
+        // preconditions
+        final ParamsDto paramsDto = ParamsDto.builder()
+                .from(from)
+                .to(LocalDate.parse("2023-12-21"))
+                .build();
+        final String errorMessage = "end date should refer to moment in past";
+        final String field = "to";
+
+        // assert
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/report/" + EType.JOURNAL_FOOD.name())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(paramsDto)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(jsonPath("$.logref").value(multipleError))
+                .andExpect(jsonPath("$.errors[*].field").value(field))
+                .andExpect(jsonPath("$.errors[*].message").value(errorMessage));
+
+        //test
+        Mockito.verify(reportManager, Mockito.times(0)).saveDto(paramsDto, EType.JOURNAL_FOOD);
     }
 
     private ParamsDtoOutput getPreparedParamsDtoOutput() {
