@@ -12,4 +12,6 @@ public final class Constants {
             "Ingredient weight", "Ingredient product title", "Ingredient product calories",
             "Ingredient product proteins", "Ingredient product fats", "Ingredient product carbohydrates",
             "Ingredient product weight"};
+    public static final String BUCKET_NAME = "javatests3111222";
+    public static final String XLSX_CONTENT_TYPE = "application/xlsx";
 }

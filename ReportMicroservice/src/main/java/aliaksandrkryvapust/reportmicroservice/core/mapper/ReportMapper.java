@@ -1,5 +1,6 @@
 package aliaksandrkryvapust.reportmicroservice.core.mapper;
 
+import aliaksandrkryvapust.reportmicroservice.core.aws.AwsS3FileDto;
 import aliaksandrkryvapust.reportmicroservice.core.dto.input.ParamsDto;
 import aliaksandrkryvapust.reportmicroservice.core.dto.output.ParamsDtoOutput;
 import aliaksandrkryvapust.reportmicroservice.core.dto.output.ReportDtoOutput;
@@ -7,10 +8,7 @@ import aliaksandrkryvapust.reportmicroservice.core.dto.output.microservices.ETyp
 import aliaksandrkryvapust.reportmicroservice.core.dto.output.pages.PageDtoOutput;
 import aliaksandrkryvapust.reportmicroservice.core.mapper.microservices.UserMapper;
 import aliaksandrkryvapust.reportmicroservice.core.security.MyUserDetails;
-import aliaksandrkryvapust.reportmicroservice.repository.entity.Params;
-import aliaksandrkryvapust.reportmicroservice.repository.entity.Report;
-import aliaksandrkryvapust.reportmicroservice.repository.entity.EStatus;
-import aliaksandrkryvapust.reportmicroservice.repository.entity.User;
+import aliaksandrkryvapust.reportmicroservice.repository.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -19,6 +17,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static aliaksandrkryvapust.reportmicroservice.core.Constants.XLSX_CONTENT_TYPE;
 
 @Component
 @RequiredArgsConstructor
@@ -47,6 +47,18 @@ public class ReportMapper {
             throw new IllegalStateException("EType field is not enum value");
         }
 
+    }
+
+    public Report setJournalReport(Report report, AwsS3FileDto fileDto) {
+        File file = File.builder()
+                .fileType(EFileType.JOURNAL_REPORT)
+                .contentType(XLSX_CONTENT_TYPE)
+                .fileName(report.getId().toString())
+                .url(fileDto.getUrl())
+                .fileKey(fileDto.getFileKey())
+                .build();
+        report.setFile(file);
+        return report;
     }
 
     public ReportDtoOutput outputMapping(Report report) {
