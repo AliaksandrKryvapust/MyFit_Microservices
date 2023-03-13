@@ -1,10 +1,12 @@
 package aliaksandrkryvapust.reportmicroservice.service;
 
 import aliaksandrkryvapust.reportmicroservice.core.dto.input.ParamsDto;
+import aliaksandrkryvapust.reportmicroservice.core.dto.output.FileDtoOutput;
 import aliaksandrkryvapust.reportmicroservice.core.dto.output.ReportDtoOutput;
 import aliaksandrkryvapust.reportmicroservice.core.dto.output.microservices.AuditDto;
 import aliaksandrkryvapust.reportmicroservice.core.dto.output.microservices.EType;
 import aliaksandrkryvapust.reportmicroservice.core.dto.output.pages.PageDtoOutput;
+import aliaksandrkryvapust.reportmicroservice.core.mapper.FileMapper;
 import aliaksandrkryvapust.reportmicroservice.core.mapper.ReportMapper;
 import aliaksandrkryvapust.reportmicroservice.core.mapper.microservices.AuditMapper;
 import aliaksandrkryvapust.reportmicroservice.core.security.MyUserDetails;
@@ -34,6 +36,7 @@ public class ReportService implements IReportService, IReportManager {
     private final IReportValidator reportValidator;
     private final AuditMapper auditMapper;
     private final IAuditManager auditManager;
+    private final FileMapper fileMapper;
 
     @Override
     public Report save(Report report) {
@@ -48,11 +51,6 @@ public class ReportService implements IReportService, IReportManager {
     @Override
     public Report get(UUID id, String username) {
         return reportRepository.findByIdAndUser_Username(id, username).orElseThrow(NoSuchElementException::new);
-    }
-
-    @Override
-    public byte[] exportFile(UUID id) {
-        return reportRepository.fileExport(id).getFileValue();
     }
 
     @Override
@@ -77,8 +75,10 @@ public class ReportService implements IReportService, IReportManager {
     }
 
     @Override
-    public byte[] getReportFile(UUID id) {
-        return exportFile(id);
+    public FileDtoOutput getReportFile(UUID id) {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Report report = get(id, userDetails.getUsername());
+        return fileMapper.outputMapping(report.getFile());
     }
 
     private void prepareAudit(Report report, MyUserDetails userDetails, String method) {
