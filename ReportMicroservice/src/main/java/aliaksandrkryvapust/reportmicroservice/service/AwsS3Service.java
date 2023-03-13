@@ -49,7 +49,7 @@ public class AwsS3Service implements IAwsS3Service {
     private Calendar generateExpirationTime() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        calendar.add(Calendar.DATE, 10); // Expiration time 10 days
+        calendar.add(Calendar.DATE, 3); // Expiration time 10 days
         return calendar;
     }
 }
