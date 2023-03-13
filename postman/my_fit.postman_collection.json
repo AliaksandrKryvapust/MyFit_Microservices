@@ -16,7 +16,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{   \"nick\": \"NNIIIck\",\r\n    \"mail\": \"admin@myfit.com\",\r\n    \"password\": \"kdrL556D\"\r\n}",
+					"raw": "{   \"username\": \"NNIIIck\",\r\n    \"email\": \"admin@myfit.com\",\r\n    \"password\": \"kdrL556D\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -46,7 +46,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8090/api/v1/users/registration/confirm?token=c70aacb3-fab6-416e-8620-eab72c9a6bbf",
+					"raw": "http://localhost:8090/api/v1/users/registration/confirm?token=6ca68892-3911-43e2-bab5-57304e8dba70",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -62,7 +62,7 @@
 					"query": [
 						{
 							"key": "token",
-							"value": "c70aacb3-fab6-416e-8620-eab72c9a6bbf"
+							"value": "6ca68892-3911-43e2-bab5-57304e8dba70"
 						}
 					]
 				}
@@ -72,6 +72,9 @@
 		{
 			"name": "user resend confirmation token",
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -102,11 +105,14 @@
 		{
 			"name": "login form",
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"mail\": \"admin@myfit.com\",\r\n    \"password\": \"kdrL556D\"\r\n}",
+					"raw": "{\r\n    \"email\": \"admin@myfit.com\",\r\n    \"password\": \"kdrL556D\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -131,14 +137,14 @@
 			"response": []
 		},
 		{
-			"name": "user get his own details",
+			"name": "user logout",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzIwNTM2ODYsImV4cCI6MTY3MjA1NzI4Nn0.f-Plrx2yFTx5fWzwRSL2dGYBiqWNe3brz4uK6RNh8BA",
+							"value": "{{JWT_Token}}",
 							"type": "string"
 						}
 					]
@@ -146,7 +152,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8090/api/v1/users/me",
+					"raw": "http://localhost:8090/api/v1/users/logout",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -156,7 +162,38 @@
 						"api",
 						"v1",
 						"users",
-						"me"
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user get his own details",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/api/v1/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"api",
+						"v1",
+						"users"
 					]
 				}
 			},
@@ -173,7 +210,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzMyODAzMDcsImV4cCI6MTY3MzI4MzkwN30.4qC8ODkRKnuWPu6QXdCq3PT1RW8JnzuWl4ZjdxZcF78",
+							"value": "{{JWT_Token}}",
 							"type": "string"
 						}
 					]
@@ -190,7 +227,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8090/api/v1/users?page=0&size=5",
+					"raw": "http://localhost:8090/api/v1/admin/users?page=0&size=5",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -199,6 +236,7 @@
 					"path": [
 						"api",
 						"v1",
+						"admin",
 						"users"
 					],
 					"query": [
@@ -223,7 +261,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzMyODAzMDcsImV4cCI6MTY3MzI4MzkwN30.4qC8ODkRKnuWPu6QXdCq3PT1RW8JnzuWl4ZjdxZcF78",
+							"value": "{{JWT_Token}}",
 							"type": "string"
 						}
 					]
@@ -231,7 +269,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8090/api/v1/users/71687d74-4a67-4201-be39-7895f90f7962",
+					"raw": "http://localhost:8090/api/v1/admin/users/89c1f7df-008a-49f5-9056-008f26075792",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -240,51 +278,9 @@
 					"path": [
 						"api",
 						"v1",
+						"admin",
 						"users",
-						"71687d74-4a67-4201-be39-7895f90f7962"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "update user data",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzMyODAzMDcsImV4cCI6MTY3MzI4MzkwN30.4qC8ODkRKnuWPu6QXdCq3PT1RW8JnzuWl4ZjdxZcF78",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"password\": \"1235hkkd\",\r\n    \"nick\": \"Adminius\",\r\n    \"mail\": \"adminBoss@gmail.com\",\r\n    \"role\": \"ADMIN\",\r\n    \"status\": \"ACTIVATED\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8090/api/v1/users/4641cda4-44d9-4f49-89e8-5faf069df2e9/dt_update/1673280753915",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8090",
-					"path": [
-						"api",
-						"v1",
-						"users",
-						"4641cda4-44d9-4f49-89e8-5faf069df2e9",
-						"dt_update",
-						"1673280753915"
+						"89c1f7df-008a-49f5-9056-008f26075792"
 					]
 				}
 			},
@@ -298,7 +294,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzMyODAzMDcsImV4cCI6MTY3MzI4MzkwN30.4qC8ODkRKnuWPu6QXdCq3PT1RW8JnzuWl4ZjdxZcF78",
+							"value": "{{JWT_Token}}",
 							"type": "string"
 						}
 					]
@@ -307,7 +303,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"password\": \"1235hkkd\",\r\n    \"nick\": \"Adminius\",\r\n    \"mail\": \"boss@gmail.com\",\r\n    \"role\": \"ADMIN\",\r\n    \"status\": \"ACTIVATED\"\r\n}",
+					"raw": "{\r\n    \"password\": \"1235hkkd\",\r\n    \"username\": \"Adminius\",\r\n    \"email\": \"boss@gmail.com\",\r\n    \"role\": \"ADMIN\",\r\n    \"status\": \"ACTIVATED\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -315,7 +311,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8090/api/v1/users",
+					"raw": "http://localhost:8090/api/v1/admin/users",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -324,7 +320,52 @@
 					"path": [
 						"api",
 						"v1",
+						"admin",
 						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update user data",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"password\": \"1235hkkd\",\r\n    \"username\": \"Adminius\",\r\n    \"email\": \"adminBoss@gmail.com\",\r\n    \"role\": \"ADMIN\",\r\n    \"status\": \"ACTIVATED\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/api/v1/admin/users/373c15b5-3732-4354-b89a-fc886b0654b8/version/1677272754739",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"api",
+						"v1",
+						"admin",
+						"users",
+						"373c15b5-3732-4354-b89a-fc886b0654b8",
+						"version",
+						"1677272754739"
 					]
 				}
 			},
@@ -338,7 +379,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzMyODAzMDcsImV4cCI6MTY3MzI4MzkwN30.4qC8ODkRKnuWPu6QXdCq3PT1RW8JnzuWl4ZjdxZcF78",
+							"value": "{{JWT_Token}}",
 							"type": "string"
 						}
 					]
@@ -369,7 +410,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzM4MTk2NTgsImV4cCI6MTY3MzgyMzI1OH0.QB8T3C54jT-tlmtkvYhoeLgp084RAoCZ7iqicoYAcds",
+							"value": "{{JWT_Token}}",
 							"type": "string"
 						}
 					]
@@ -409,7 +450,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzM4MTk2NTgsImV4cCI6MTY3MzgyMzI1OH0.QB8T3C54jT-tlmtkvYhoeLgp084RAoCZ7iqicoYAcds",
+							"value": "{{JWT_Token}}",
 							"type": "string"
 						}
 					]
@@ -426,7 +467,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8083/api/v1/product/3abd7e8c-65d1-4f57-afe4-a3e4e3b7fc0d/dt_update/1673819759227",
+					"raw": "http://localhost:8083/api/v1/product/fa7f6fa4-a02b-41ee-bd93-61c60f0b99ea/version/1677684874403",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -436,9 +477,9 @@
 						"api",
 						"v1",
 						"product",
-						"3abd7e8c-65d1-4f57-afe4-a3e4e3b7fc0d",
-						"dt_update",
-						"1673819759227"
+						"fa7f6fa4-a02b-41ee-bd93-61c60f0b99ea",
+						"version",
+						"1677684874403"
 					]
 				}
 			},
@@ -455,7 +496,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzM0NDUyNTksImV4cCI6MTY3MzQ0ODg1OX0.2Zlj7MRXZhkkUdeBRLa343MuThEDCnRTZclllALzf2c",
+							"value": "{{JWT_Token}}",
 							"type": "string"
 						}
 					]
@@ -505,7 +546,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzM0NDUyNTksImV4cCI6MTY3MzQ0ODg1OX0.2Zlj7MRXZhkkUdeBRLa343MuThEDCnRTZclllALzf2c",
+							"value": "{{JWT_Token}}",
 							"type": "string"
 						}
 					]
@@ -514,7 +555,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"composition\": [\r\n        {\r\n            \"product\": {\r\n                \"uuid\": \"87301d72-a97e-495c-b1c3-c05fe3dca2d2\"\r\n            },\r\n            \"weight\": 4.0\r\n        },\r\n        {\r\n            \"product\": {\r\n                \"uuid\": \"4e9b4fdc-a517-4013-a7b1-8e9a877bf8e8\"\r\n            },\r\n            \"weight\": 15.0\r\n        },\r\n        {\r\n            \"product\": {\r\n                \"uuid\": \"3e74e5c4-cb8c-4c6b-8d5f-d6dfef1b5254\"\r\n            },\r\n            \"weight\": 90.0\r\n        },\r\n        {\r\n            \"product\": {\r\n                \"uuid\": \"ca238a29-6ee8-40fb-9a98-91dd266ef527\"\r\n            },\r\n            \"weight\": 140.0\r\n        },\r\n        {\r\n            \"product\": {\r\n                \"uuid\": \"f5ca6266-d0ca-4eb1-8b91-8165a402b984\"\r\n            },\r\n            \"weight\": 120.0\r\n        },\r\n        {\r\n            \"product\": {\r\n                \"uuid\": \"740f832c-4435-4f25-82b1-163573a32a27\"\r\n            },\r\n            \"weight\": 120.0\r\n        }\r\n    ],\r\n    \"title\": \"Porridge with vegetables\"\r\n}",
+					"raw": "{\r\n    \"composition\": [\r\n        {\r\n            \"product\": {\r\n                \"id\": \"87301d72-a97e-495c-b1c3-c05fe3dca2d2\"\r\n            },\r\n            \"weight\": 4.0\r\n        },\r\n        {\r\n            \"product\": {\r\n                \"id\": \"4e9b4fdc-a517-4013-a7b1-8e9a877bf8e8\"\r\n            },\r\n            \"weight\": 15.0\r\n        },\r\n        {\r\n            \"product\": {\r\n                \"id\": \"3e74e5c4-cb8c-4c6b-8d5f-d6dfef1b5254\"\r\n            },\r\n            \"weight\": 90.0\r\n        },\r\n        {\r\n            \"product\": {\r\n                \"id\": \"ca238a29-6ee8-40fb-9a98-91dd266ef527\"\r\n            },\r\n            \"weight\": 140.0\r\n        },\r\n        {\r\n            \"product\": {\r\n                \"id\": \"f5ca6266-d0ca-4eb1-8b91-8165a402b984\"\r\n            },\r\n            \"weight\": 120.0\r\n        },\r\n        {\r\n            \"product\": {\r\n                \"id\": \"740f832c-4435-4f25-82b1-163573a32a27\"\r\n            },\r\n            \"weight\": 120.0\r\n        }\r\n    ],\r\n    \"title\": \"Porridge with vegetables\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -562,7 +603,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzM0NDUyNTksImV4cCI6MTY3MzQ0ODg1OX0.2Zlj7MRXZhkkUdeBRLa343MuThEDCnRTZclllALzf2c",
+							"value": "{{JWT_Token}}",
 							"type": "string"
 						}
 					]
@@ -571,7 +612,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"composition\": [\r\n        {\r\n            \"product\": {\r\n                \"uuid\": \"87301d72-a97e-495c-b1c3-c05fe3dca2d2\"\r\n            },\r\n            \"weight\": 4.0\r\n        },\r\n        {\r\n            \"product\": {\r\n                \"uuid\": \"4e9b4fdc-a517-4013-a7b1-8e9a877bf8e8\"\r\n            },\r\n            \"weight\": 15.0\r\n        },\r\n        {\r\n            \"product\": {\r\n                \"uuid\": \"3e74e5c4-cb8c-4c6b-8d5f-d6dfef1b5254\"\r\n            },\r\n            \"weight\": 90.0\r\n        },\r\n        {\r\n            \"product\": {\r\n                \"uuid\": \"ca238a29-6ee8-40fb-9a98-91dd266ef527\"\r\n            },\r\n            \"weight\": 140.0\r\n        },\r\n        {\r\n            \"product\": {\r\n                \"uuid\": \"f5ca6266-d0ca-4eb1-8b91-8165a402b984\"\r\n            },\r\n            \"weight\": 120.0\r\n        },\r\n        {\r\n            \"product\": {\r\n                \"uuid\": \"740f832c-4435-4f25-82b1-163573a32a27\"\r\n            },\r\n            \"weight\": 120.0\r\n        }\r\n    ],\r\n    \"title\": \"Porridge with vegetables\"\r\n}",
+					"raw": "{\r\n    \"composition\": [\r\n        {\r\n            \"product\": {\r\n                \"id\": \"87301d72-a97e-495c-b1c3-c05fe3dca2d2\"\r\n            },\r\n            \"weight\": 4.0\r\n        },\r\n        {\r\n            \"product\": {\r\n                \"id\": \"4e9b4fdc-a517-4013-a7b1-8e9a877bf8e8\"\r\n            },\r\n            \"weight\": 15.0\r\n        },\r\n        {\r\n            \"product\": {\r\n                \"id\": \"3e74e5c4-cb8c-4c6b-8d5f-d6dfef1b5254\"\r\n            },\r\n            \"weight\": 90.0\r\n        },\r\n        {\r\n            \"product\": {\r\n                \"id\": \"ca238a29-6ee8-40fb-9a98-91dd266ef527\"\r\n            },\r\n            \"weight\": 140.0\r\n        },\r\n        {\r\n            \"product\": {\r\n                \"id\": \"f5ca6266-d0ca-4eb1-8b91-8165a402b984\"\r\n            },\r\n            \"weight\": 120.0\r\n        },\r\n        {\r\n            \"product\": {\r\n                \"id\": \"740f832c-4435-4f25-82b1-163573a32a27\"\r\n            },\r\n            \"weight\": 120.0\r\n        }\r\n    ],\r\n    \"title\": \"Porridge with vegetables\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -579,7 +620,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8083/api/v1/recipe/344cd451-5196-4562-aa09-557f16149dff/dt_update/1673446694085",
+					"raw": "http://localhost:8083/api/v1/recipe/e94b5877-2464-4a67-a17a-96587fb9b3bf/version/1677687724660",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -589,23 +630,23 @@
 						"api",
 						"v1",
 						"recipe",
-						"344cd451-5196-4562-aa09-557f16149dff",
-						"dt_update",
-						"1673446694085"
+						"e94b5877-2464-4a67-a17a-96587fb9b3bf",
+						"version",
+						"1677687724660"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "ger recipe page",
+			"name": "get recipe page",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzM0NDUyNTksImV4cCI6MTY3MzQ0ODg1OX0.2Zlj7MRXZhkkUdeBRLa343MuThEDCnRTZclllALzf2c",
+							"value": "{{JWT_Token}}",
 							"type": "string"
 						}
 					]
@@ -646,7 +687,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzM0NTgwMjIsImV4cCI6MTY3MzQ2MTYyMn0.s8AQW-vxDdIeFlOop3ZTedd6pmGztKqush-xBPBcNH8",
+							"value": "{{JWT_Token}}",
 							"type": "string"
 						}
 					]
@@ -686,7 +727,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzM0NTgwMjIsImV4cCI6MTY3MzQ2MTYyMn0.s8AQW-vxDdIeFlOop3ZTedd6pmGztKqush-xBPBcNH8",
+							"value": "{{JWT_Token}}",
 							"type": "string"
 						}
 					]
@@ -694,7 +735,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8083/api/v1/profile/897b6ef6-21a0-4aeb-a5f4-9396dcf265fd",
+					"raw": "http://localhost:8083/api/v1/profile/841bb13e-2264-4da0-9cb3-316c7fa88779",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -704,7 +745,7 @@
 						"api",
 						"v1",
 						"profile",
-						"897b6ef6-21a0-4aeb-a5f4-9396dcf265fd"
+						"841bb13e-2264-4da0-9cb3-316c7fa88779"
 					],
 					"query": [
 						{
@@ -730,7 +771,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzM0NjQwMDUsImV4cCI6MTY3MzQ2NzYwNX0.QwItF-qC5Y0CCbTUhrxh8M-lasaIb2SF5DOsrrcrmc8",
+							"value": "{{JWT_Token}}",
 							"type": "string"
 						}
 					]
@@ -739,7 +780,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"dt_supply\": 1671465055782,\r\n    \"recipe\": {\r\n        \"uuid\": \"341371d0-a240-4bc4-b50b-aa2b3fbed7f0\"\r\n    },\r\n    \"weight\": 400\r\n}",
+					"raw": "{\r\n    \"dt_supply\": 1671465055782,\r\n    \"recipe\": {\r\n        \"id\": \"e80c0e64-3c2c-43d7-a144-f1f8a62ee7f8\"\r\n    },\r\n    \"weight\": 400\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -747,7 +788,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8083/api/v1/profile/897b6ef6-21a0-4aeb-a5f4-9396dcf265fd/journal/food",
+					"raw": "http://localhost:8083/api/v1/profile/841bb13e-2264-4da0-9cb3-316c7fa88779/journal/food",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -757,7 +798,7 @@
 						"api",
 						"v1",
 						"profile",
-						"897b6ef6-21a0-4aeb-a5f4-9396dcf265fd",
+						"841bb13e-2264-4da0-9cb3-316c7fa88779",
 						"journal",
 						"food"
 					],
@@ -780,7 +821,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzM0NjQwMDUsImV4cCI6MTY3MzQ2NzYwNX0.QwItF-qC5Y0CCbTUhrxh8M-lasaIb2SF5DOsrrcrmc8",
+							"value": "{{JWT_Token}}",
 							"type": "string"
 						}
 					]
@@ -788,7 +829,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8083/api/v1/profile/897b6ef6-21a0-4aeb-a5f4-9396dcf265fd/journal/food?page=0&size=5",
+					"raw": "http://localhost:8083/api/v1/profile/841bb13e-2264-4da0-9cb3-316c7fa88779/journal/food?page=0&size=5",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -798,7 +839,7 @@
 						"api",
 						"v1",
 						"profile",
-						"897b6ef6-21a0-4aeb-a5f4-9396dcf265fd",
+						"841bb13e-2264-4da0-9cb3-316c7fa88779",
 						"journal",
 						"food"
 					],
@@ -819,6 +860,16 @@
 		{
 			"name": "audit test post",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_Token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [
 					{
@@ -829,7 +880,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": \"d0df3060-26e6-4c45-a604-419d3391a8cb\",\r\n    \"user\": {\r\n        \"uuid\": \"d0df3060-26e6-4c45-a604-419d3391a8cb\",\r\n        \"nick\": \"Rick\",\r\n        \"mail\": \"rickAndMorty@gmail.com\",\r\n        \"role\": \"USER\",\r\n        \"status\": \"ACTIVATED\",\r\n        \"dt_create\": 1671381741242,\r\n        \"dt_update\": 1671381741242\r\n    },\r\n    \"text\": \"User was activated\",\r\n    \"type\": \"USER\"\r\n}",
+					"raw": "{\r\n    \"id\": \"d0df3060-26e6-4c45-a604-419d3391a8cb\",\r\n    \"user\": {\r\n        \"id\": \"d0df3060-26e6-4c45-a604-419d3391a8cb\",\r\n        \"email\": \"rickAndMorty@gmail.com\",\r\n        \"role\": \"USER\"\r\n    },\r\n    \"text\": \"User was activated\",\r\n    \"type\": \"USER\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -860,7 +911,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzM0NzQzMTQsImV4cCI6MTY3MzQ3NzkxNH0.ZOpQLud77B-LBsxgv6tbXD1HE6wSthihfX57He21x58",
+							"value": "{{JWT_Token}}",
 							"type": "string"
 						}
 					]
@@ -868,7 +919,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/api/v1/audit?page=4&size=5",
+					"raw": "http://localhost:8081/api/v1/audit?page=0&size=5",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -882,7 +933,7 @@
 					"query": [
 						{
 							"key": "page",
-							"value": "4"
+							"value": "0"
 						},
 						{
 							"key": "size",
@@ -901,7 +952,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzM1MzE5MzEsImV4cCI6MTY3MzUzNTUzMX0.ncZiUNsJK1LFh2U59moFgWhzcWZyW3p0TL9O_hWVcvw",
+							"value": "{{JWT_Token}}",
 							"type": "string"
 						}
 					]
@@ -909,7 +960,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/api/v1/audit/73eb7252-546d-4302-8c49-184de5948641",
+					"raw": "http://localhost:8081/api/v1/audit/d0df3060-26e6-4c45-a604-419d3391a8cb",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -919,7 +970,7 @@
 						"api",
 						"v1",
 						"audit",
-						"73eb7252-546d-4302-8c49-184de5948641"
+						"d0df3060-26e6-4c45-a604-419d3391a8cb"
 					]
 				}
 			},
@@ -933,7 +984,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzM1MzE5MzEsImV4cCI6MTY3MzUzNTUzMX0.ncZiUNsJK1LFh2U59moFgWhzcWZyW3p0TL9O_hWVcvw",
+							"value": "{{JWT_Token}}",
 							"type": "string"
 						}
 					]
@@ -942,7 +993,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"from\": \"2022-12-21\",\r\n  \"to\": \"2023-01-12\"\r\n}",
+					"raw": "{\r\n  \"from\": \"2023-03-01\",\r\n  \"to\": \"2023-03-10\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -974,7 +1025,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b3VnaEd1eUBnbWFpbC5jb20iLCJpYXQiOjE2NzI5NTgxMzYsImV4cCI6MTY3Mjk2MTczNn0.k1ZsYJUoWuKkUh5B2cCD0k-Yyjq-JbwkTNTkw_i0PmU",
+							"value": "{{JWT_Token}}",
 							"type": "string"
 						}
 					]
@@ -1019,7 +1070,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzM1MzE5MzEsImV4cCI6MTY3MzUzNTUzMX0.ncZiUNsJK1LFh2U59moFgWhzcWZyW3p0TL9O_hWVcvw",
+							"value": "{{JWT_Token}}",
 							"type": "string"
 						}
 					]
@@ -1038,7 +1089,7 @@
 					"file": {}
 				},
 				"url": {
-					"raw": "http://localhost:8082/api/v1/report/095576a3-ff49-414d-941d-726add41b5de/export",
+					"raw": "http://localhost:8082/api/v1/report/92d103bc-d286-4989-a4f7-82cdb53c9143/export",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -1048,7 +1099,7 @@
 						"api",
 						"v1",
 						"report",
-						"095576a3-ff49-414d-941d-726add41b5de",
+						"92d103bc-d286-4989-a4f7-82cdb53c9143",
 						"export"
 					]
 				}
@@ -1063,7 +1114,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBteWZpdC5jb20iLCJpYXQiOjE2NzM1MzE5MzEsImV4cCI6MTY3MzUzNTUzMX0.ncZiUNsJK1LFh2U59moFgWhzcWZyW3p0TL9O_hWVcvw",
+							"value": "{{JWT_Token}}",
 							"type": "string"
 						}
 					]
@@ -1071,7 +1122,7 @@
 				"method": "HEAD",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8082/api/v1/report/095576a3-ff49-414d-941d-726add41b5de/export",
+					"raw": "http://localhost:8082/api/v1/report/92d103bc-d286-4989-a4f7-82cdb53c9143/export",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -1081,7 +1132,7 @@
 						"api",
 						"v1",
 						"report",
-						"095576a3-ff49-414d-941d-726add41b5de",
+						"92d103bc-d286-4989-a4f7-82cdb53c9143",
 						"export"
 					]
 				}
