@@ -56,6 +56,26 @@ Available after authorization.
 For demonstration, queries from the Postman collection from the \postman folder can be run.
 The my_fit_droplet collection is intended for droplet requests on the digitalocean server (the server is temporarily stopped, demonstration on request).
 
+# Used tools/technologies
+
+* Microservice architecture
+* Spring (Security, Boot)
+* Hibernate
+* PostgreSQL
+* MongoDB
+* Tomcat
+* Docker
+* Quartz
+* Amazon S3
+* Apache POI
+* Junit
+* Mockito
+* Maven
+* GIT
+* HTTP
+* REST
+* Postman
+* DigitalOcean Developer Cloud
 
 
 
